@@ -8,7 +8,7 @@ services:
       - "443:443"
       - "443:443/udp"
     volumes:
-      - "./database/database.sqlite:/app/database/database.sqlite"
+      - "./database.sqlite:/app/database/database.sqlite"
     tty: true
     stdin_open: true
     restart: unless-stopped

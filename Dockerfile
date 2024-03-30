@@ -1,3 +1,16 @@
+FROM composer as base
+
+COPY . /app
+
+RUN composer install --no-dev --ignore-platform-reqs
+RUN php artisan optimize
+RUN php artisan optimize:clear
+RUN php artisan config:cache
+RUN php artisan event:cache
+RUN php artisan route:cache
+RUN php artisan view:cache
+
+
 FROM dunglas/frankenphp
 
 # Be sure to replace "your-domain-name.example.com" by your domain name
@@ -11,4 +24,4 @@ ENV SERVER_NAME=svg.servegame.com
 RUN install-php-extensions \
     intl
 
-COPY . /app
+COPY --from=base /app /app
