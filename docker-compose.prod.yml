@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  wos-svg:
+    build: .
+    container_name: wos-svg
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - "./database/database.sqlite:/app/database/database.sqlite"
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
