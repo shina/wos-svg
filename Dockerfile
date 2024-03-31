@@ -3,7 +3,6 @@ FROM composer as base
 COPY . /app
 
 RUN composer install --no-dev --ignore-platform-reqs
-RUN php artisan migrate --force
 RUN php artisan optimize
 RUN php artisan optimize:clear
 RUN php artisan config:cache

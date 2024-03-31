@@ -3,13 +3,14 @@ services:
   wos-svg:
     build: .
     container_name: wos-svg
+    env_file:
+      - .env
     ports:
       - "80:80"
       - "443:443"
       - "443:443/udp"
     volumes:
-      - "/root/database.sqlite:/app/database/database.sqlite"
-      - "/root/.env:/app/.env"
+      - "./database/database.sqlite:/app/database/database.sqlite"
     tty: true
     stdin_open: true
     restart: unless-stopped
