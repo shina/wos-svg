@@ -5,7 +5,7 @@ down:
 	docker compose -f docker-compose.prod.yml down
 
 migrate:
-	docker exec -it wos-svg /app/artisan migrate
+	docker exec -it wos-svg /app/artisan migrate --force
 
 prune:
 	docker system prune --all --force --volumes
