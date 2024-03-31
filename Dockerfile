@@ -19,10 +19,3 @@ COPY --from=base /app /app
 
 RUN install-php-extensions \
     intl
-
-RUN php artisan optimize
-RUN php artisan optimize:clear
-RUN php artisan config:cache
-RUN php artisan event:cache
-RUN php artisan route:cache
-RUN php artisan view:cache

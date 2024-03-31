@@ -10,4 +10,8 @@ migrate:
 prune:
 	docker system prune --all --force --volumes
 
-update: down prune up migrate
+optimize:
+	docker exec -it wos-svg /app/artisan optimize
+	docker exec -it wos-svg /app/artisan optimize:clear
+
+update: down up migrate optimize
