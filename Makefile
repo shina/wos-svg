@@ -1,5 +1,5 @@
 up:
-	docker compose -f docker-compose.prod.yml up -d
+	docker compose -f docker-compose.prod.yml up -d --build
 
 down:
 	docker compose -f docker-compose.prod.yml down
@@ -12,5 +12,8 @@ prune:
 
 optimize:
 	docker exec -it wos-svg /app/artisan optimize
+
+octane:
+
 
 update: down up migrate optimize
