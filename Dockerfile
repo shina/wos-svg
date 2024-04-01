@@ -21,6 +21,4 @@ RUN install-php-extensions \
     intl \
     pcntl
 
-#RUN php artisan octane:install --server=frankenphp
-
-CMD ["php", "artisan", "octane:start", "--port=80", "--admin-port=2019"]
+CMD ["php", "artisan", "octane:start"]

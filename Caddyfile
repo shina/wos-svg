@@ -1,0 +1,3 @@
+svg.servegame.com {
+    reverse_proxy wos-svg:8000
+}

@@ -13,7 +13,4 @@ prune:
 optimize:
 	docker exec -it wos-svg /app/artisan optimize
 
-octane:
-
-
 update: down up migrate optimize

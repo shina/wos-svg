@@ -6,11 +6,33 @@ services:
     env_file:
       - .env
     ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
+      - "8000:8000"
     volumes:
       - "./database/database.sqlite:/app/database/database.sqlite"
     tty: true
     stdin_open: true
     restart: unless-stopped
+    networks:
+      - internal
+
+  caddy:
+    image: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - "./Caddyfile:/etc/caddy/Caddyfile"
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - wos-svg
+    networks:
+      - internal
+
+networks:
+  internal:
+
+volumes:
+  caddy_data:
+  caddy_config:
