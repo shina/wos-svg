@@ -12,5 +12,6 @@ prune:
 
 optimize:
 	docker exec -it wos-svg /app/artisan optimize
+	docker exec -it wos-svg /app/artisan octane:reload
 
 update: down up migrate optimize
