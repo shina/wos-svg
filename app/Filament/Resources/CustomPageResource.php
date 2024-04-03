@@ -59,8 +59,6 @@ class CustomPageResource extends Resource
                 TextColumn::make('slug')
                     ->searchable()
                     ->sortable(),
-
-                TextColumn::make('html'),
             ])
             ->filters([
                 //
