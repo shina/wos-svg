@@ -2,11 +2,33 @@
 <script>
     function copyText(elementId) {
         let text = document.getElementById(elementId).innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            alert('Text copied to clipboard');
-        }).catch(err => {
-            console.error('Error in copying text: ', err);
-        });
+
+        if (navigator.clipboard) {
+            // Try the Clipboard API first
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Text copied to clipboard');
+            }).catch(err => {
+                console.error('Error in copying text: ', err);
+            });
+        } else {
+            // Fallback mechanism if Clipboard API isn't supported.
+            // Creates a temporary textarea, copies the text, then removes the textarea.
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                const msg = successful ? 'successfully' : 'unsuccessfully';
+                alert('Text was copied ' + msg);
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+
+            document.body.removeChild(textArea);
+        }
     }
 
     function onLongPress(elementId, callback) {
