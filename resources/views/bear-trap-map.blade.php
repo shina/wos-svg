@@ -1,5 +1,6 @@
 <style>
     .map {
+        margin: 0 auto;
         max-width: 100%;
     }
 </style>
