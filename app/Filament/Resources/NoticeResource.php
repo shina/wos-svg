@@ -45,9 +45,6 @@ class NoticeResource extends Resource
                     ]),
 
                 TextInput::make('title')
-                    ->afterStateUpdated(function(string $state, callable $set) {
-                        $set('title', strtoupper($state));
-                    })
                     ->unique(ignoreRecord: true)
                     ->required(),
 
