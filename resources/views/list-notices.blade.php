@@ -1,34 +1,22 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="{{ url('/assets/notices/hammer.min.js') }}"></script>
+<script src="{{ url('/assets/notices/clipboard.min.js') }}"></script>
+
 <script>
     function copyText(elementId) {
-        let text = document.getElementById(elementId).innerText;
+        const button = document.createElement('button');
 
-        if (navigator.clipboard) {
-            // Try the Clipboard API first
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Text copied to clipboard');
-            }).catch(err => {
-                console.error('Error in copying text: ', err);
-            });
-        } else {
-            // Fallback mechanism if Clipboard API isn't supported.
-            // Creates a temporary textarea, copies the text, then removes the textarea.
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
+        clipboard = new ClipboardJS(button, {
+            text: () => document.getElementById(elementId).innerText
+        });
+        clipboard.on('success', function(e) {
+            alert('Copied!');
+        });
+        clipboard.on('error', function(e) {
+            alert('Cannot copy text on this device :(');
+        });
 
-            try {
-                const successful = document.execCommand('copy');
-                const msg = successful ? 'successfully' : 'unsuccessfully';
-                alert('Text was copied ' + msg);
-            } catch (err) {
-                console.error('Fallback: Oops, unable to copy', err);
-            }
-
-            document.body.removeChild(textArea);
-        }
+        button.click();
+        clipboard.destroy();
     }
 
     function onLongPress(elementId, callback) {
