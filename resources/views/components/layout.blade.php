@@ -36,22 +36,17 @@
 <body>
 
 <div class="header">
-{{--    <h1>[SVG]Savages</h1>--}}
     <picture>
-        <source media="(min-width: 1200px)" srcset="layout/logo-large.jpg">
-        <source media="(min-width: 768px)" srcset="layout/logo-medium.jpg">
-        <source srcset="layout/logo-small.jpg">
-        <img class="logo" src="layout/logo-small.jpg" alt="SVG">
+        <source media="(min-width: 1200px)" srcset="{{ url('/layout/logo-large.jpg') }}">
+        <source media="(min-width: 768px)" srcset="{{ url('/layout/logo-medium.jpg') }}">
+        <source srcset="{{ url('/layout/logo-small.jpg') }}">
+        <img class="logo" src="{{ url('/layout/logo-small.jpg') }}" alt="SVG">
     </picture>
 </div>
 
 <div class="main">
     {{ $slot }}
 </div>
-
-{{--<div class="footer">--}}
-{{--    <p>Footer</p>--}}
-{{--</div>--}}
 
 </body>
 </html>
