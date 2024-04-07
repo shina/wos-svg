@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\Wiki\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CustomPage extends Model
+class Page extends Model
 {
     protected $guarded = [];
 }

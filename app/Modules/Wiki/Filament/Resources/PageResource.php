@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Modules\Wiki\Filament\Resources;
 
-use App\Filament\Resources\CustomPageResource\Pages;
-use App\Models\CustomPage;
+use App\Modules\Wiki\Filament\Resources\PageResource\Pages;
+use App\Modules\Wiki\Models\Page;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Placeholder;
@@ -17,11 +17,11 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class CustomPageResource extends Resource
+class PageResource extends Resource
 {
-    protected static ?string $model = CustomPage::class;
+    protected static ?string $model = Page::class;
 
-    protected static ?string $slug = 'custom-pages';
+    protected static ?string $slug = 'pages';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -35,11 +35,11 @@ class CustomPageResource extends Resource
                     ->schema([
                         Placeholder::make('created_at')
                             ->label('Created Date')
-                            ->content(fn(?CustomPage $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+                            ->content(fn(?Page $record): string => $record?->created_at?->diffForHumans() ?? '-'),
 
                         Placeholder::make('updated_at')
                             ->label('Last Modified Date')
-                            ->content(fn(?CustomPage $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                            ->content(fn(?Page $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
                     ]),
 
                 TextInput::make('slug')
@@ -77,14 +77,14 @@ class CustomPageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCustomPages::route('/'),
-            'create' => Pages\CreateCustomPage::route('/create'),
-            'edit' => Pages\EditCustomPage::route('/{record}/edit'),
+            'index' => Pages\ListPages::route('/'),
+            'create' => Pages\CreatePage::route('/create'),
+            'edit' => Pages\EditPage::route('/{record}/edit'),
         ];
     }
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['slug'];
+        return [];
     }
 }

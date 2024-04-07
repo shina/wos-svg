@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Modules\Wiki\Http\Controllers;
 
-use App\Models\CustomPage;
+use App\Http\Controllers\Controller;
+use App\Modules\Wiki\Models\Page;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
-class CustomPageController extends Controller
+class PageController extends Controller
 {
     public function __invoke(Request $request)
     {
         $slug = $request->route('slug');
-        $customPage = CustomPage::query()
+        $customPage = Page::query()
             ->where('slug', $slug)
             ->first();
 
         abort_if($customPage === null, 404);
 
         $parsedown = new \Parsedown();
-        return view('custom-page', [
+        return view('wiki::page', [
             'content' => $parsedown->text($customPage->content)
         ]);
     }
