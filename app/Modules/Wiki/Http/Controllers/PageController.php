@@ -11,16 +11,12 @@ class PageController extends Controller
     public function __invoke(Request $request)
     {
         $slug = $request->route('slug');
-        $customPage = Page::query()
+        $page = Page::query()
             ->where('slug', $slug)
             ->first();
 
-        abort_if($customPage === null, 404);
+        abort_if($page === null, 404);
 
-        $parsedown = new \Parsedown();
-
-        return view('wiki::page', [
-            'content' => $parsedown->text($customPage->content),
-        ]);
+        return view('wiki::page', PageData::from($page));
     }
 }
