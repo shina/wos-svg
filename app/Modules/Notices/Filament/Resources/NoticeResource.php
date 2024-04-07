@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Modules\Notices\Filament\Resources;
 
 use App\Filament\Resources\NoticeResource\Pages;
-use App\Models\Notice;
+use App\Modules\Notices\Models\Notice;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -90,9 +88,9 @@ class NoticeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListNotices::route('/'),
-            'create' => Pages\CreateNotice::route('/create'),
-            'edit' => Pages\EditNotice::route('/{record}/edit'),
+            'index' => \App\Modules\Notices\Filament\Resources\NoticeResource\Pages\ListNotices::route('/'),
+            'create' => \App\Modules\Notices\Filament\Resources\NoticeResource\Pages\CreateNotice::route('/create'),
+            'edit' => \App\Modules\Notices\Filament\Resources\NoticeResource\Pages\EditNotice::route('/{record}/edit'),
         ];
     }
 

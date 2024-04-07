@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Modules\Notices\Http\Controllers;
 
-use App\Models\Notice;
+use App\Http\Controllers\Controller;
+use App\Modules\Notices\Models\Notice;
 
 class ListNoticesController extends Controller
 {
     public function __invoke()
     {
-        return view('list-notices', [
+        return view('notices::list-notices', [
             'notices' => Notice::query()
                 ->orderBy('priority', 'desc')
                 ->get()

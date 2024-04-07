@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\NoticeResource\Pages;
+namespace App\Modules\Notices\Filament\Resources\NoticeResource\Pages;
 
-use App\Filament\Resources\NoticeResource;
+use App\Modules\Notices\Filament\Resources\NoticeResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
