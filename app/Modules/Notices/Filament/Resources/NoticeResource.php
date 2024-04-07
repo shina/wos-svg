@@ -2,7 +2,6 @@
 
 namespace App\Modules\Notices\Filament\Resources;
 
-use App\Filament\Resources\NoticeResource\Pages;
 use App\Modules\Notices\Models\Notice;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Placeholder;
@@ -35,11 +34,11 @@ class NoticeResource extends Resource
                     ->schema([
                         Placeholder::make('created_at')
                             ->label('Created Date')
-                            ->content(fn(?Notice $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+                            ->content(fn (?Notice $record): string => $record?->created_at?->diffForHumans() ?? '-'),
 
                         Placeholder::make('updated_at')
                             ->label('Last Modified Date')
-                            ->content(fn(?Notice $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                            ->content(fn (?Notice $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
                     ]),
 
                 TextInput::make('title')
@@ -55,8 +54,8 @@ class NoticeResource extends Resource
                     ->columns(4)
                     ->schema([
                         TextInput::make('priority')
-                            ->numeric()
-                    ])
+                            ->numeric(),
+                    ]),
             ]);
     }
 
@@ -68,7 +67,7 @@ class NoticeResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('priority')
-                    ->sortable()
+                    ->sortable(),
             ])
             ->defaultSort('priority', 'desc')
             ->filters([

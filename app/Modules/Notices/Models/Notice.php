@@ -10,7 +10,7 @@ class Notice extends Model
 
     protected static function booted()
     {
-        self::saving(function(Notice $notice) {
+        self::saving(function (Notice $notice) {
             if ($notice->isDirty('title')) {
                 $notice->title = strtoupper($notice->title);
             }

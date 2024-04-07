@@ -18,8 +18,9 @@ class PageController extends Controller
         abort_if($customPage === null, 404);
 
         $parsedown = new \Parsedown();
+
         return view('wiki::page', [
-            'content' => $parsedown->text($customPage->content)
+            'content' => $parsedown->text($customPage->content),
         ]);
     }
 }
