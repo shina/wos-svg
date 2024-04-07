@@ -38,17 +38,16 @@
 
 <x-layout>
     @foreach($notices as $notice)
-        <?php $slug = \Illuminate\Support\Str::slug($notice->title); ?>
-        <details id="{{ $slug }}">
-            <summary class="title">{{ $notice->title }}</summary>
+        <details id="{{ $notice['slug'] }}">
+            <summary class="title">{{ $notice['title'] }}</summary>
             <p>
-                {!! nl2br($notice->content) !!}
+                {!! $notice['content'] !!}
             </p>
         </details>
 
         <script>
-            onLongPress('{{ $slug }}', function() {
-                copyText('{{ $slug }}');
+            onLongPress('{{ $notice['slug'] }}', function() {
+                copyText('{{ $notice['slug'] }}');
             });
         </script>
     @endforeach

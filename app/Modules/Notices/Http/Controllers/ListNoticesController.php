@@ -9,10 +9,10 @@ class ListNoticesController extends Controller
 {
     public function __invoke()
     {
-        return view('notices::list-notices', [
-            'notices' => Notice::query()
+        return view('notices::list-notices', ListNoticesData::from(
+            Notice::query()
                 ->orderBy('priority', 'desc')
-                ->get(),
-        ]);
+                ->get()
+        ));
     }
 }
