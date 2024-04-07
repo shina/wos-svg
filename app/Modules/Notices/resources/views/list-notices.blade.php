@@ -8,10 +8,10 @@
         clipboard = new ClipboardJS(button, {
             text: () => document.getElementById(elementId).innerText
         });
-        clipboard.on('success', function(e) {
+        clipboard.on('success', function() {
             alert('Copied!');
         });
-        clipboard.on('error', function(e) {
+        clipboard.on('error', function() {
             alert('Cannot copy text on this device :(');
         });
 
