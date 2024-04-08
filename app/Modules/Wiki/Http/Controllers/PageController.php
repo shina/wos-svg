@@ -3,17 +3,19 @@
 namespace App\Modules\Wiki\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Wiki\Models\Page;
+use App\Modules\Wiki\Repositories\PageRepository;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
+    public function __construct(private PageRepository $pageRepository)
+    {
+    }
+
     public function __invoke(Request $request)
     {
         $slug = $request->route('slug');
-        $page = Page::query()
-            ->where('slug', $slug)
-            ->first();
+        $page = $this->pageRepository->getBySlug($slug);
 
         abort_if($page === null, 404);
 
