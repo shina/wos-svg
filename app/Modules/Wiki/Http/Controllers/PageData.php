@@ -8,10 +8,9 @@ use Spatie\LaravelData\Data;
 
 class PageData extends Data
 {
-
     public function __construct(
         #[WithTransformer(MarkdownTransformer::class)]
         public string $content,
-    ) {}
-
+    ) {
+    }
 }
