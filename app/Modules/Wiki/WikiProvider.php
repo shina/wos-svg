@@ -13,6 +13,5 @@ class WikiProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__.'/resources/views', 'wiki');
-        $this->loadRoutesFrom(__DIR__.'/routes.php');
     }
 }
