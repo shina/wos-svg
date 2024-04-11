@@ -2,7 +2,9 @@
 
 namespace App\Modules\Notices;
 
+use App\Modules\Notices\database\factories\TranslatedNoticeFactory;
 use App\Modules\Notices\Policies\NoticePolicy;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Gate;
@@ -12,6 +14,8 @@ use Illuminate\Support\Facades\Gate;
  */
 class TranslatedNotice extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
 
     protected static function booted()
@@ -22,5 +26,10 @@ class TranslatedNotice extends Model
     protected function notice(): BelongsTo
     {
         return $this->belongsTo(Notice::class);
+    }
+
+    protected static function newFactory()
+    {
+        return TranslatedNoticeFactory::new();
     }
 }
