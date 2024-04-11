@@ -6,18 +6,18 @@ use Illuminate\Support\Collection;
 
 enum Language: string
 {
-    case Portuguese = 'pt-br';
+    case Chinese = 'zh';
+    case Dutch = 'nl';
     case French = 'fr';
+    case German = 'de';
     case Italian = 'it';
     case Korean = 'ko';
-    case Chinese = 'zh';
-    case German = 'de';
-    case Norwegian = 'no';
     case Lithuanian = 'lt';
+    case Norwegian = 'no';
+    case Polish = 'pl';
+    case Portuguese = 'pt-br';
     case Russian = 'ru';
     case Turkish = 'tr';
-    case Dutch = 'nl';
-    case Polish = 'pl';
 
     public static function collect(): Collection
     {
