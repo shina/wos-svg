@@ -3,6 +3,7 @@
 namespace App\Modules\Notices;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Notice extends Model
 {
@@ -19,5 +20,10 @@ class Notice extends Model
                 // translate into multiple languages
             }
         });
+    }
+
+    public function translatedNotices(): HasMany
+    {
+        return $this->hasMany(TranslatedNotice::class);
     }
 }
