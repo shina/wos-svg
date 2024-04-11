@@ -2,12 +2,16 @@
 
 namespace App\Modules\Notices;
 
+use App\Modules\Notices\Http\Controllers\NoticeTranslationSelector;
 use Illuminate\Support\ServiceProvider;
 
 class NoticesProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->app->bind(NoticeTranslationSelector::class, function () {
+            return new NoticeTranslationSelector(app()->getFallbackLocale());
+        });
     }
 
     public function boot(): void
