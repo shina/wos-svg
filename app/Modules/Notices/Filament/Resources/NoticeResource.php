@@ -2,12 +2,18 @@
 
 namespace App\Modules\Notices\Filament\Resources;
 
+use App\Enums\Language;
 use App\Modules\Notices\Notice;
+use App\Modules\Notices\TranslatedNotice;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
@@ -15,6 +21,7 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rules\Unique;
 
 class NoticeResource extends Resource
 {
@@ -49,6 +56,46 @@ class NoticeResource extends Resource
                     ->maxLength(300)
                     ->rows(10)
                     ->required(),
+
+                Repeater::make('translatedNotices')
+                    ->relationship()
+                    ->label('Translations')
+                    ->addActionLabel('Add Translation')
+                    ->default(
+                        Language::collect()
+                            ->map(function (Language $language) {
+                                return TranslatedNotice::make([
+                                    'language' => $language->value,
+                                ])->toArray();
+                            })
+                    )
+                    ->schema([
+                        Grid::make()
+                            ->columns(2)
+                            ->schema([
+                                Toggle::make('enable_auto_translation')
+                                    ->live()
+                                    ->default(true),
+
+                                Select::make('language')
+                                    ->required()
+                                    ->unique(
+                                        ignoreRecord: true,
+                                        modifyRuleUsing: function (Unique $rule, $livewire) {
+                                            return $rule->where('notice_id', $livewire->record->id);
+                                        })
+                                    ->options(
+                                        Language::collect()
+                                            ->mapWithKeys(fn (Language $language) => [$language->value => $language->name])
+                                    ),
+                            ]),
+
+                        Textarea::make('content')
+                            ->maxLength(300)
+                            ->rows(10)
+                            ->required(fn (Get $get) => $get('enable_auto_translation') === false)
+                            ->disabled(fn (Get $get) => $get('enable_auto_translation') === true),
+                    ]),
 
                 Grid::make()
                     ->columns(4)
