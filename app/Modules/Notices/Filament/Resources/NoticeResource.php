@@ -61,6 +61,11 @@ class NoticeResource extends Resource
                     ->relationship()
                     ->label('Translations')
                     ->addActionLabel('Add Translation')
+                    ->itemLabel(function (array $state) {
+                        return rescue(fn () => Language::from($state['language'])->name);
+                    })
+                    ->collapsible()
+                    ->collapsed()
                     ->default(
                         Language::collect()
                             ->map(function (Language $language) {
@@ -78,6 +83,7 @@ class NoticeResource extends Resource
                                     ->default(true),
 
                                 Select::make('language')
+                                    ->live()
                                     ->required()
                                     ->unique(
                                         ignoreRecord: true,
