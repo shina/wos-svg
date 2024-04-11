@@ -3,7 +3,7 @@
 namespace App\Modules\Notices\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Notices\Models\Notice;
+use App\Modules\Notices\Notice;
 
 class ListNoticesController extends Controller
 {

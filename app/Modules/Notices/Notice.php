@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Notices\Models;
+namespace App\Modules\Notices;
 
 use Illuminate\Database\Eloquent\Model;
 

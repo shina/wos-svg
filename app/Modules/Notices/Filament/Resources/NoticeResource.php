@@ -2,7 +2,7 @@
 
 namespace App\Modules\Notices\Filament\Resources;
 
-use App\Modules\Notices\Models\Notice;
+use App\Modules\Notices\Notice;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Textarea;
