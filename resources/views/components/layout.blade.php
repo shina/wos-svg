@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[SVG]Savages</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="//unpkg.com/alpinejs" defer></script>
     <style>
         body, html {
             margin: 0;
@@ -48,5 +49,8 @@
     {{ $slot }}
 </div>
 
+<div class="footer">
+    <x-locale-selection-selector></x-locale-selection-selector>
+</div>
 </body>
 </html>

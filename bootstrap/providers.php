@@ -5,4 +5,5 @@ return [
     App\Providers\Filament\AdminPanelProvider::class,
     \App\Modules\Notices\NoticesProvider::class,
     \App\Modules\Wiki\WikiProvider::class,
+    \App\Modules\LocaleSelection\LocaleSelectionProvider::class,
 ];
