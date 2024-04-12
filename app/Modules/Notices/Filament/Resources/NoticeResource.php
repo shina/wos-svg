@@ -4,7 +4,6 @@ namespace App\Modules\Notices\Filament\Resources;
 
 use App\Enums\Language;
 use App\Modules\Notices\Notice;
-use App\Modules\Notices\TranslatedNotice;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
@@ -68,10 +67,11 @@ class NoticeResource extends Resource
                     ->collapsed()
                     ->default(
                         Language::collect()
+                            ->filter(fn (Language $language) => $language->value !== 'en')
                             ->map(function (Language $language) {
-                                return TranslatedNotice::make([
+                                return [
                                     'language' => $language->value,
-                                ])->toArray();
+                                ];
                             })
                     )
                     ->schema([
@@ -92,6 +92,7 @@ class NoticeResource extends Resource
                                         })
                                     ->options(
                                         Language::collect()
+                                            ->filter(fn (Language $language) => $language->value !== 'en')
                                             ->mapWithKeys(fn (Language $language) => [$language->value => $language->name])
                                     ),
                             ]),

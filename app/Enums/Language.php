@@ -8,6 +8,7 @@ enum Language: string
 {
     case Chinese = 'zh';
     case Dutch = 'nl';
+    case English = 'en';
     case French = 'fr';
     case German = 'de';
     case Italian = 'it';
