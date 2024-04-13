@@ -112,4 +112,8 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    'deepl' => [
+        'api-key' => env('AUTH_DEEPL_API_KEY'),
+    ],
+
 ];

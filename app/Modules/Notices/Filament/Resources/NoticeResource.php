@@ -61,7 +61,9 @@ class NoticeResource extends Resource
                     ->label('Translations')
                     ->addActionLabel('Add Translation')
                     ->itemLabel(function (array $state) {
-                        $language = constant('App\Enums\Language::'.$state['language']);
+                        /** @var Language $language */
+                        $language = Language::collect()
+                            ->first(fn (Language $language) => $language->name === $state['language']);
 
                         return rescue(fn () => $language->getEnglishLabel());
                     })
