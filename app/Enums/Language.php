@@ -4,21 +4,63 @@ namespace App\Enums;
 
 use Illuminate\Support\Collection;
 
-enum Language: string
+enum Language
 {
-    case Chinese = 'zh';
-    case Dutch = 'nl';
-    case English = 'en';
-    case French = 'fr';
-    case German = 'de';
-    case Italian = 'it';
-    case Korean = 'ko';
-    case Lithuanian = 'lt';
-    case Norwegian = 'no';
-    case Polish = 'pl';
-    case Portuguese = 'pt-br';
-    case Russian = 'ru';
-    case Turkish = 'tr';
+    case zh;
+    case nl;
+    case en;
+    case fr;
+    case de;
+    case it;
+    case ko;
+    case lt;
+    case no;
+    case pl;
+    case pt;
+    case ru;
+    case tr;
+
+    public function getEnglishLabel()
+    {
+        $labels = [
+            'zh' => 'Chinese',
+            'nl' => 'Dutch',
+            'en' => 'English',
+            'fr' => 'French',
+            'de' => 'German',
+            'it' => 'Italian',
+            'ko' => 'Korean',
+            'lt' => 'Lithuanian',
+            'no' => 'Norwegian',
+            'pl' => 'Polish',
+            'pt' => 'Portuguese',
+            'ru' => 'Russian',
+            'tr' => 'Turkish',
+        ];
+
+        return $labels[$this->name];
+    }
+
+    public function getLocalisedLabel(): string
+    {
+        $labels = [
+            'zh' => '中文',
+            'nl' => 'Nederlands',
+            'en' => 'English',
+            'fr' => 'Français',
+            'de' => 'Deutsch',
+            'it' => 'Italiano',
+            'ko' => '한국어',
+            'lt' => 'Lietuvių',
+            'no' => 'Norsk',
+            'pl' => 'Polski',
+            'pt' => 'Português',
+            'ru' => 'Русский',
+            'tr' => 'Türkçe',
+        ];
+
+        return $labels[$this->name];
+    }
 
     public static function collect(): Collection
     {

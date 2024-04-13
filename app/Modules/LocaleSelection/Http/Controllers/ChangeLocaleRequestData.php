@@ -16,7 +16,7 @@ class ChangeLocaleRequestData extends Data
 
     public static function rules(ValidationContext $context): array
     {
-        $languages = Language::collect()->map(fn (Language $language) => $language->value);
+        $languages = Language::collect()->map(fn (Language $language) => $language->name);
 
         return [
             'locale' => [new In($languages)],

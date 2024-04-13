@@ -17,8 +17,8 @@ class LanguageOptionData extends Data
     public static function fromMultiple(Language $language, bool $isSelected): self
     {
         return new self(
-            $language->value,
             $language->name,
+            $language->getLocalisedLabel(),
             $isSelected
         );
     }

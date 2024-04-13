@@ -17,7 +17,7 @@ class LocaleSelectorData extends Data
     {
         return new self(
             $languages->map(function (Language $language) use ($selected) {
-                return LanguageOptionData::from($language, $selected === $language->value);
+                return LanguageOptionData::from($language, $selected === $language->name);
             })
         );
     }

@@ -61,16 +61,18 @@ class NoticeResource extends Resource
                     ->label('Translations')
                     ->addActionLabel('Add Translation')
                     ->itemLabel(function (array $state) {
-                        return rescue(fn () => Language::from($state['language'])->name);
+                        $language = constant('App\Enums\Language::'.$state['language']);
+
+                        return rescue(fn () => $language->getEnglishLabel());
                     })
                     ->collapsible()
                     ->collapsed()
                     ->default(
                         Language::collect()
-                            ->filter(fn (Language $language) => $language->value !== 'en')
+                            ->filter(fn (Language $language) => $language->name !== 'en')
                             ->map(function (Language $language) {
                                 return [
-                                    'language' => $language->value,
+                                    'language' => $language->name,
                                 ];
                             })
                     )
@@ -92,8 +94,8 @@ class NoticeResource extends Resource
                                         })
                                     ->options(
                                         Language::collect()
-                                            ->filter(fn (Language $language) => $language->value !== 'en')
-                                            ->mapWithKeys(fn (Language $language) => [$language->value => $language->name])
+                                            ->filter(fn (Language $language) => $language->name !== 'en')
+                                            ->mapWithKeys(fn (Language $language) => [$language->name => $language->getEnglishLabel()])
                                     ),
                             ]),
 
