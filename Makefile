@@ -12,6 +12,7 @@ prune:
 
 optimize:
 	docker exec -it wos-svg /app/artisan optimize
+	docker exec -it wos-svg /app/artisan data:cache-structures
 	docker exec -it wos-svg /app/artisan octane:reload
 	docker exec -it wos-svg /app/artisan storage:link
 
