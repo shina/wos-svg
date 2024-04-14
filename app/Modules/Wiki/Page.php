@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Wiki\Models;
+namespace App\Modules\Wiki;
 
 use App\Modules\Wiki\database\factories\PageFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

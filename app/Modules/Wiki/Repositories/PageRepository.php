@@ -2,7 +2,7 @@
 
 namespace App\Modules\Wiki\Repositories;
 
-use App\Modules\Wiki\Models\Page;
+use App\Modules\Wiki\Page;
 use App\Traits\FakeableTrait;
 
 class PageRepository

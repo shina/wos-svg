@@ -2,7 +2,7 @@
 
 namespace App\Modules\Wiki\database\factories;
 
-use App\Modules\Wiki\Models\Page;
+use App\Modules\Wiki\Page;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
