@@ -6,4 +6,5 @@ return [
     \App\Modules\Notices\NoticesProvider::class,
     \App\Modules\Wiki\WikiProvider::class,
     \App\Modules\LocaleSelection\LocaleSelectionProvider::class,
+    \App\Modules\Players\PlayersProvider::class,
 ];
