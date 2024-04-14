@@ -10,6 +10,8 @@ enum Role: string
 
     case MANAGER = 'manager';
 
+    case EDITOR = 'editor';
+
     public static function collect(): Collection
     {
         return collect(self::cases());
