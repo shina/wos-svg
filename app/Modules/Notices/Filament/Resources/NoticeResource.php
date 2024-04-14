@@ -92,7 +92,7 @@ class NoticeResource extends Resource
                                     ->unique(
                                         ignoreRecord: true,
                                         modifyRuleUsing: function (Unique $rule, $livewire) {
-                                            return $rule->where('notice_id', $livewire->record->id);
+                                            return $rule->where('notice_id', $livewire->record?->id);
                                         })
                                     ->options(
                                         Language::collect()

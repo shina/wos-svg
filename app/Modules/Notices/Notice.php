@@ -19,10 +19,6 @@ class Notice extends Model
             if ($notice->isDirty('title')) {
                 $notice->title = strtoupper($notice->title);
             }
-
-            if ($notice->isDirty('content')) {
-                // translate into multiple languages
-            }
         });
     }
 

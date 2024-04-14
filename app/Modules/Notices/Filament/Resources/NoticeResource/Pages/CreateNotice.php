@@ -3,6 +3,7 @@
 namespace App\Modules\Notices\Filament\Resources\NoticeResource\Pages;
 
 use App\Modules\Notices\Filament\Resources\NoticeResource;
+use App\Modules\Notices\Services\TranslateNotice;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateNotice extends CreateRecord
@@ -14,5 +15,11 @@ class CreateNotice extends CreateRecord
         return [
 
         ];
+    }
+
+    public function afterCreate()
+    {
+        $translateNotice = resolve(TranslateNotice::class);
+        $translateNotice($this->record);
     }
 }

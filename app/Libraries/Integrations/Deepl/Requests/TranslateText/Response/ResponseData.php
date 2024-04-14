@@ -14,10 +14,11 @@ class ResponseData extends Data
     ) {
     }
 
-    public static function fromResponse(Response $response): static
+    public static function fromResponse(Response $response): self
     {
         return new self(
-            $response->collect('translations')->map(fn (array $data) => TranslationData::from($data))
+            $response->collect('translations')
+                ->map(fn (array $data) => TranslationData::from($data))
         );
     }
 }

@@ -8,6 +8,9 @@ use App\Libraries\Integrations\Deepl\Enums\SourceLanguage;
 use App\Libraries\Integrations\Deepl\Enums\TargetLanguage;
 use Spatie\LaravelData\Data;
 
+/**
+ * @method from(string $text, ?Language $source_lang, Language $target_lang, ?string $context = null, ?bool $preserve_formatting = null, ?Formality $formality = null)
+ */
 class RequestBodyData extends Data
 {
     public function __construct(
