@@ -16,8 +16,13 @@
         .header, .footer {
             background-color: #121627;
             color: #fff;
-            text-align: center;
             padding: 1em;
+        }
+        .align-center {
+            text-align: center;
+        }
+        .align-right {
+            text-align: right;
         }
         .main {
             padding: 1em;
@@ -37,20 +42,22 @@
 <body>
 
 <div class="header">
-    <picture>
-        <source media="(min-width: 1200px)" srcset="{{ url('/layout/logo-large.jpg') }}">
-        <source media="(min-width: 768px)" srcset="{{ url('/layout/logo-medium.jpg') }}">
-        <source srcset="{{ url('/layout/logo-small.jpg') }}">
-        <img class="logo" src="{{ url('/layout/logo-small.jpg') }}" alt="SVG">
-    </picture>
+    <div class="align-right">
+        <x-locale-selection-selector></x-locale-selection-selector>
+    </div>
+    <div class="align-center">
+        <picture>
+            <source media="(min-width: 1200px)" srcset="{{ url('/layout/logo-large.jpg') }}">
+            <source media="(min-width: 768px)" srcset="{{ url('/layout/logo-medium.jpg') }}">
+            <source srcset="{{ url('/layout/logo-small.jpg') }}">
+            <img class="logo" src="{{ url('/layout/logo-small.jpg') }}" alt="SVG">
+        </picture>
+    </div>
 </div>
 
 <div class="main">
     {{ $slot }}
 </div>
 
-<div class="footer">
-    <x-locale-selection-selector></x-locale-selection-selector>
-</div>
 </body>
 </html>
