@@ -10,13 +10,18 @@ use Illuminate\Console\Command;
 
 class NoticeAutoTranslateCommand extends Command
 {
-    protected $signature = 'notice:auto-translate';
+    protected $signature = 'notice:auto-translate {--id= : The id to be translated} {--all : Translate all notices}';
 
     protected $description = 'This command automatically translates all notices in the application.';
 
     public function handle(TranslateNotice $translateNotice): void
     {
-        Notice::all()->each(function (Notice $notice) use ($translateNotice) {
+        $id = $this->option('id');
+        $isAll = $this->option('all');
+
+        $notices = $isAll ? Notice::all() : collect([Notice::find($id)]);
+
+        $notices->each(function (Notice $notice) use ($translateNotice) {
             $noticeLanguages = $notice->translatedNotices
                 ?->map(fn (TranslatedNotice $translateNotice) => $translateNotice->language);
 
