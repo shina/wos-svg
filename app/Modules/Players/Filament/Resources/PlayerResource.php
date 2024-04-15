@@ -5,6 +5,7 @@ namespace App\Modules\Players\Filament\Resources;
 use App\Modules\Players\Filament\Resources\PlayerResource\Pages;
 use App\Modules\Players\Player;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -61,6 +62,9 @@ class PlayerResource extends Resource
                     ->minValue(1)
                     ->maxValue(5)
                     ->prefix('R'),
+
+                RichEditor::make('background')
+                    ->columnSpan(2),
             ]);
     }
 
@@ -69,19 +73,19 @@ class PlayerResource extends Resource
         return $table
             ->searchable()
             ->columns([
+                TextColumn::make('in_game_id')->prefix('#'),
+
                 TextColumn::make('nickname'),
+
+                TextColumn::make('rank')
+                    ->sortable()
+                    ->prefix('R'),
 
                 TextColumn::make('rating')
                     ->sortable()
                     ->formatStateUsing(function (int $state) {
                         return collect(range(0, $state))->map(fn () => '*')->join(' ');
                     }),
-
-                TextColumn::make('in_game_id')->prefix('#'),
-
-                TextColumn::make('rank')
-                    ->sortable()
-                    ->prefix('R'),
             ])
             ->filters([
                 TrashedFilter::make(),
