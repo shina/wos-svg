@@ -32,6 +32,8 @@ class NoticeResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $contentMaxLength = 300;
+
         return $form
             ->columns(1)
             ->schema([
@@ -52,7 +54,7 @@ class NoticeResource extends Resource
                     ->required(),
 
                 Textarea::make('content')
-                    ->maxLength(300)
+                    ->maxLength($contentMaxLength)
                     ->rows(10)
                     ->required(),
 
@@ -102,7 +104,7 @@ class NoticeResource extends Resource
                             ]),
 
                         Textarea::make('content')
-                            ->maxLength(300)
+                            ->maxLength(fn (Get $get) => $get('enable_auto_translation') === false ? $contentMaxLength : null)
                             ->rows(10)
                             ->required(fn (Get $get) => $get('enable_auto_translation') === false)
                             ->disabled(fn (Get $get) => $get('enable_auto_translation') === true),
