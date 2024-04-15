@@ -84,7 +84,10 @@ class PlayerResource extends Resource
                 TextColumn::make('rating')
                     ->sortable()
                     ->formatStateUsing(function (int $state) {
-                        return collect(range(0, $state))->map(fn () => '*')->join(' ');
+                        $filledStars = collect($state === 0 ? [] : range(1, $state))->map(fn () => '★');
+                        $emptyStars = collect($state === 10 ? [] : range($state, 9))->map(fn () => '☆');
+
+                        return $filledStars->merge($emptyStars)->join('');
                     }),
             ])
             ->filters([
