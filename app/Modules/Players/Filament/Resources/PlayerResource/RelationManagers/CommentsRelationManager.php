@@ -6,7 +6,11 @@ use App\Modules\Players\Comment;
 use App\Modules\Players\Services\RatingCalculator;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Enums\ActionSize;
+use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -62,6 +66,26 @@ class CommentsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
+                Tables\Actions\Action::make('how-it-works')
+                    ->link()
+                    ->size(ActionSize::ExtraSmall)
+                    ->label('')
+                    ->icon('heroicon-c-question-mark-circle')
+                    ->infolist([
+                        TextEntry::make('title')
+                            ->hiddenLabel()
+                            ->weight(FontWeight::Bold)
+                            ->state('How does it work?'),
+                        TextEntry::make('text')
+                            ->hiddenLabel()
+                            ->state('The review system uses a thumbs up/down rating. Every player starts with '.
+                                '10 stars. Each review can increase or decrease the overall rating, but the rating '.
+                                'cannot exceed 10 stars or drop below 0 stars.'),
+                    ])
+                    ->modalSubmitAction(false)
+                    ->modalCancelAction(false)
+                    ->modalWidth(MaxWidth::Small),
+
                 Tables\Actions\CreateAction::make()
                     ->label('Write review'),
             ])
