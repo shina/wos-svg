@@ -66,6 +66,7 @@ class UserResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('roles')
+                    ->badge()
                     ->label('Roles')
                     ->getStateUsing(function (User $user) {
                         return $user->getRoleNames();
