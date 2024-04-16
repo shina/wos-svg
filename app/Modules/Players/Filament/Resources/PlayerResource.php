@@ -70,9 +70,8 @@ class PlayerResource extends Resource
         return $table
             ->searchable()
             ->columns([
-                TextColumn::make('in_game_id')->prefix('#'),
-
-                TextColumn::make('nickname'),
+                TextColumn::make('nickname')
+                    ->label(''),
 
                 TextColumn::make('rank')
                     ->sortable()
@@ -87,6 +86,7 @@ class PlayerResource extends Resource
                         return $filledStars->merge($emptyStars)->join('');
                     }),
             ])
+            ->defaultSort('nickname')
             ->filters([
                 TrashedFilter::make(),
             ])
