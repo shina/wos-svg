@@ -12,6 +12,10 @@ class EditPlayer extends EditRecord
 {
     protected static string $resource = PlayerResource::class;
 
+    protected $listeners = [
+        'refresh' => 'refresh',
+    ];
+
     protected function getHeaderActions(): array
     {
         return [
@@ -19,5 +23,10 @@ class EditPlayer extends EditRecord
             ForceDeleteAction::make(),
             RestoreAction::make(),
         ];
+    }
+
+    public function refresh()
+    {
+        $this->refreshFormData(['rating']);
     }
 }

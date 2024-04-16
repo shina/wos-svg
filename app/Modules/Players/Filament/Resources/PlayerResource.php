@@ -3,9 +3,9 @@
 namespace App\Modules\Players\Filament\Resources;
 
 use App\Modules\Players\Filament\Resources\PlayerResource\Pages;
-use App\Modules\Players\Player;
-use Filament\Forms\Components\Placeholder;
+use App\Modules\Players\Filament\Resources\PlayerResource\RelationManagers\CommentsRelationManager;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PlayerResource extends Resource
 {
-    protected static ?string $model = Player::class;
+    protected static ?string $model = \App\Modules\Players\Player::class;
 
     protected static ?string $slug = 'players';
 
@@ -35,14 +35,6 @@ class PlayerResource extends Resource
     {
         return $form
             ->schema([
-                Placeholder::make('created_at')
-                    ->label('Created Date')
-                    ->content(fn (?Player $record): string => $record?->created_at?->diffForHumans() ?? '-'),
-
-                Placeholder::make('updated_at')
-                    ->label('Last Modified Date')
-                    ->content(fn (?Player $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
-
                 TextInput::make('nickname')
                     ->required(),
 
@@ -63,8 +55,13 @@ class PlayerResource extends Resource
                     ->maxValue(5)
                     ->prefix('R'),
 
-                RichEditor::make('background')
-                    ->columnSpan(2),
+                Section::make('Background')
+                    ->collapsed()
+                    ->collapsible()
+                    ->schema([
+                        RichEditor::make('background')
+                            ->label(''),
+                    ]),
             ]);
     }
 
@@ -128,5 +125,12 @@ class PlayerResource extends Resource
     public static function getGloballySearchableAttributes(): array
     {
         return [];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            CommentsRelationManager::class,
+        ];
     }
 }
