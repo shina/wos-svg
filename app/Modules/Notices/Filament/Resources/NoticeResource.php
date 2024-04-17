@@ -63,6 +63,14 @@ class NoticeResource extends Resource
                 TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('copy-clipboard')
+                    ->label('')
+                    ->icon('heroicon-o-clipboard-document-list')
+                    ->state('copy')
+                    ->copyable()
+                    ->copyableState(function (Notice $record) {
+                        return "$record->title\n$record->content";
+                    }),
             ])
             ->defaultSort('priority')
             ->filters([
