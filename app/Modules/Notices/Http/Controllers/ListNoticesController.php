@@ -11,7 +11,7 @@ class ListNoticesController extends Controller
     {
         return view('notices::list-notices', ListNoticesData::from(
             Notice::query()
-                ->orderBy('priority', 'desc')
+                ->orderBy('priority', 'asc')
                 ->get()
         ));
     }

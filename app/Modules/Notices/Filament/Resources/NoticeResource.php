@@ -52,26 +52,19 @@ class NoticeResource extends Resource
                     ->maxLength($contentMaxLength)
                     ->rows(10)
                     ->required(),
-                Grid::make()
-                    ->columns(4)
-                    ->schema([
-                        TextInput::make('priority')
-                            ->numeric(),
-                    ]),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->reorderable('priority')
             ->columns([
                 TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('priority')
-                    ->sortable(),
             ])
-            ->defaultSort('priority', 'desc')
+            ->defaultSort('priority')
             ->filters([
                 //
             ])
