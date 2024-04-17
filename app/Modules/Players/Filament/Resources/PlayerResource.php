@@ -68,9 +68,9 @@ class PlayerResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->searchable()
             ->columns([
                 TextColumn::make('nickname')
+                    ->searchable()
                     ->label(''),
 
                 TextColumn::make('rank')
@@ -86,7 +86,7 @@ class PlayerResource extends Resource
                         return $filledStars->merge($emptyStars)->join('');
                     }),
             ])
-            ->defaultSort('nickname')
+            ->defaultSort('rank', 'desc')
             ->filters([
                 TrashedFilter::make(),
             ])
