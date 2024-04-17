@@ -23,7 +23,7 @@ class NoticeAutoTranslateCommand extends Command
 
         $notices->each(function (Notice $notice) use ($translateNotice) {
             $noticeLanguages = $notice->translatedNotices
-                ?->map(fn (TranslatedNotice $translateNotice) => $translateNotice->language);
+                ?->map(fn (TranslatedNotice $translateNotice) => $translateNotice->getLanguage()->name);
 
             Language::collect()
                 ->map(fn (Language $language) => $language->name)

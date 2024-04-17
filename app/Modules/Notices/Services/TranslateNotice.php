@@ -26,10 +26,7 @@ class TranslateNotice
         $notice->translatedNotices
             ?->filter(fn (TranslatedNotice $translatedNotice) => $translatedNotice->enable_auto_translation)
             ->each(function (TranslatedNotice $translatedNotice) use ($notice) {
-                $language = Language::collect()
-                    ->first(fn (Language $language) => $language->name === $translatedNotice->language);
-
-                $translatedNotice->content = $this->translate($notice, $language);
+                $translatedNotice->content = $this->translate($notice, $translatedNotice->getLanguage());
 
                 $translatedNotice->save();
             });

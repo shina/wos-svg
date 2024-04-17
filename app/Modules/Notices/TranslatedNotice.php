@@ -2,6 +2,7 @@
 
 namespace App\Modules\Notices;
 
+use App\Enums\Language;
 use App\Modules\Notices\database\factories\TranslatedNoticeFactory;
 use App\Modules\Notices\Policies\NoticePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,6 +22,15 @@ class TranslatedNotice extends Model
     protected static function booted()
     {
         Gate::policy(self::class, NoticePolicy::class);
+    }
+
+    public function getLanguage(): Language
+    {
+        return cache()->rememberForever(
+            'notices.translated-notice.language.'.$this->language,
+            fn () => Language::collect()
+                ->first(fn (Language $language) => $language->name === $this->language)
+        );
     }
 
     protected function notice(): BelongsTo

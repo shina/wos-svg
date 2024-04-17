@@ -2,17 +2,13 @@
 
 namespace App\Modules\Notices\Filament\Resources;
 
-use App\Enums\Language;
+use App\Modules\Notices\Filament\Resources\NoticeResource\RelationManagers\TranslatedNoticesRelationManager;
 use App\Modules\Notices\Notice;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
@@ -20,7 +16,6 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Validation\Rules\Unique;
 
 class NoticeResource extends Resource
 {
@@ -57,59 +52,6 @@ class NoticeResource extends Resource
                     ->maxLength($contentMaxLength)
                     ->rows(10)
                     ->required(),
-
-                Repeater::make('translatedNotices')
-                    ->relationship()
-                    ->label('Translations')
-                    ->addActionLabel('Add Translation')
-                    ->itemLabel(function (array $state) {
-                        /** @var Language $language */
-                        $language = Language::collect()
-                            ->first(fn (Language $language) => $language->name === $state['language']);
-
-                        return rescue(fn () => $language->getEnglishLabel());
-                    })
-                    ->collapsible()
-                    ->collapsed()
-                    ->default(
-                        Language::collect()
-                            ->filter(fn (Language $language) => $language->name !== 'en')
-                            ->map(function (Language $language) {
-                                return [
-                                    'language' => $language->name,
-                                ];
-                            })
-                    )
-                    ->schema([
-                        Grid::make()
-                            ->columns(2)
-                            ->schema([
-                                Toggle::make('enable_auto_translation')
-                                    ->live()
-                                    ->default(true),
-
-                                Select::make('language')
-                                    ->live()
-                                    ->required()
-                                    ->unique(
-                                        ignoreRecord: true,
-                                        modifyRuleUsing: function (Unique $rule, $livewire) {
-                                            return $rule->where('notice_id', $livewire->record?->id);
-                                        })
-                                    ->options(
-                                        Language::collect()
-                                            ->filter(fn (Language $language) => $language->name !== 'en')
-                                            ->mapWithKeys(fn (Language $language) => [$language->name => $language->getEnglishLabel()])
-                                    ),
-                            ]),
-
-                        Textarea::make('content')
-                            ->maxLength(fn (Get $get) => $get('enable_auto_translation') === false ? $contentMaxLength : null)
-                            ->rows(10)
-                            ->required(fn (Get $get) => $get('enable_auto_translation') === false)
-                            ->disabled(fn (Get $get) => $get('enable_auto_translation') === true),
-                    ]),
-
                 Grid::make()
                     ->columns(4)
                     ->schema([
@@ -156,5 +98,12 @@ class NoticeResource extends Resource
     public static function getGloballySearchableAttributes(): array
     {
         return ['title'];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            TranslatedNoticesRelationManager::class,
+        ];
     }
 }
