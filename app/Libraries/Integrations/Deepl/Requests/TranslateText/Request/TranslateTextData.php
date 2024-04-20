@@ -6,13 +6,16 @@ use App\Enums\Language;
 use App\Libraries\Integrations\Deepl\Enums\Formality;
 use App\Libraries\Integrations\Deepl\Enums\SourceLanguage;
 use App\Libraries\Integrations\Deepl\Enums\TargetLanguage;
+use App\Modules\Framework\Saloon\Traits\HandlesResponse;
 use Spatie\LaravelData\Data;
 
 /**
- * @method from(string $text, ?Language $source_lang, Language $target_lang, ?string $context = null, ?bool $preserve_formatting = null, ?Formality $formality = null)
+ * @method self from(string $text, ?Language $source_lang, Language $target_lang, ?string $context = null, ?bool $preserve_formatting = null, ?Formality $formality = null)
  */
-class RequestBodyData extends Data
+class TranslateTextData extends Data
 {
+    use HandlesResponse;
+
     public function __construct(
         public array $text,
         public ?SourceLanguage $source_lang,
@@ -25,7 +28,7 @@ class RequestBodyData extends Data
 
     public static function fromMultiple(
         string $text,
-        ?Language $source_lang,
+        Language $source_lang,
         Language $target_lang,
         ?string $context = null,
         ?bool $preserve_formatting = null,

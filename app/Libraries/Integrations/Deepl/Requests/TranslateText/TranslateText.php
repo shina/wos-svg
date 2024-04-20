@@ -2,9 +2,11 @@
 
 namespace App\Libraries\Integrations\Deepl\Requests\TranslateText;
 
+use App\Libraries\Integrations\Deepl\Requests\TranslateText\Response\ResponseData;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Http\Response;
 use Saloon\Traits\Body\HasJsonBody;
 
 /**
@@ -23,5 +25,10 @@ class TranslateText extends Request implements HasBody
 
     public function __construct()
     {
+    }
+
+    public function createDtoFromResponse(Response $response): ResponseData
+    {
+        return ResponseData::from($response);
     }
 }

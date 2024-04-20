@@ -6,6 +6,9 @@ use Illuminate\Support\Collection;
 use Saloon\Http\Response;
 use Spatie\LaravelData\Data;
 
+/**
+ * @method self from(Response $response)
+ */
 class ResponseData extends Data
 {
     public function __construct(
