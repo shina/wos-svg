@@ -3,6 +3,7 @@
 namespace App\Modules\Wiki\Filament\Resources\PageResource\Pages;
 
 use App\Modules\Wiki\Filament\Resources\PageResource;
+use App\Modules\Wiki\Services\TranslatePage;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreatePage extends CreateRecord
@@ -14,5 +15,11 @@ class CreatePage extends CreateRecord
         return [
 
         ];
+    }
+
+    public function afterCreate()
+    {
+        $translatePage = resolve(TranslatePage::class);
+        $translatePage($this->record);
     }
 }

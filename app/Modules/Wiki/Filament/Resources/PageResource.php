@@ -3,6 +3,7 @@
 namespace App\Modules\Wiki\Filament\Resources;
 
 use App\Modules\Wiki\Filament\Resources\PageResource\Pages;
+use App\Modules\Wiki\Filament\Resources\PageResource\RelationManagers\TranslatedPagesRelationManager;
 use App\Modules\Wiki\Page;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\MarkdownEditor;
@@ -86,5 +87,12 @@ class PageResource extends Resource
     public static function getGloballySearchableAttributes(): array
     {
         return [];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            TranslatedPagesRelationManager::class,
+        ];
     }
 }
