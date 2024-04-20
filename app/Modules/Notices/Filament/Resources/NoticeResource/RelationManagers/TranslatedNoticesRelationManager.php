@@ -3,6 +3,7 @@
 namespace App\Modules\Notices\Filament\Resources\NoticeResource\RelationManagers;
 
 use App\Enums\Language;
+use App\Modules\Notices\Services\TranslateNotice;
 use App\Modules\Notices\TranslatedNotice;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -67,10 +68,22 @@ class TranslatedNoticesRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('New Translation'),
+                    ->label('New Translation')
+                    ->after(function (TranslatedNotice $record) {
+                        if ($record->enable_auto_translation) {
+                            $translateNotice = resolve(TranslateNotice::class);
+                            $translateNotice->singleTranslation($record);
+                        }
+                    }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->after(function (TranslatedNotice $record) {
+                        if ($record->enable_auto_translation && ! empty($this->oldFormState)) {
+                            $translateNotice = resolve(TranslateNotice::class);
+                            $translateNotice->singleTranslation($record);
+                        }
+                    }),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

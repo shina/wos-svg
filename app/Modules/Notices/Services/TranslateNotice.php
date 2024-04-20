@@ -25,24 +25,35 @@ class TranslateNotice
     {
         $translateTextRequests = $notice->translatedNotices
             ->filter(fn (TranslatedNotice $translatedNotice) => $translatedNotice->enable_auto_translation)
-            ->map(function (TranslatedNotice $translatedNotice) use ($notice) {
-                $translateTextData = TranslateTextData::from(
-                    $notice->content,
-                    Language::en,
-                    $translatedNotice->getLanguage(),
-                    null, null, Formality::prefer_less
-                );
-
-                $translateTextData->handleResponseUsing(function (ResponseData $response) use ($translatedNotice) {
-                    $translatedNotice->content = $response->translations->first()->text;
-                    $translatedNotice->save();
-                });
-
-                $translateTextData->handleExceptionUsing(report(...));
-
-                return $translateTextData;
-            });
+            ->map(fn (TranslatedNotice $translatedNotice) => $this->makeTranslateTextData($notice, $translatedNotice));
 
         $this->deepl->bulkTranslate($translateTextRequests);
+    }
+
+    public function singleTranslation(TranslatedNotice $translatedNotice): void
+    {
+        $translateTextData = $this->makeTranslateTextData($translatedNotice->notice, $translatedNotice);
+        $this->deepl->bulkTranslate(
+            collect([$translateTextData])
+        );
+    }
+
+    private function makeTranslateTextData(Notice $notice, TranslatedNotice $translatedNotice): TranslateTextData
+    {
+        $translateTextData = TranslateTextData::from(
+            $notice->content,
+            Language::en,
+            $translatedNotice->getLanguage(),
+            null, null, Formality::prefer_less
+        );
+
+        $translateTextData->handleResponseUsing(function (ResponseData $response) use ($translatedNotice) {
+            $translatedNotice->content = $response->translations->first()->text;
+            $translatedNotice->save();
+        });
+
+        $translateTextData->handleExceptionUsing(report(...));
+
+        return $translateTextData;
     }
 }
