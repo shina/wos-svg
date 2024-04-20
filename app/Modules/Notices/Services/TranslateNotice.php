@@ -4,9 +4,9 @@ namespace App\Modules\Notices\Services;
 
 use App\Enums\Language;
 use App\Libraries\Integrations\Deepl\Deepl;
-use App\Libraries\Integrations\Deepl\Requests\TranslateText\Request\RequestBodyData;
+use App\Libraries\Integrations\Deepl\Enums\Formality;
+use App\Libraries\Integrations\Deepl\Requests\TranslateText\Request\TranslateTextData;
 use App\Libraries\Integrations\Deepl\Requests\TranslateText\Response\ResponseData;
-use App\Libraries\Integrations\Deepl\Requests\TranslateText\TranslateText;
 use App\Modules\Notices\Notice;
 use App\Modules\Notices\TranslatedNotice;
 
@@ -23,31 +23,24 @@ class TranslateNotice
      */
     public function __invoke(Notice $notice): void
     {
-        $notice->translatedNotices
-            ?->filter(fn (TranslatedNotice $translatedNotice) => $translatedNotice->enable_auto_translation)
-            ->each(function (TranslatedNotice $translatedNotice) use ($notice) {
-                $translatedNotice->content = $this->translate($notice, $translatedNotice->getLanguage());
+        $translateTextRequests = $notice->translatedNotices
+            ->filter(fn (TranslatedNotice $translatedNotice) => $translatedNotice->enable_auto_translation)
+            ->map(function (TranslatedNotice $translatedNotice) use ($notice) {
+                return TranslateTextData::from(
+                    $notice->content,
+                    Language::en,
+                    $translatedNotice->getLanguage(),
+                    null, null, Formality::prefer_less
 
-                $translatedNotice->save();
+                )->handleResponseUsing(function (ResponseData $response) use ($translatedNotice) {
+                    $translatedNotice->content = $response->translations->first()->text;
+                    $translatedNotice->save();
+
+                })->handleExceptionUsing(function (\Exception $e) {
+                    dd($e);
+                });
             });
-    }
 
-    private function translate(Notice $notice, Language $language): string
-    {
-        $request = resolve(TranslateText::class);
-        $request->body()->set(
-            RequestBodyData::from($notice->content, Language::en, $language)->toArray()
-        );
-
-        $response = $this->deepl->send($request);
-
-        if ($response->failed()) {
-            $response->throw();
-        }
-
-        return ResponseData::from($response)
-            ->translations
-            ->first()
-            ->text;
+        $this->deepl->bulkTranslate($translateTextRequests);
     }
 }
