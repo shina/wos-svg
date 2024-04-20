@@ -41,6 +41,7 @@ class PlayerResource extends Resource
                 TextInput::make('rating')
                     ->required()
                     ->integer()
+                    ->default(10)
                     ->minValue(0)
                     ->maxValue(10),
 
