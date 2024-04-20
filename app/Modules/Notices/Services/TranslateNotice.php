@@ -26,19 +26,21 @@ class TranslateNotice
         $translateTextRequests = $notice->translatedNotices
             ->filter(fn (TranslatedNotice $translatedNotice) => $translatedNotice->enable_auto_translation)
             ->map(function (TranslatedNotice $translatedNotice) use ($notice) {
-                return TranslateTextData::from(
+                $translateTextData = TranslateTextData::from(
                     $notice->content,
                     Language::en,
                     $translatedNotice->getLanguage(),
                     null, null, Formality::prefer_less
+                );
 
-                )->handleResponseUsing(function (ResponseData $response) use ($translatedNotice) {
+                $translateTextData->handleResponseUsing(function (ResponseData $response) use ($translatedNotice) {
                     $translatedNotice->content = $response->translations->first()->text;
                     $translatedNotice->save();
-
-                })->handleExceptionUsing(function (\Exception $e) {
-                    dd($e);
                 });
+
+                $translateTextData->handleExceptionUsing(report(...));
+
+                return $translateTextData;
             });
 
         $this->deepl->bulkTranslate($translateTextRequests);
