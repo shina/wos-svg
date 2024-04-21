@@ -3,6 +3,7 @@
 namespace App\Modules\Players\Filament\Resources\PlayerResource\RelationManagers;
 
 use App\Modules\Players\Comment;
+use App\Modules\Players\Enums\Rate;
 use App\Modules\Players\Services\RatingCalculator;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -51,13 +52,7 @@ class CommentsRelationManager extends RelationManager
                     ->description(fn (Comment $record) => $record->created_at->longAbsoluteDiffForHumans()),
                 TextColumn::make('rating')
                     ->label('')
-                    ->formatStateUsing(function (int $state) {
-                        return match ($state) {
-                            -1 => '👎',
-                            1 => '👍',
-                            default => '?'
-                        };
-                    }),
+                    ->formatStateUsing(fn (int $state) => Rate::fromNumber($state)),
                 TextColumn::make('content')
                     ->label(''),
             ])
