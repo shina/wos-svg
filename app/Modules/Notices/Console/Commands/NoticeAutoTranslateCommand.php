@@ -27,7 +27,7 @@ class NoticeAutoTranslateCommand extends Command
 
             Language::collect()
                 ->map(fn (Language $language) => $language->name)
-                ->except('en')
+                ->filter(fn (string $lang) => $lang !== 'en')
                 ->diff($noticeLanguages)
                 ->each(function (string $language) use ($notice) {
                     return $notice->translatedNotices()
