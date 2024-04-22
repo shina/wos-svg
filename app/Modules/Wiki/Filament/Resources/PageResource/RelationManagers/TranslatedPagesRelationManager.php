@@ -3,6 +3,7 @@
 namespace App\Modules\Wiki\Filament\Resources\PageResource\RelationManagers;
 
 use App\Enums\Language;
+use App\Modules\Wiki\Page;
 use App\Modules\Wiki\Services\TranslatePage;
 use App\Modules\Wiki\TranslatedPage;
 use Filament\Forms\Components\Select;
@@ -69,6 +70,30 @@ class TranslatedPagesRelationManager extends RelationManager
                             $translatePage = resolve(TranslatePage::class);
                             $translatePage->singleTranslation($record);
                         }
+                    }),
+                Tables\Actions\Action::make('create-all-translations')
+                    ->label('Create all missing translations')
+                    ->action(function () {
+                        // todo make a service for that and use in the command too
+
+                        /** @var Page $page */
+                        $page = $this->ownerRecord;
+
+                        $pageLanguages = $page->translatedPages
+                            ->map(fn (TranslatedPage $translatedPage) => $translatedPage->getLanguage()->name);
+
+                        Language::collect()
+                            ->map(fn (Language $language) => $language->name)
+                            ->filter(fn (string $lang) => $lang !== 'en')
+                            ->diff($pageLanguages)
+                            ->each(function (string $language) use ($page) {
+                                return $page->translatedPages()
+                                    ->create(['language' => $language, 'enable_auto_translation' => true]);
+                            });
+                        $page->unsetRelations();
+
+                        $translatePage = resolve(TranslatePage::class);
+                        $translatePage($page);
                     }),
             ])
             ->actions([

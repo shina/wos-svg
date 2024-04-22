@@ -3,6 +3,7 @@
 namespace App\Modules\Notices\Filament\Resources\NoticeResource\RelationManagers;
 
 use App\Enums\Language;
+use App\Modules\Notices\Notice;
 use App\Modules\Notices\Services\TranslateNotice;
 use App\Modules\Notices\TranslatedNotice;
 use Filament\Forms\Components\Select;
@@ -74,6 +75,28 @@ class TranslatedNoticesRelationManager extends RelationManager
                             $translateNotice = resolve(TranslateNotice::class);
                             $translateNotice->singleTranslation($record);
                         }
+                    }),
+                Tables\Actions\Action::make('create-all-translations')
+                    ->label('Create all missing translations')
+                    ->action(function () {
+                        /** @var Notice $notice */
+                        $notice = $this->ownerRecord;
+
+                        $noticeLanguages = $notice->translatedNotices
+                            ->map(fn (TranslatedNotice $translateNotice) => $translateNotice->getLanguage()->name);
+
+                        Language::collect()
+                            ->map(fn (Language $language) => $language->name)
+                            ->filter(fn (string $lang) => $lang !== 'en')
+                            ->diff($noticeLanguages)
+                            ->each(function (string $language) use ($notice) {
+                                return $notice->translatedNotices()
+                                    ->create(['language' => $language, 'enable_auto_translation' => true]);
+                            });
+                        $notice->unsetRelations();
+
+                        $translateNotice = resolve(TranslateNotice::class);
+                        $translateNotice($notice);
                     }),
             ])
             ->actions([
