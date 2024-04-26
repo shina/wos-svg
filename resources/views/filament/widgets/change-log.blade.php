@@ -6,11 +6,11 @@
 
         @foreach($changes as $index => $change)
             <div class="@if($index !== 0) mt-5 @endif">
-                <span class="text-xs text-gray-500">{{ $change->date }}</span>
                 <div class="flex">
-                    @if($change->isNew) <x-filament::badge color="danger" class="flex-none w-12 h-7">NEW</x-filament::badge> @endif
-                    <span class="ml-1 flex-grow">{{ $change->title }}</span>
+                    <span class="text-xs text-gray-500">{{ $change->date }}</span>
+                    @if($change->isNew) <x-filament::badge color="danger" class="flex-none ml-1 w-12 h-4">NEW</x-filament::badge> @endif
                 </div>
+                <span class="ml-1">{{ $change->title }}</span>
                 @if($change->description)
                     <div class="italic text-sm">{{ $change->description }}</div>
                 @endif
