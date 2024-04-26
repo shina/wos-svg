@@ -2,16 +2,37 @@
 
 namespace App\Modules\Participation;
 
+use App\Modules\Participation\ModelFactories\EventFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Event extends Model
 {
-    protected $guarded = [];
+    use HasFactory;
+
+    protected $fillable = [
+        'id',
+        'name',
+        'date',
+        'created_at',
+        'updated_at',
+    ];
 
     protected function casts()
     {
         return [
-            'date' => 'date',
+            'date' => 'date:Y-m-d',
         ];
+    }
+
+    public function attendees(): HasMany
+    {
+        return $this->hasMany(Attendee::class);
+    }
+
+    protected static function newFactory()
+    {
+        return EventFactory::new();
     }
 }

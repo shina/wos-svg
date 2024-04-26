@@ -4,6 +4,7 @@ namespace App\Modules\Participation\Filament\Resources;
 
 use App\Modules\Participation\Event;
 use App\Modules\Participation\Filament\Resources\EventResource\Pages;
+use App\Modules\Participation\Filament\Resources\EventResource\RelationManagers\AttendeesRelationManager;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -73,5 +74,12 @@ class EventResource extends Resource
     public static function getGloballySearchableAttributes(): array
     {
         return ['name'];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            AttendeesRelationManager::class,
+        ];
     }
 }
