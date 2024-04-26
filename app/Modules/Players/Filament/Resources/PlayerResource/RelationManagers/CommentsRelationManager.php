@@ -82,7 +82,14 @@ class CommentsRelationManager extends RelationManager
                     ->modalWidth(MaxWidth::Small),
 
                 Tables\Actions\CreateAction::make()
-                    ->label('Write review'),
+                    ->label('Write review')
+                    ->after(function (RatingCalculator $ratingCalculator) {
+                        $player = $this->ownerRecord;
+                        $player->rating = $ratingCalculator->calculate($player);
+                        $player->save();
+
+                        $this->dispatch('refresh');
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->after(function (RatingCalculator $ratingCalculator, $livewire) {
