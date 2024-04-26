@@ -4,11 +4,13 @@ namespace App\Modules\Players\Filament\Resources;
 
 use App\Modules\Players\Filament\Resources\PlayerResource\Pages;
 use App\Modules\Players\Filament\Resources\PlayerResource\RelationManagers\CommentsRelationManager;
+use App\Modules\Players\Player;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -22,6 +24,7 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 
 class PlayerResource extends Resource
 {
@@ -103,6 +106,20 @@ class PlayerResource extends Resource
                     RestoreBulkAction::make(),
                     ForceDeleteBulkAction::make(),
                 ]),
+                BulkAction::make('change-rank')
+                    ->icon('heroicon-s-pencil-square')
+                    ->form(function (Form $form) {
+                        return $form
+                            ->schema([
+                                TextInput::make('rank')
+                                    ->required(),
+                            ]);
+                    })
+                    ->action(function (Collection $records, array $data) {
+                        Player::query()
+                            ->whereIn('id', $records->pluck('id'))
+                            ->update(['rank' => $data['rank']]);
+                    }),
             ]);
     }
 

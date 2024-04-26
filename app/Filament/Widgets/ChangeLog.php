@@ -14,11 +14,16 @@ class ChangeLog extends Widget
             'changes' => [
                 ChangeData::from([
                     'isNew' => true,
+                    'title' => 'Added bulk action to change Players rank',
+                    'date' => '26.04.2024',
+                ]),
+                ChangeData::from([
+                    'isNew' => false,
                     'title' => 'Added this change log widget 🙂',
                     'date' => '21.04.2024',
                 ]),
                 ChangeData::from([
-                    'isNew' => true,
+                    'isNew' => false,
                     'title' => 'Added a button to display the most recent comments on the Players page',
                     //                    'description' => '',
                     'date' => '21.04.2024',
