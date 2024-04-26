@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware
             ->web(
                 append: [
-                    \App\Modules\LocaleSelection\Http\Middleware\LocaleSelectionMiddleware::class,
+                    \App\Modules\Framework\LocaleSelection\Http\Middleware\LocaleSelectionMiddleware::class,
                 ]
             );
     })

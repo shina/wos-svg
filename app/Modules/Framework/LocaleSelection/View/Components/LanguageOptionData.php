@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\LocaleSelection\View\Components;
+namespace App\Modules\Framework\LocaleSelection\View\Components;
 
 use App\Enums\Language;
 use Spatie\LaravelData\Data;

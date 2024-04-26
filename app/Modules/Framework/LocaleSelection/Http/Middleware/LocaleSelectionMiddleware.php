@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\LocaleSelection\Http\Middleware;
+namespace App\Modules\Framework\LocaleSelection\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\LocaleSelection;
+namespace App\Modules\Framework\LocaleSelection;
 
-use App\Modules\LocaleSelection\View\Components\LocaleSelector;
+use App\Modules\Framework\LocaleSelection\View\Components\LocaleSelector;
 use Illuminate\Support\ServiceProvider;
 
 class LocaleSelectionProvider extends ServiceProvider

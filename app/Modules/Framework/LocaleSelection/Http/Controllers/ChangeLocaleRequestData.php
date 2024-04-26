@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\LocaleSelection\Http\Controllers;
+namespace App\Modules\Framework\LocaleSelection\Http\Controllers;
 
 use App\Enums\Language;
 use Illuminate\Validation\Rules\In;
