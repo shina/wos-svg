@@ -12,6 +12,8 @@ enum Role: string
 
     case EDITOR = 'editor';
 
+    case BETA = 'beta-tester';
+
     public static function collect(): Collection
     {
         return collect(self::cases());
