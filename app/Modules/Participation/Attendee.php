@@ -2,6 +2,7 @@
 
 namespace App\Modules\Participation;
 
+use App\Modules\Participation\Enums\CommitmentLevel;
 use App\Modules\Participation\Policies\EventPolicy;
 use App\Modules\Players\Player;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,11 @@ class Attendee extends Model
         'comment',
         'player_id',
         'event_id',
+    ];
+
+    protected $casts = [
+        'commitment_level' => CommitmentLevel::class,
+        'is_commitment_fulfilled' => 'bool',
     ];
 
     protected static function booted()

@@ -21,7 +21,10 @@ class AttendeesRelationManager extends RelationManager
                 Forms\Components\Select::make('player_id')
                     ->required()
                     ->relationship('player', 'nickname')
-                    ->unique(modifyRuleUsing: fn (Unique $rule) => $rule->where('event_id', $this->ownerRecord->id))
+                    ->unique(
+                        ignoreRecord: true,
+                        modifyRuleUsing: fn (Unique $rule) => $rule->where('event_id', $this->ownerRecord->id)
+                    )
                     ->searchable(),
 
                 Forms\Components\Select::make('commitment_level')
