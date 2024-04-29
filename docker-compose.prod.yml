@@ -13,6 +13,7 @@ services:
     tty: true
     stdin_open: true
     restart: unless-stopped
+    platform: linux/amd64
     networks:
       - internal
 
