@@ -14,36 +14,36 @@ class EventPolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(Role::BETA);
+        return $user->hasRole(Role::MANAGER);
     }
 
     public function view(User $user, Event|Attendee $event): bool
     {
-        return $user->hasRole(Role::BETA);
+        return $user->hasRole(Role::MANAGER);
     }
 
     public function create(User $user): bool
     {
-        return $user->hasRole(Role::BETA);
+        return $user->hasRole(Role::MANAGER);
     }
 
     public function update(User $user, Event|Attendee $event): bool
     {
-        return $user->hasRole(Role::BETA);
+        return $user->hasRole(Role::MANAGER);
     }
 
     public function delete(User $user, Event|Attendee $event): bool
     {
-        return $user->hasRole(Role::BETA);
+        return $user->hasRole(Role::MANAGER);
     }
 
     public function restore(User $user, Event|Attendee $event): bool
     {
-        return $user->hasRole(Role::BETA);
+        return $user->hasRole(Role::MANAGER);
     }
 
     public function forceDelete(User $user, Event|Attendee $event): bool
     {
-        return $user->hasRole(Role::BETA);
+        return $user->hasRole(Role::MANAGER);
     }
 }
