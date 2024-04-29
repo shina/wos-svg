@@ -18,10 +18,16 @@ build:
 load:
 	docker load -i wos-svg.tar
 
+backup:
+	cp database/database.sqlite /root/db.bkp
+
+gitpull:
+	git pull
+
 optimize:
 	docker exec -it wos-svg /app/artisan optimize
 	docker exec -it wos-svg /app/artisan data:cache-structures
 	docker exec -it wos-svg /app/artisan octane:reload
 	docker exec -it wos-svg /app/artisan storage:link
 
-update: down load up migrate optimize
+update: backup gitpull load up migrate optimize
