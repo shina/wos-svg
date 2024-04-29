@@ -83,29 +83,27 @@ class CommentsRelationManager extends RelationManager
 
                 Tables\Actions\CreateAction::make()
                     ->label('Write review')
-                    ->after(function (RatingCalculator $ratingCalculator) {
-                        $player = $this->ownerRecord;
-                        $player->rating = $ratingCalculator->calculate($player);
-                        $player->save();
-
-                        $this->dispatch('refresh');
-                    }),
+                    ->after(fn () => $this->recalculatePlayerRating()),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->after(function (RatingCalculator $ratingCalculator) {
-                    $player = $this->ownerRecord;
-                    $player->rating = $ratingCalculator->calculate($player);
-                    $player->save();
-
-                    $this->dispatch('refresh');
-                }),
-                Tables\Actions\DeleteAction::make()->after(function (RatingCalculator $ratingCalculator) {
-                    $player = $this->ownerRecord;
-                    $player->rating = $ratingCalculator->calculate($player);
-                    $player->save();
-
-                    $this->dispatch('refresh');
-                }),
+                Tables\Actions\EditAction::make()->after(fn () => $this->recalculatePlayerRating()),
+                Tables\Actions\DeleteAction::make()->after(fn () => $this->recalculatePlayerRating()),
             ]);
+    }
+
+    /**
+     * @param  RatingCalculator  $ratingCalculator
+     *
+     * @throws \Throwable
+     */
+    private function recalculatePlayerRating(): void
+    {
+        $ratingCalculator = resolve(RatingCalculator::class);
+
+        $player = $this->ownerRecord;
+        $player->rating = $ratingCalculator->calculate($player);
+        $player->save();
+
+        $this->dispatch('refresh');
     }
 }
