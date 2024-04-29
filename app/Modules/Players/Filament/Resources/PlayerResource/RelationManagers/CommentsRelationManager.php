@@ -2,6 +2,7 @@
 
 namespace App\Modules\Players\Filament\Resources\PlayerResource\RelationManagers;
 
+use App\Models\Player;
 use App\Modules\Players\Comment;
 use App\Modules\Players\Enums\Rate;
 use App\Modules\Players\Services\RatingCalculator;
@@ -100,6 +101,7 @@ class CommentsRelationManager extends RelationManager
     {
         $ratingCalculator = resolve(RatingCalculator::class);
 
+        /** @var Player $player */
         $player = $this->ownerRecord;
         $player->rating = $ratingCalculator->calculate($player);
         $player->save();

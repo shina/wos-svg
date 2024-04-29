@@ -34,7 +34,7 @@ class ListPlayers extends ListRecords
                         ->schema([
                             RepeatableEntry::make('comments')
                                 ->hiddenLabel()
-                                ->columns(4)
+                                ->columns(['sm' => 2, 'md' => 3, 'lg' => 4])
                                 ->schema([
                                     TextEntry::make('player'),
                                     TextEntry::make('rate'),
@@ -42,7 +42,7 @@ class ListPlayers extends ListRecords
                                     TextEntry::make('when')
                                         ->since(),
                                     TextEntry::make('comment')
-                                        ->columnSpan(4),
+                                        ->columnSpan(['sm' => 2, 'md' => 3, 'lg' => 4]),
                                 ]),
                         ]);
                 }),
