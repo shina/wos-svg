@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Models\Player;
-use App\Modules\Players\Filament\Resources\PlayerResource\Pages;
 use App\Modules\Players\Filament\Resources\PlayerResource\RelationManagers\CommentsRelationManager;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
@@ -90,7 +89,7 @@ class PlayerResource extends Resource
                         return $filledStars->merge($emptyStars)->join('');
                     }),
             ])
-            ->defaultSort('rank', 'desc')
+            ->defaultSort('rank')
             ->filters([
                 TrashedFilter::make(),
             ])
