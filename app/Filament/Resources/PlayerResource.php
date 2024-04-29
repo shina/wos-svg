@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\Players\Filament\Resources;
+namespace App\Filament\Resources;
 
+use App\Models\Player;
 use App\Modules\Players\Filament\Resources\PlayerResource\Pages;
 use App\Modules\Players\Filament\Resources\PlayerResource\RelationManagers\CommentsRelationManager;
-use App\Modules\Players\Player;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -28,7 +28,7 @@ use Illuminate\Support\Collection;
 
 class PlayerResource extends Resource
 {
-    protected static ?string $model = \App\Modules\Players\Player::class;
+    protected static ?string $model = \App\Models\Player::class;
 
     protected static ?string $slug = 'players';
 
@@ -126,9 +126,9 @@ class PlayerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPlayers::route('/'),
-            'create' => Pages\CreatePlayer::route('/create'),
-            'edit' => Pages\EditPlayer::route('/{record}/edit'),
+            'index' => \App\Filament\Resources\PlayerResource\Pages\ListPlayers::route('/'),
+            'create' => \App\Filament\Resources\PlayerResource\Pages\CreatePlayer::route('/create'),
+            'edit' => \App\Filament\Resources\PlayerResource\Pages\EditPlayer::route('/{record}/edit'),
         ];
     }
 

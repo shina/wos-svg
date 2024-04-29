@@ -2,6 +2,7 @@
 
 namespace App\Modules\Players;
 
+use App\Models\Player;
 use App\Models\User;
 use App\Modules\Players\database\factories\CommentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

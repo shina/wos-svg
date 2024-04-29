@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Modules\Players;
+namespace App\Models;
 
-use App\Modules\Players\database\factories\PlayerFactory;
+use App\Modules\Players\Comment;
+use Database\Factories\PlayerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Players\Filament\Resources\PlayerResource\Pages;
+namespace App\Filament\Resources\PlayerResource\Pages;
 
 use App\Modules\Players\Comment;
 use App\Modules\Players\Enums\Rate;

@@ -2,10 +2,10 @@
 
 namespace App\Modules\Participation\ModelFactories;
 
+use App\Models\Player;
 use App\Modules\Participation\Attendee;
 use App\Modules\Participation\Enums\CommitmentLevel;
 use App\Modules\Participation\Event;
-use App\Modules\Players\Player;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AttendeeFactory extends Factory

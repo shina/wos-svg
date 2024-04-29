@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\Players\database\factories;
+namespace Database\Factories;
 
-use App\Modules\Players\Player;
+use App\Models\Player;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 

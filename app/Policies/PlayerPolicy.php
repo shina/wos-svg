@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\Players\Policies;
+namespace App\Policies;
 
 use App\Enums\Role;
+use App\Models\Player;
 use App\Models\User;
-use App\Modules\Players\Player;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PlayerPolicy

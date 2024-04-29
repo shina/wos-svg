@@ -1,7 +1,7 @@
 <?php
 
+use App\Models\Player;
 use App\Modules\Players\Comment;
-use App\Modules\Players\Player;
 
 describe('RatingCalculator', function () {
     it('should calculate adding or subtracting from the initial 10', function () {

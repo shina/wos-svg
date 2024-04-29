@@ -2,8 +2,8 @@
 
 namespace App\Modules\Players\Services;
 
+use App\Models\Player;
 use App\Modules\Players\Comment;
-use App\Modules\Players\Player;
 
 class RatingCalculator
 {

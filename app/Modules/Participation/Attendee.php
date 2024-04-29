@@ -2,9 +2,9 @@
 
 namespace App\Modules\Participation;
 
+use App\Models\Player;
 use App\Modules\Participation\Enums\CommitmentLevel;
 use App\Modules\Participation\Policies\EventPolicy;
-use App\Modules\Players\Player;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Gate;

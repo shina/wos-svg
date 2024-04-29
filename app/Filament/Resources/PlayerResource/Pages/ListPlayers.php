@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Modules\Players\Filament\Resources\PlayerResource\Pages;
+namespace App\Filament\Resources\PlayerResource\Pages;
 
+use App\Filament\Resources\PlayerResource;
 use App\Modules\Players\Comment;
-use App\Modules\Players\Filament\Resources\PlayerResource;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Infolists\Components\RepeatableEntry;

@@ -2,9 +2,9 @@
 
 namespace App\Modules\Players\database\factories;
 
+use App\Models\Player;
 use App\Models\User;
 use App\Modules\Players\Comment;
-use App\Modules\Players\Player;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 

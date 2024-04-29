@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\Players\Filament\Resources\PlayerResource\Pages;
+namespace App\Filament\Resources\PlayerResource\Pages;
 
-use App\Modules\Players\Filament\Resources\PlayerResource;
+use App\Filament\Resources\PlayerResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
