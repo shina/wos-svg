@@ -92,14 +92,20 @@ class CommentsRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->after(function (RatingCalculator $ratingCalculator, $livewire) {
+                Tables\Actions\EditAction::make()->after(function (RatingCalculator $ratingCalculator) {
                     $player = $this->ownerRecord;
                     $player->rating = $ratingCalculator->calculate($player);
                     $player->save();
 
                     $this->dispatch('refresh');
                 }),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()->after(function (RatingCalculator $ratingCalculator) {
+                    $player = $this->ownerRecord;
+                    $player->rating = $ratingCalculator->calculate($player);
+                    $player->save();
+
+                    $this->dispatch('refresh');
+                }),
             ]);
     }
 }
