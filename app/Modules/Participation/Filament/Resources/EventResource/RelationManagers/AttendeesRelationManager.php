@@ -54,14 +54,14 @@ class AttendeesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('commitment_level'),
                 Tables\Columns\ToggleColumn::make('is_commitment_fulfilled'),
                 Tables\Columns\TextColumn::make('trust-level')
-                    ->suffix('%')
                     ->state(function (CalculateTrustLevel $calculateTrustLevel, Attendee $record) {
                         return rescue(
                             fn () => $calculateTrustLevel->player($record->player_id),
                             'never attended',
                             false
                         );
-                    }),
+                    })
+                    ->suffix(fn (string $state) => $state === 'never attended' ? '' : '%'),
             ])
             ->filters([
                 //
