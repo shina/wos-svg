@@ -11,6 +11,7 @@ prune:
 	docker system prune --all --force --volumes
 
 build:
+	./sail test
 	docker compose -f docker-compose.prod.yml build
 	docker save -o wos-svg.tar wos-svg-wos-svg
 	scp wos-svg.tar root@svg.servegame.com:/root/wos-svg
