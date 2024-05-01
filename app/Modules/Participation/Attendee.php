@@ -4,13 +4,17 @@ namespace App\Modules\Participation;
 
 use App\Models\Player;
 use App\Modules\Participation\Enums\CommitmentLevel;
+use App\Modules\Participation\ModelFactories\AttendeeFactory;
 use App\Modules\Participation\Policies\EventPolicy;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Gate;
 
 class Attendee extends Model
 {
+    use HasFactory;
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -40,5 +44,10 @@ class Attendee extends Model
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    protected static function newFactory()
+    {
+        return AttendeeFactory::new();
     }
 }
