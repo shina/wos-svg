@@ -34,7 +34,8 @@ class EventResource extends Resource
                 TextInput::make('name')
                     ->required(),
 
-                DatePicker::make('date'),
+                DatePicker::make('date')
+                    ->required(),
             ]);
     }
 
