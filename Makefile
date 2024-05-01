@@ -14,6 +14,7 @@ build:
 	docker compose -f docker-compose.prod.yml build
 	docker save -o wos-svg.tar wos-svg-wos-svg
 	scp wos-svg.tar root@svg.servegame.com:/root/wos-svg
+	rm wos-svg.tar
 
 load:
 	docker load -i wos-svg.tar
