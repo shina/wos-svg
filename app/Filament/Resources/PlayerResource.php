@@ -72,6 +72,13 @@ class PlayerResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('in_game_id')
+                    ->label('')
+                    ->prefix('#')
+                    ->size(TextColumn\TextColumnSize::ExtraSmall)
+                    ->width(1)
+                    ->searchable(),
+
                 TextColumn::make('nickname')
                     ->searchable()
                     ->label(''),
