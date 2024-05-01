@@ -14,6 +14,12 @@ class ChangeLog extends Widget
             'changes' => [
                 ChangeData::from([
                     'isNew' => true,
+                    'title' => 'Small features and fixes',
+                    'description' => 'Players can be searched by ID; Players are sorted by rating by default; And more...',
+                    'date' => '01.05.2024',
+                ]),
+                ChangeData::from([
+                    'isNew' => false,
                     'title' => 'Added event logging to track which players attended each event.',
                     'date' => '29.04.2024',
                 ]),
