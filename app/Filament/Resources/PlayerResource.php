@@ -97,7 +97,7 @@ class PlayerResource extends Resource
                         return $filledStars->merge($emptyStars)->join('');
                     }),
             ])
-            ->defaultSort('rank')
+            ->defaultSort('rating')
             ->filters([
                 TrashedFilter::make(),
             ])
