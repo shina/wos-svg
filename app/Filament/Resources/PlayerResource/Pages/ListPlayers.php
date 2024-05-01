@@ -26,6 +26,8 @@ class ListPlayers extends ListRecords
                 ->infolist(function (Infolist $infolist) {
                     $comments = Comment::query()
                         ->limit(25)
+                        ->activePlayers()
+                        ->with(['player', 'reviewerUser'])
                         ->orderBy('created_at', 'desc')
                         ->get();
 

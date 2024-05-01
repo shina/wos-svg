@@ -5,6 +5,7 @@ namespace App\Modules\Players;
 use App\Models\Player;
 use App\Models\User;
 use App\Modules\Players\database\factories\CommentFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,5 +29,12 @@ class Comment extends Model
     public function reviewerUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reviewer_user_id');
+    }
+
+    public function scopeActivePlayers(Builder $query): Builder
+    {
+        return $query->whereHas('player', function (Builder $query) {
+            $query->whereNull('deleted_at');
+        });
     }
 }
