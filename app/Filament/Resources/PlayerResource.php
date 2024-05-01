@@ -49,6 +49,7 @@ class PlayerResource extends Resource
 
                 TextInput::make('in_game_id')
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->prefix('#'),
 
                 TextInput::make('rank')
