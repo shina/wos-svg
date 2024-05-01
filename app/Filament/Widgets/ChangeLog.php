@@ -14,6 +14,11 @@ class ChangeLog extends Widget
             'changes' => [
                 ChangeData::from([
                     'isNew' => true,
+                    'title' => 'Added participation rate level (list of attendees in events)',
+                    'date' => '01.05.2024',
+                ]),
+                ChangeData::from([
+                    'isNew' => true,
                     'title' => 'Small features and fixes',
                     'description' => 'Players can be searched by ID; Players are sorted by rating by default; And more...',
                     'date' => '01.05.2024',
