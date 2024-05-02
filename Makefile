@@ -32,4 +32,4 @@ optimize:
 	docker exec -it wos-svg /app/artisan octane:reload
 	docker exec -it wos-svg /app/artisan storage:link
 
-update: backup gitpull load up migrate optimize
+upgrade: backup gitpull load up migrate optimize
