@@ -21,7 +21,6 @@ class Attendee extends Model
         'id',
         'commitment_level',
         'is_commitment_fulfilled',
-        'comment',
         'player_id',
         'event_id',
     ];

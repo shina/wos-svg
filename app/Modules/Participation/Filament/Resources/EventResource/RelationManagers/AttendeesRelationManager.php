@@ -39,8 +39,6 @@ class AttendeesRelationManager extends RelationManager
 
                 Forms\Components\Toggle::make('is_commitment_fulfilled'),
 
-                Forms\Components\Textarea::make('comment'),
-
                 Forms\Components\Hidden::make('event_id')
                     ->formatStateUsing(fn () => $this->ownerRecord->id),
             ]);
