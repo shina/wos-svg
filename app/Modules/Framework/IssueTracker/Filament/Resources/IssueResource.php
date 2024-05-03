@@ -43,10 +43,12 @@ class IssueResource extends Resource
                 RichEditor::make('description')
                     ->required(),
 
-                FileUpload::make('attachments')
+                FileUpload::make('screenshots')
                     ->image()
                     ->imageEditor()
-                    ->multiple(),
+                    ->multiple()
+                    ->disk('public')
+                    ->directory('issue-tracker/issues'),
 
                 Hidden::make('user_id')
                     ->formatStateUsing(fn () => auth()->user()->id)
