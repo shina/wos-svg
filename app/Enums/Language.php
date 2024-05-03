@@ -65,6 +65,7 @@ enum Language
 
     public static function collect(): Collection
     {
-        return collect(self::cases());
+        return collect(self::cases())
+            ->filter(fn (self $language) => $language !== self::unknown);
     }
 }
