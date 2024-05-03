@@ -2,6 +2,7 @@
 
 namespace App\Modules\Participation\Filament\Resources\EventResource\RelationManagers;
 
+use App\Models\Player;
 use App\Modules\Participation\Attendee;
 use App\Modules\Participation\Enums\CommitmentLevel;
 use App\Modules\Participation\Services\CalculateTrustLevel;
@@ -19,25 +20,43 @@ class AttendeesRelationManager extends RelationManager
     public function form(Form $form): Form
     {
         return $form
+            ->columns(1)
             ->schema([
-                Forms\Components\Select::make('player_id')
-                    ->required()
-                    ->relationship('player', 'nickname')
-                    ->unique(
-                        ignoreRecord: true,
-                        modifyRuleUsing: fn (Unique $rule) => $rule->where('event_id', $this->ownerRecord->id)
-                    )
-                    ->searchable(['nickname', 'in_game_id', 'translated_nickname']),
+                Forms\Components\Split::make([
+                    Forms\Components\Section::make()
+                        ->schema([
+                            Forms\Components\Select::make('player_id')
+                                ->required()
+                                ->relationship('player', 'nickname')
+                                ->unique(
+                                    ignoreRecord: true,
+                                    modifyRuleUsing: fn (Unique $rule) => $rule->where('event_id', $this->ownerRecord->id)
+                                )
+                                ->searchable(['nickname', 'in_game_id', 'translated_nickname']),
 
-                Forms\Components\Select::make('commitment_level')
-                    ->required()
-                    ->default(CommitmentLevel::join)
-                    ->options(
-                        CommitmentLevel::collect()
-                            ->mapWithKeys(fn (CommitmentLevel $commitmentLevel) => [$commitmentLevel->name => $commitmentLevel->value])
-                    ),
+                            Forms\Components\Select::make('commitment_level')
+                                ->required()
+                                ->default(CommitmentLevel::join)
+                                ->options(
+                                    CommitmentLevel::collect()
+                                        ->mapWithKeys(fn (CommitmentLevel $commitmentLevel) => [$commitmentLevel->name => $commitmentLevel->value])
+                                ),
 
-                Forms\Components\Toggle::make('is_commitment_fulfilled'),
+                            Forms\Components\Toggle::make('is_commitment_fulfilled'),
+                        ]),
+                    Forms\Components\Section::make('Nicknames reference')
+                        ->grow(false)
+                        ->schema([
+                            Forms\Components\ViewField::make('nickname reference')
+                                ->view('participation::filament.event.attendee-nickname-reference')
+                                ->viewData([
+                                    'nicknames' => Player::query()
+                                        ->whereNotNull('translated_nickname')
+                                        ->get()
+                                        ->map(fn (Player $player) => $player->full_nickname),
+                                ]),
+                        ]),
+                ])->from('sm'),
 
                 Forms\Components\Hidden::make('event_id')
                     ->formatStateUsing(fn () => $this->ownerRecord->id),

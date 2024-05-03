@@ -7,4 +7,5 @@ return [
     \App\Modules\Wiki\WikiProvider::class,
     \App\Modules\Framework\LocaleSelection\LocaleSelectionProvider::class,
     \App\Modules\Players\PlayersProvider::class,
+    \App\Modules\Participation\ParticipationProvider::class,
 ];
