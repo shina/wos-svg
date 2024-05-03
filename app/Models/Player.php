@@ -49,4 +49,14 @@ class Player extends Model
             get: fn ($value, array $attributes) => $this->translated_nickname !== null,
         );
     }
+
+    protected function fullNickname(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, array $attributes) => match ($this->translated_nickname === null) {
+                true => $this->nickname,
+                false => "$this->nickname ($this->translated_nickname)"
+            }
+        );
+    }
 }

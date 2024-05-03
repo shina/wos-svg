@@ -108,7 +108,8 @@ class PlayerResource extends Resource
 
                 TextColumn::make('nickname')
                     ->searchable()
-                    ->label(''),
+                    ->label('')
+                    ->formatStateUsing(fn (Player $record) => $record->full_nickname),
 
                 TextColumn::make('rank')
                     ->sortable()
