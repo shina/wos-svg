@@ -2,12 +2,18 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Language;
+use App\Libraries\Integrations\Deepl\Deepl;
+use App\Libraries\Integrations\Deepl\Requests\TranslateText\Request\TranslateTextData;
 use App\Models\Player;
 use App\Modules\Players\Filament\Resources\PlayerResource\RelationManagers\CommentsRelationManager;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\BulkActionGroup;
@@ -37,8 +43,32 @@ class PlayerResource extends Resource
     {
         return $form
             ->schema([
+                TextInput::make('in_game_id')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->prefix('#'),
+
                 TextInput::make('nickname')
                     ->required(),
+
+                Toggle::make('has_translation')
+                    ->afterStateUpdated(function (Get $get, Set $set, Deepl $deepl) {
+                        if ($get('has_translation') === true && $get('nickname') !== null) {
+                            $response = $deepl->translate(TranslateTextData::from(
+                                $get('nickname'),
+                                null,
+                                Language::en
+                            ));
+
+                            $set('translated_nickname', $response->translations[0]->text ?? '???');
+                        }
+                    })
+                    ->columnSpan(fn (bool $state) => $state === true ? 1 : 2)
+                    ->live(),
+
+                TextInput::make('translated_nickname')
+                    ->required()
+                    ->hidden(fn (Get $get) => $get('has_translation') === false),
 
                 TextInput::make('rating')
                     ->required()
@@ -46,11 +76,6 @@ class PlayerResource extends Resource
                     ->default(10)
                     ->minValue(0)
                     ->maxValue(10),
-
-                TextInput::make('in_game_id')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->prefix('#'),
 
                 TextInput::make('rank')
                     ->required()

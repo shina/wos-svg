@@ -18,7 +18,7 @@ class ResponseHandler
         /** @var TranslateTextData $request */
         $request = $this->requests->get($key);
 
-        if (in_array(HandlesResponse::class, class_uses($request)) === false) {
+        if (objUse($request, HandlesResponse::class) === false) {
             report('Request object does not use HandlesResponse or the handler was not '.
                 'registered. Skipping handling.');
 

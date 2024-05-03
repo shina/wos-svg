@@ -27,7 +27,7 @@ class AttendeesRelationManager extends RelationManager
                         ignoreRecord: true,
                         modifyRuleUsing: fn (Unique $rule) => $rule->where('event_id', $this->ownerRecord->id)
                     )
-                    ->searchable(),
+                    ->searchable(['nickname', 'in_game_id', 'translated_nickname']),
 
                 Forms\Components\Select::make('commitment_level')
                     ->required()

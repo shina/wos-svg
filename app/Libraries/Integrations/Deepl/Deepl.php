@@ -3,11 +3,15 @@
 namespace App\Libraries\Integrations\Deepl;
 
 use App\Libraries\Integrations\Deepl\Requests\TranslateText\Request\TranslateTextData;
+use App\Libraries\Integrations\Deepl\Requests\TranslateText\Response\ResponseData;
 use App\Libraries\Integrations\Deepl\Requests\TranslateText\TranslateText;
 use App\Modules\Framework\Saloon\ExceptionHandler;
 use App\Modules\Framework\Saloon\ResponseHandler;
 use Illuminate\Support\Collection;
 use Saloon\Contracts\Authenticator;
+use Saloon\Exceptions\InvalidPoolItemException;
+use Saloon\Exceptions\Request\FatalRequestException;
+use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
 
@@ -29,7 +33,21 @@ class Deepl extends Connector
     }
 
     /**
+     * @throws FatalRequestException
+     * @throws RequestException
+     */
+    public function translate(TranslateTextData $translateTextData): ResponseData
+    {
+        $translateTextRequest = resolve(TranslateText::class);
+        $translateTextRequest->body()->set($translateTextData->toArray());
+
+        return $this->send($translateTextRequest)->dtoOrFail();
+    }
+
+    /**
      * @param  Collection<TranslateTextData>  $requests
+     *
+     * @throws InvalidPoolItemException
      */
     public function bulkTranslate(Collection $requests): void
     {

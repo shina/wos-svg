@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Modules\Players\Comment;
 use Database\Factories\PlayerFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,6 +18,7 @@ class Player extends Model
     protected $fillable = [
         'in_game_id',
         'nickname',
+        'translated_nickname',
         'rating',
         'rank',
         'background',
@@ -39,5 +41,12 @@ class Player extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    protected function hasTranslation(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, array $attributes) => $this->translated_nickname !== null,
+        );
     }
 }
