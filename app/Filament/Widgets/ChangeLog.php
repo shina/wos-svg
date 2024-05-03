@@ -14,6 +14,11 @@ class ChangeLog extends Widget
             'changes' => [
                 ChangeData::from([
                     'isNew' => true,
+                    'title' => 'Add translated nickname to Players. This will be helpful for names that use non-Roman characters.',
+                    'date' => '02.05.2024',
+                ]),
+                ChangeData::from([
+                    'isNew' => true,
                     'title' => 'Added issue tracker',
                     'date' => '01.05.2024',
                 ]),
