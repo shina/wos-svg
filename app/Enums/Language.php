@@ -19,6 +19,7 @@ enum Language
     case pt;
     case ru;
     case tr;
+    case unknown;
 
     public function getEnglishLabel()
     {

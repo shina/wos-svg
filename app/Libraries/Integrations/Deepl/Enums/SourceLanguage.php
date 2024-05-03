@@ -72,11 +72,12 @@ enum SourceLanguage: string
             SourceLanguage::IT => Language::it,
             SourceLanguage::KO => Language::ko,
             SourceLanguage::LT => Language::lt,
-            SourceLanguage::NB => Language::nl,
+            SourceLanguage::NB => Language::no,
             SourceLanguage::PL => Language::pl,
             SourceLanguage::PT => Language::pt,
             SourceLanguage::RU => Language::ru,
             SourceLanguage::TR => Language::tr,
+            default => Language::unknown
         };
     }
 }
