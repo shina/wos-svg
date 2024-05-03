@@ -52,6 +52,7 @@ class PlayerResource extends Resource
                     ->required(),
 
                 Toggle::make('has_translation')
+                    ->formatStateUsing(fn (Get $get) => $get('translated_nickname') !== null)
                     ->afterStateUpdated(function (Get $get, Set $set, Deepl $deepl) {
                         if ($get('has_translation') === true && $get('nickname') !== null) {
                             $response = $deepl->translate(TranslateTextData::from(
