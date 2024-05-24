@@ -8,26 +8,26 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "erusev/parsedown": "^1.7",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.8",
-        "laravel/framework": "^11.5",
+        "laravel/framework": "^11.8",
         "laravel/octane": "^2.3",
         "laravel/tinker": "^2.9",
         "saloonphp/laravel-plugin": "^3.5",
         "saloonphp/saloon": "^3.8",
-        "spatie/laravel-data": "^4.5",
+        "spatie/laravel-data": "^4.6",
         "spatie/laravel-permission": "^6.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
-        "laravel/pint": "^1.15",
+        "laravel/pint": "^1.16",
         "laravel/sail": "^1.29",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.1",
         "pestphp/pest": "^2.34",
-        "spatie/laravel-ignition": "^2.5"
+        "spatie/laravel-ignition": "^2.7"
     },
     "autoload": {
         "files": [
