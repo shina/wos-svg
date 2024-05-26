@@ -4,6 +4,7 @@ namespace App\Modules\Participation\Filament\Resources\EventResource\RelationMan
 
 use App\Models\Player;
 use App\Modules\Participation\Attendee;
+use App\Modules\Participation\Event;
 use App\Modules\Participation\Filament\Resources\EventResource\Table\Columns\TrustLevelColumn;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -67,6 +68,27 @@ class AttendeesRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('Add remaining players')
+                        ->requiresConfirmation()
+                        ->action(function () {
+                            /** @var Event $event */
+                            $event = $this->ownerRecord;
+
+                            $existingPlayerIds = $event->attendees->pluck('player_id');
+
+                            Player::query()
+                                ->whereNotIn('id', $existingPlayerIds)
+                                ->get(['id'])
+                                ->pluck('id')
+                                ->each(function (int $playerId) use ($event) {
+                                    Attendee::create([
+                                        'player_id' => $playerId,
+                                        'event_id' => $event->id,
+                                    ]);
+                                });
+                        }),
+                ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Modules\Players\Comment;
 use Database\Factories\PlayerFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -59,4 +60,9 @@ class Player extends Model
             }
         );
     }
+
+    //    public function scope(Builder $query): Builder
+    //    {
+    //        return $query->where();
+    //    }
 }
