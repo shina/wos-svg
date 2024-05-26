@@ -14,21 +14,26 @@ class ChangeLog extends Widget
             'changes' => [
                 ChangeData::from([
                     'isNew' => true,
+                    'title' => 'Add Players Participation for having an overview of all players.',
+                    'date' => '26.05.2024',
+                ]),
+                ChangeData::from([
+                    'isNew' => false,
                     'title' => 'Add translated nickname to Players. This will be helpful for names that use non-Roman characters.',
                     'date' => '02.05.2024',
                 ]),
                 ChangeData::from([
-                    'isNew' => true,
+                    'isNew' => false,
                     'title' => 'Added issue tracker',
                     'date' => '01.05.2024',
                 ]),
                 ChangeData::from([
-                    'isNew' => true,
+                    'isNew' => false,
                     'title' => 'Added participation rate level (list of attendees in events)',
                     'date' => '01.05.2024',
                 ]),
                 ChangeData::from([
-                    'isNew' => true,
+                    'isNew' => false,
                     'title' => 'Small features and fixes',
                     'description' => 'Players can be searched by ID; Players are sorted by rating by default; And more...',
                     'date' => '01.05.2024',
