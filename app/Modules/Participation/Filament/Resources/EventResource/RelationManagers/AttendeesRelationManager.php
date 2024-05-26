@@ -4,7 +4,6 @@ namespace App\Modules\Participation\Filament\Resources\EventResource\RelationMan
 
 use App\Models\Player;
 use App\Modules\Participation\Attendee;
-use App\Modules\Participation\Enums\CommitmentLevel;
 use App\Modules\Participation\Filament\Resources\EventResource\Table\Columns\TrustLevelColumn;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -34,14 +33,6 @@ class AttendeesRelationManager extends RelationManager
                                 )
                                 ->searchable(['nickname', 'in_game_id', 'translated_nickname']),
 
-                            Forms\Components\Select::make('commitment_level')
-                                ->required()
-                                ->default(CommitmentLevel::join)
-                                ->options(
-                                    CommitmentLevel::collect()
-                                        ->mapWithKeys(fn (CommitmentLevel $commitmentLevel) => [$commitmentLevel->name => $commitmentLevel->value])
-                                ),
-
                             Forms\Components\Toggle::make('is_commitment_fulfilled'),
                         ]),
                     Forms\Components\Section::make('Nicknames reference')
@@ -68,7 +59,6 @@ class AttendeesRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('player.nickname'),
-                Tables\Columns\TextColumn::make('commitment_level'),
                 Tables\Columns\ToggleColumn::make('is_commitment_fulfilled'),
                 TrustLevelColumn::make(fn (Attendee $record) => $record->player_id),
             ])

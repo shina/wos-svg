@@ -4,7 +4,6 @@ namespace App\Modules\Participation\Services;
 
 use App\Exceptions\NonFatalException;
 use App\Modules\Participation\Attendee;
-use App\Modules\Participation\Enums\CommitmentLevel;
 use Illuminate\Database\Eloquent\Builder;
 
 class CalculateTrustLevel
@@ -21,7 +20,6 @@ class CalculateTrustLevel
     {
         $attendees = Attendee::query()
             ->where('player_id', $playerId)
-            ->where('commitment_level', CommitmentLevel::join)
             ->whereHas('event', function (Builder $query) {
                 $query->where('date', '<', now()->toISOString());
             })

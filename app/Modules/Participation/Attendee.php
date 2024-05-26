@@ -3,7 +3,6 @@
 namespace App\Modules\Participation;
 
 use App\Models\Player;
-use App\Modules\Participation\Enums\CommitmentLevel;
 use App\Modules\Participation\ModelFactories\AttendeeFactory;
 use App\Modules\Participation\Policies\EventPolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,14 +18,12 @@ class Attendee extends Model
 
     protected $fillable = [
         'id',
-        'commitment_level',
         'is_commitment_fulfilled',
         'player_id',
         'event_id',
     ];
 
     protected $casts = [
-        'commitment_level' => CommitmentLevel::class,
         'is_commitment_fulfilled' => 'bool',
     ];
 
