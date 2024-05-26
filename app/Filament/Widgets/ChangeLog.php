@@ -14,6 +14,16 @@ class ChangeLog extends Widget
             'changes' => [
                 ChangeData::from([
                     'isNew' => true,
+                    'title' => 'Add button to add all remaining players in an event',
+                    'date' => '26.05.2024',
+                ]),
+                ChangeData::from([
+                    'isNew' => true,
+                    'title' => 'Remove commitment level (join, absent) on event attendees',
+                    'date' => '26.05.2024',
+                ]),
+                ChangeData::from([
+                    'isNew' => true,
                     'title' => 'Add Players Participation for having an overview of all players.',
                     'date' => '26.05.2024',
                 ]),
