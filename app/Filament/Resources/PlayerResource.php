@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Enums\Language;
+use App\Filament\Resources\PlayerResource\Table\Columns\InGameIdColumn;
+use App\Filament\Resources\PlayerResource\Table\Columns\NicknameColumn;
 use App\Libraries\Integrations\Deepl\Deepl;
 use App\Libraries\Integrations\Deepl\Requests\TranslateText\Request\TranslateTextData;
 use App\Models\Player;
@@ -99,17 +101,9 @@ class PlayerResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('in_game_id')
-                    ->label('')
-                    ->prefix('#')
-                    ->size(TextColumn\TextColumnSize::ExtraSmall)
-                    ->width(1)
-                    ->searchable(),
+                InGameIdColumn::make(),
 
-                TextColumn::make('nickname')
-                    ->searchable()
-                    ->label('')
-                    ->formatStateUsing(fn (Player $record) => $record->full_nickname),
+                NicknameColumn::make(),
 
                 TextColumn::make('rank')
                     ->sortable()

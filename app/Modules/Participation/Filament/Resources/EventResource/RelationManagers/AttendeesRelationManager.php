@@ -5,7 +5,7 @@ namespace App\Modules\Participation\Filament\Resources\EventResource\RelationMan
 use App\Models\Player;
 use App\Modules\Participation\Attendee;
 use App\Modules\Participation\Enums\CommitmentLevel;
-use App\Modules\Participation\Services\CalculateTrustLevel;
+use App\Modules\Participation\Filament\Resources\EventResource\Table\Columns\TrustLevelColumn;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -70,15 +70,7 @@ class AttendeesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('player.nickname'),
                 Tables\Columns\TextColumn::make('commitment_level'),
                 Tables\Columns\ToggleColumn::make('is_commitment_fulfilled'),
-                Tables\Columns\TextColumn::make('trust-level')
-                    ->state(function (CalculateTrustLevel $calculateTrustLevel, Attendee $record) {
-                        return rescue(
-                            fn () => $calculateTrustLevel->player($record->player_id),
-                            'never attended',
-                            false
-                        );
-                    })
-                    ->suffix(fn (string $state) => $state === 'never attended' ? '' : '%'),
+                TrustLevelColumn::make(fn (Attendee $record) => $record->player_id),
             ])
             ->filters([
                 //
