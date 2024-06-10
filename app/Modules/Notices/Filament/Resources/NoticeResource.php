@@ -9,6 +9,7 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
@@ -27,8 +28,6 @@ class NoticeResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $contentMaxLength = 300;
-
         return $form
             ->columns(1)
             ->schema([
@@ -49,7 +48,11 @@ class NoticeResource extends Resource
                     ->required(),
 
                 Textarea::make('content')
-                    ->maxLength($contentMaxLength)
+                    ->hiddenLabel()
+                    ->maxLength(fn (Get $get) => 300 - strlen($get('title')))
+                    ->validationMessages([
+                        'max' => fn (Get $get) => 'Max length is 300 characters, title and content combined. Current is: '.strlen($get('title')) + strlen($get('content')),
+                    ])
                     ->rows(10)
                     ->required(),
             ]);
