@@ -30,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->registration()
             ->profile()
-            ->spa()
+//            ->spa() disabled due to -> "Uncaught Could not find Livewire component in DOM tree"
             ->colors([
                 'primary' => Color::Amber,
             ])
