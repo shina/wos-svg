@@ -4,6 +4,7 @@ namespace App\Modules\Participation\Services;
 
 use App\Exceptions\NonFatalException;
 use App\Modules\Participation\Attendee;
+use App\Modules\Participation\Services\CalculateTrustLevel\QueryModifier;
 use Illuminate\Database\Eloquent\Builder;
 
 class CalculateTrustLevel
@@ -16,14 +17,18 @@ class CalculateTrustLevel
      *
      * @throws NonFatalException If the player did not commit to any event.
      */
-    public function player(int $playerId): string
+    public function player(int $playerId, ?QueryModifier $queryModifier = null): string
     {
-        $attendees = Attendee::query()
-            ->where('player_id', $playerId)
-            ->whereHas('event', function (Builder $query) {
-                $query->where('date', '<', now()->toISOString());
-            })
-            ->get();
+        $query = Attendee::query()->where('player_id', $playerId);
+        if ($queryModifier === null) {
+            $query = $query->whereHas('event', function (Builder $query) {
+                $query->where('date', '<', now()->subDay()->toISOString());
+            });
+        } else {
+            $query = $queryModifier->modifyQuery($query);
+        }
+
+        $attendees = $query->get();
 
         if ($attendees->count() === 0) {
             context([__METHOD__ => get_defined_vars()]);

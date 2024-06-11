@@ -4,6 +4,8 @@ use App\Models\Player;
 use App\Modules\Participation\Attendee;
 use App\Modules\Participation\Event;
 use App\Modules\Participation\Services\CalculateTrustLevel;
+use App\Modules\Participation\Services\CalculateTrustLevel\QueryModifiers\Last3Events;
+use App\Modules\Participation\Services\CalculateTrustLevel\QueryModifiers\OneMonth;
 
 describe('CalculateTrustLevel', function () {
     test('should calculate the rate of commitment percentage [1]', function () {
@@ -69,6 +71,70 @@ describe('CalculateTrustLevel', function () {
 
         $calculateTrustLevel = resolve(CalculateTrustLevel::class);
         $result = $calculateTrustLevel->player($player->id);
+
+        expect($result)->toBe('100');
+    });
+
+    test('OneMonth modifier', function () {
+        $player = Player::factory()->create();
+
+        // one event in this month
+        Attendee::factory()->create([
+            'is_commitment_fulfilled' => true,
+            'player_id' => $player->id,
+            'event_id' => Event::factory()
+                ->create(['date' => now()->subWeek()->toISOString()])
+                ->id,
+        ]);
+
+        // one event older than 2 months
+        Attendee::factory()->create([
+            'is_commitment_fulfilled' => false,
+            'player_id' => $player->id,
+            'event_id' => Event::factory()
+                ->create(['date' => now()->subMonths(2)->toISOString()])
+                ->id,
+        ]);
+
+        // one event in 1 month
+        Attendee::factory()->create([
+            'is_commitment_fulfilled' => false,
+            'player_id' => $player->id,
+            'event_id' => Event::factory()
+                ->create(['date' => now()->addMonth()->toISOString()])
+                ->id,
+        ]);
+
+        $calculateTrustLevel = resolve(CalculateTrustLevel::class);
+        $result = $calculateTrustLevel->player($player->id, new OneMonth());
+
+        expect($result)->toBe('100');
+    });
+
+    test('Last3Events modifier', function () {
+        $player = Player::factory()->create();
+
+        Event::factory(2)
+            ->create(['date' => now()->subWeek()->toISOString()])
+            ->each(function (Event $event) use ($player) {
+                Attendee::factory()->create([
+                    'is_commitment_fulfilled' => false,
+                    'player_id' => $player->id,
+                    'event_id' => $event->id,
+                ]);
+            });
+        Event::factory(3)
+            ->create(['date' => now()->subDay()->toISOString()])
+            ->each(function (Event $event) use ($player) {
+                Attendee::factory()->create([
+                    'is_commitment_fulfilled' => true,
+                    'player_id' => $player->id,
+                    'event_id' => $event->id,
+                ]);
+            });
+
+        $calculateTrustLevel = resolve(CalculateTrustLevel::class);
+        $result = $calculateTrustLevel->player($player->id, new Last3Events());
 
         expect($result)->toBe('100');
     });
