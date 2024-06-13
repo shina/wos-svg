@@ -6,6 +6,7 @@ use App\Models\Player;
 use App\Modules\Participation\Attendee;
 use App\Modules\Participation\Event;
 use App\Modules\Participation\Filament\Resources\EventResource\Table\Columns\TrustLevelColumn;
+use App\Modules\Participation\PlayerParticipation;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -61,7 +62,9 @@ class AttendeesRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('player.nickname'),
                 Tables\Columns\ToggleColumn::make('is_commitment_fulfilled'),
-                TrustLevelColumn::make(fn (Attendee $record) => $record->player_id),
+                TrustLevelColumn::make(function (Attendee $record) {
+                    return PlayerParticipation::query()->where('player_id', $record->player_id)->first();
+                }),
             ])
             ->filters([
                 //
