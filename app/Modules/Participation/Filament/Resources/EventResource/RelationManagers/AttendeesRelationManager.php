@@ -64,7 +64,7 @@ class AttendeesRelationManager extends RelationManager
                 Tables\Columns\ToggleColumn::make('is_commitment_fulfilled'),
                 TrustLevelColumn::make(function (Attendee $record) {
                     return PlayerParticipation::query()->where('player_id', $record->player_id)->first();
-                }),
+                }, 'attendees.player_id'),
             ])
             ->filters([
                 //

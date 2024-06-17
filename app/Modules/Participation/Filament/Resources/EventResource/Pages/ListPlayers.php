@@ -24,7 +24,8 @@ class ListPlayers extends ListRecords
                 InGameIdColumn::make(),
                 NicknameColumn::make(),
                 TrustLevelColumn::make(
-                    fn (Player $record) => PlayerParticipation::query()->where('player_id', $record->id)->first()
+                    fn (Player $record) => PlayerParticipation::query()->where('player_id', $record->id)->first(),
+                    'players.id'
                 ),
             ])
             ->recordUrl(null)
