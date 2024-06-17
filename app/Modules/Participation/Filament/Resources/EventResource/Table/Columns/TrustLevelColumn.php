@@ -32,16 +32,14 @@ class TrustLevelColumn
                         $participation = $getPlayerParticipation($record);
 
                         return isset($participation->one_month) ? "$participation->one_month%" : 'never attended';
-                    })
-                    ->suffix(fn (string $state) => $state === 'never attended' ? '' : '%'),
+                    }),
                 TextColumn::make('all-time')
                     ->state(function ($record) use ($getPlayerParticipation) {
                         /** @var PlayerParticipation $participation */
                         $participation = $getPlayerParticipation($record);
 
                         return isset($participation->all_time) ? "$participation->all_time%" : 'never attended';
-                    })
-                    ->suffix(fn (string $state) => $state === 'never attended' ? '' : '%'),
+                    }),
             ]);
     }
 }

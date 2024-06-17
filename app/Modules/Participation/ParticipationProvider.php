@@ -14,5 +14,7 @@ class ParticipationProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__.'/Views', 'participation');
+        $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->mergeConfigFrom(__DIR__.'/config.php', 'participation');
     }
 }
