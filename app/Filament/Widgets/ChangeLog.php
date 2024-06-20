@@ -14,11 +14,16 @@ class ChangeLog extends Widget
             'changes' => [
                 ChangeData::from([
                     'isNew' => true,
+                    'title' => 'Add agreements',
+                    'date' => '20.06.2024',
+                ]),
+                ChangeData::from([
+                    'isNew' => false,
                     'title' => 'Add 3 types of participation rate: 3 last events, 1 month and all the time',
                     'date' => '17.06.2024',
                 ]),
                 ChangeData::from([
-                    'isNew' => true,
+                    'isNew' => false,
                     'title' => 'Fix the notice character validation',
                     'date' => '10.06.2024',
                 ]),
