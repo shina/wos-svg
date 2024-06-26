@@ -8,6 +8,7 @@ use App\Modules\Participation\Policies\EventPolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Gate;
 
 class Attendee extends Model
@@ -40,6 +41,11 @@ class Attendee extends Model
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function playerParticipation(): HasOne
+    {
+        return $this->hasOne(PlayerParticipation::class, 'player_id', 'player_id');
     }
 
     protected static function newFactory()

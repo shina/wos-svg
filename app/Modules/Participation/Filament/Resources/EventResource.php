@@ -5,10 +5,10 @@ namespace App\Modules\Participation\Filament\Resources;
 use App\Modules\Participation\Event;
 use App\Modules\Participation\Filament\Resources\EventResource\Pages;
 use App\Modules\Participation\Filament\Resources\EventResource\RelationManagers\AttendeesRelationManager;
+use App\Modules\Participation\Filament\Resources\PlayerParticipationResource\Pages\ListPlayerParticipations;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Navigation\NavigationItem;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
@@ -26,19 +26,6 @@ class EventResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationLabel = 'Event Participation';
-
-    public static function getNavigationItems(): array
-    {
-        return array_merge(
-            parent::getNavigationItems(),
-            [
-                NavigationItem::make('Players Participation')
-                    ->url('/admin/events/players')
-                    ->parentItem('Event Participation')
-                    ->isActiveWhen(fn () => request()->is('admin/events/players')),
-            ]
-        );
-    }
 
     public static function form(Form $form): Form
     {
@@ -85,7 +72,7 @@ class EventResource extends Resource
             'index' => Pages\ListEvents::route('/'),
             'create' => Pages\CreateEvent::route('/create'),
             'edit' => Pages\EditEvent::route('/{record}/edit'),
-            'players' => Pages\ListPlayers::route('/players'),
+            'players' => ListPlayerParticipations::route('/players'),
         ];
     }
 

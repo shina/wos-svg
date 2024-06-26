@@ -5,13 +5,16 @@ namespace App\Modules\Participation\Filament\Resources\EventResource\RelationMan
 use App\Models\Player;
 use App\Modules\Participation\Attendee;
 use App\Modules\Participation\Event;
-use App\Modules\Participation\Filament\Resources\EventResource\Table\Columns\TrustLevelColumn;
-use App\Modules\Participation\PlayerParticipation;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Columns\ColumnGroup;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TextColumn\TextColumnSize;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Unique;
 
 class AttendeesRelationManager extends RelationManager
@@ -60,11 +63,41 @@ class AttendeesRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('player.nickname'),
+                TextColumn::make('player.in_game_id')
+                    ->label('')
+                    ->prefix('#')
+                    ->size(TextColumnSize::ExtraSmall)
+                    ->width(1)
+                    ->searchable(),
+                TextColumn::make('player.full_nickname')
+                    ->searchable(query: function (Builder $query, string $search) {
+                        $query
+                            ->whereExists(fn (\Illuminate\Database\Query\Builder $query) => $query
+                                ->from('players')
+                                ->where('attendees.player_id', DB::raw('"players"."id"'))
+                                ->where('players.nickname', 'like', "%{$search}%"))
+                            ->orWhereExists(fn (\Illuminate\Database\Query\Builder $query) => $query
+                                ->from('players')
+                                ->where('attendees.player_id', DB::raw('"players"."id"'))
+                                ->where('players.translated_nickname', 'like', "%{$search}%"));
+                    })
+                    ->label(''),
                 Tables\Columns\ToggleColumn::make('is_commitment_fulfilled'),
-                TrustLevelColumn::make(function (Attendee $record) {
-                    return PlayerParticipation::query()->where('player_id', $record->player_id)->first();
-                }, 'attendees.player_id'),
+                ColumnGroup::make('Participation rate')
+                    ->columns([
+                        TextColumn::make('playerParticipation.last_3_events')
+                            ->formatStateUsing(fn (string $state) => $state === '-' ? $state : "$state%")
+                            ->default('-')
+                            ->sortable(),
+                        TextColumn::make('playerParticipation.one_month')
+                            ->formatStateUsing(fn (string $state) => $state === '-' ? $state : "$state%")
+                            ->default('-')
+                            ->sortable(),
+                        TextColumn::make('playerParticipation.all_time')
+                            ->formatStateUsing(fn (string $state) => $state === '-' ? $state : "$state%")
+                            ->default('-')
+                            ->sortable(),
+                    ]),
             ])
             ->filters([
                 //
