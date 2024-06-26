@@ -33,5 +33,13 @@ class RecalculateAllPlayersJob implements ShouldQueue
             $participation->last_3_events = rescue(fn () => (float) $calculateTrustLevel->player($player->id, new Last3Events()), null, false);
             $participation->save();
         });
+
+        $deletedPlayerIds = Player::query()
+            ->onlyTrashed()
+            ->pluck('id')
+            ->toArray();
+        PlayerParticipation::query()
+            ->whereIn('player_id', $deletedPlayerIds)
+            ->delete();
     }
 }
