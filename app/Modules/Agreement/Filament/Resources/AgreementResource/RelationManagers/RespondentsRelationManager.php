@@ -49,6 +49,7 @@ class RespondentsRelationManager extends RelationManager
                                 ->where('players.translated_nickname', 'like', "%{$search}%"));
                     }),
                 Tables\Columns\SelectColumn::make('value')
+                    ->sortable()
                     ->options(fn () => collect($this->ownerRecord->options)->pluck('name')),
             ])
             ->filters([
@@ -76,13 +77,13 @@ class RespondentsRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                //                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                //                Tables\Actions\BulkActionGroup::make([
+                //                    Tables\Actions\DeleteBulkAction::make(),
+                //                ]),
             ]);
     }
 }
