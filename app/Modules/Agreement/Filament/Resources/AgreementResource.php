@@ -9,7 +9,9 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -61,6 +63,26 @@ class AgreementResource extends Resource
                 //
             ])
             ->actions([
+                Action::make('report')
+                    ->icon('heroicon-o-presentation-chart-line')
+                    ->infolist([
+                        KeyValueEntry::make('result')
+                            ->label('')
+                            ->keyLabel('Option')
+                            ->valueLabel('Total count')
+                            ->getStateUsing(function (Agreement $record) {
+                                return collect($record->options)
+                                    ->mapWithKeys(function ($value, $key) use ($record) {
+                                        $count = $record->respondents()
+                                            ->where('value', $key)
+                                            ->count();
+
+                                        return [$value['name'] => $count];
+                                    });
+                            }),
+                    ])
+                    ->modalSubmitAction(false)
+                    ->modalCancelAction(false),
                 EditAction::make(),
                 DeleteAction::make(),
             ])
