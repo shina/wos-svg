@@ -86,14 +86,17 @@ class AttendeesRelationManager extends RelationManager
                 ColumnGroup::make('Participation rate')
                     ->columns([
                         TextColumn::make('playerParticipation.last_3_events')
+                            ->label('Last 3 events')
                             ->formatStateUsing(fn (string $state) => $state === '-' ? $state : "$state%")
                             ->default('-')
                             ->sortable(),
                         TextColumn::make('playerParticipation.one_month')
+                            ->label('One month')
                             ->formatStateUsing(fn (string $state) => $state === '-' ? $state : "$state%")
                             ->default('-')
                             ->sortable(),
                         TextColumn::make('playerParticipation.all_time')
+                            ->label('All time')
                             ->formatStateUsing(fn (string $state) => $state === '-' ? $state : "$state%")
                             ->default('-')
                             ->sortable(),
