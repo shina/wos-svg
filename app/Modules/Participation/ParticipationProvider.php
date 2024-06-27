@@ -2,6 +2,7 @@
 
 namespace App\Modules\Participation;
 
+use App\Modules\Participation\Console\Commands\RecalculateParticipationCommand;
 use Illuminate\Support\ServiceProvider;
 
 class ParticipationProvider extends ServiceProvider
@@ -14,7 +15,8 @@ class ParticipationProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__.'/Views', 'participation');
-        $this->loadRoutesFrom(__DIR__.'/routes.php');
-        $this->mergeConfigFrom(__DIR__.'/config.php', 'participation');
+        $this->commands([
+            RecalculateParticipationCommand::class,
+        ]);
     }
 }

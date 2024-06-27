@@ -5,9 +5,9 @@ namespace App\Modules\Participation\Console\Commands;
 use App\Modules\Participation\Jobs\RecalculateAllPlayersJob;
 use Illuminate\Console\Command;
 
-class TriggerCalculationCommand extends Command
+class RecalculateParticipationCommand extends Command
 {
-    protected $signature = 'participation:trigger-calculation';
+    protected $signature = 'participation:recalculate';
 
     protected $description = 'Start the calculation of the participation on each player';
 
