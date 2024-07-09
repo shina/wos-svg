@@ -27,6 +27,10 @@
             font-size: 14px;
             text-align: center;
         }
+
+        .grid-item span {
+            transform: rotate(-30deg);
+        }
     </style>
 </head>
 <body>
@@ -48,43 +52,47 @@
         function addTextToGrid(text, row, col, rowSpan = 1, colSpan = 1, backgroundColor = 'white') {
             const gridItem = document.createElement('div');
             gridItem.classList.add('grid-item');
-            gridItem.textContent = text;
+            // gridItem.textContent = text;
             gridItem.style.gridRowStart = row;
             gridItem.style.gridColumnStart = col;
             gridItem.style.gridRowEnd = `span ${rowSpan}`;
             gridItem.style.gridColumnEnd = `span ${colSpan}`;
             gridItem.style.backgroundColor = backgroundColor;
+
+            const span = document.createElement('span');
+            span.textContent = text;
+            gridItem.appendChild(span);
+
             gridContainer.appendChild(gridItem);
         }
 
         createGrid(26, 22);
 
         // bear
-        addTextToGrid('Bear Trap', 13, 9, 3, 3, 'green');
-        addTextToGrid('B', 13, 12, 1, 1, 'blue');
-        addTextToGrid('B', 16, 9, 1, 1, 'blue');
-        addTextToGrid('B', 16, 12, 1, 1, 'blue');
+        addTextToGrid('Bear Trap', 13, 9, 3, 3, '#2D6517');
+        addTextToGrid('B', 13, 12, 1, 1, '#3D6FE3');
+        addTextToGrid('B', 16, 9, 1, 1, '#3D6FE3');
+        addTextToGrid('B', 16, 12, 1, 1, '#3D6FE3');
 
         // banners
-        addTextToGrid('B', 2, 5, 1, 1, 'blue');
-        addTextToGrid('B', 9, 5, 1, 1, 'blue');
-        addTextToGrid('B', 6, 12, 1, 1, 'blue');
-        addTextToGrid('B', 16, 2, 1, 1, 'blue');
-        addTextToGrid('B', 23, 2, 1, 1, 'blue');
-        addTextToGrid('B', 23, 9, 1, 1, 'blue');
-        addTextToGrid('B', 23, 16, 1, 1, 'blue');
-        addTextToGrid('B', 9, 18, 1, 1, 'blue');
-        addTextToGrid('B', 16, 18, 1, 1, 'blue');
+        addTextToGrid('B', 2, 5, 1, 1, '#3D6FE3');
+        addTextToGrid('B', 9, 5, 1, 1, '#3D6FE3');
+        addTextToGrid('B', 6, 12, 1, 1, '#3D6FE3');
+        addTextToGrid('B', 16, 2, 1, 1, '#3D6FE3');
+        addTextToGrid('B', 23, 2, 1, 1, '#3D6FE3');
+        addTextToGrid('B', 23, 9, 1, 1, '#3D6FE3');
+        addTextToGrid('B', 23, 16, 1, 1, '#3D6FE3');
+        addTextToGrid('B', 9, 19, 1, 1, '#3D6FE3');
+        addTextToGrid('B', 16, 19, 1, 1, '#3D6FE3');
 
         // mines
         addTextToGrid('', 1, 9, 2, 2, 'black');
-        addTextToGrid('', 8, 16, 2, 2, 'black');
-        addTextToGrid('', 22, 12, 2, 2, 'black');
+        addTextToGrid('', 8, 17, 2, 2, 'black');
+        addTextToGrid('', 23, 12, 2, 2, 'black');
 
-        // Example of adding text to the grid
-        // addTextToGrid('Hello', 1, 1);
-        // addTextToGrid('World', 2, 2, 2, 2); // Spans 2 rows and 2 columns
-        // addTextToGrid('Dynamic', 4, 4, 1, 3); // Spans 1 row and 3 columns
+        @foreach($items as $item)
+            addTextToGrid('{{ $item->nickname }}', {{ $item->row }}, {{ $item->col }}, 2, 2, '#5C9B3E');
+        @endforeach
     });
 </script>
 </body>
