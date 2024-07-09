@@ -8,6 +8,10 @@ use App\Modules\Participation\Services\CalculateTrustLevel\QueryModifiers\Last3E
 use App\Modules\Participation\Services\CalculateTrustLevel\QueryModifiers\OneMonth;
 
 describe('CalculateTrustLevel', function () {
+    beforeEach(function () {
+        Player::truncate();
+    });
+
     test('should calculate the rate of commitment percentage [1]', function () {
         $player = Player::factory()->create();
         Attendee::factory(5)->create([
