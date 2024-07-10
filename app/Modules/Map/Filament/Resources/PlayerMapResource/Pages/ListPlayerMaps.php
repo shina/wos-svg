@@ -16,7 +16,7 @@ class ListPlayerMaps extends ListRecords
     {
         return [
             Action::make('Open map')
-                ->url('/map-test')
+                ->url('/map')
                 ->link()
                 ->openUrlInNewTab(),
             Action::make('Select on map')
