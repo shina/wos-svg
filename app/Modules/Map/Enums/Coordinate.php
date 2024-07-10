@@ -110,6 +110,7 @@ enum Coordinate: string
     case P97 = '25x11';
     case P98 = '25x13';
     case P99 = '25x15';
+    case P100 = '25x17';
 
     public static function collect(): Collection
     {

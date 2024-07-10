@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Map\Http\Controllers;
+namespace App\Modules\Map\resources\views\components;
 
 use App\Modules\Map\Enums\Coordinate;
 use App\Modules\Map\PlayerMap;
@@ -11,7 +11,8 @@ class GridItemData extends Data
     public function __construct(
         public string $nickname,
         public string $row,
-        public string $col
+        public string $col,
+        public ?string $url = null
     ) {
     }
 
@@ -21,5 +22,11 @@ class GridItemData extends Data
         [$row, $col] = explode('x', $coordinate->value);
 
         return new static($playerMap->player->full_nickname, $row, $col);
+    }
+
+    public static function fromCoordinate(Coordinate $coordinate)
+    {
+        [$row, $col] = explode('x', $coordinate->value);
+        return new static('-', $row, $col);
     }
 }

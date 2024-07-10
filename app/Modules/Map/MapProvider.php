@@ -14,7 +14,7 @@ class MapProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__.'/views', 'map');
+        $this->loadViewsFrom(__DIR__.'/resources/views', 'map');
         $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         Player::deleted(fn (Player $player) => PlayerMap::query()

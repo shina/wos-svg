@@ -4,6 +4,7 @@ namespace App\Modules\Map\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Map\PlayerMap;
+use App\Modules\Map\resources\views\components\GridItemData;
 
 class MapController extends Controller
 {
@@ -11,7 +12,8 @@ class MapController extends Controller
     {
         $gridItems = PlayerMap::query()
             ->with('player')
-            ->where('coordinate_position', '<', 99)
+            ->where('coordinate_position', '>=', 1)
+            ->where('coordinate_position', '<=', 100)
             ->get()
             ->map(fn (PlayerMap $playerMap) => GridItemData::from($playerMap));
 

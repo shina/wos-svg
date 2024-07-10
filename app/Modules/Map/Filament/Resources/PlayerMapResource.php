@@ -4,9 +4,6 @@ namespace App\Modules\Map\Filament\Resources;
 
 use App\Modules\Map\Filament\Resources\PlayerMapResource\Pages;
 use App\Modules\Map\PlayerMap;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
@@ -24,40 +21,27 @@ class PlayerMapResource extends Resource
 
     protected static ?string $label = 'Map';
 
-    protected static ?string $pluralLabel = 'Map (beta)';
-
-    //    public static function form(Form $form): Form
-    //    {
-    //        return $form
-    //            ->schema([
-    //                TextInput::make('coordinate_position')
-    //                    ->required()
-    //                    ->integer(),
-    //
-    //                Select::make('player_id')
-    //                    ->required()
-    //                    ->relationship('player', 'nickname'),
-    //            ]);
-    //    }
+    protected static ?string $pluralLabel = 'Map';
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                TextColumn::make('coordinate_position')
+                    ->label('Position'),
                 TextColumn::make('player.full_nickname')
-                    ->label(''),
+                    ->label('Player'),
             ])
             ->reorderable('coordinate_position')
             ->defaultSort('coordinate_position')
-            ->selectable(false)
             ->paginated(false)
             ->actions([
                 DeleteAction::make(),
             ])
             ->bulkActions([
-                //                BulkActionGroup::make([
-                //                    DeleteBulkAction::make(),
-                //                ]),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
@@ -65,6 +49,9 @@ class PlayerMapResource extends Resource
     {
         return [
             'index' => Pages\ListPlayerMaps::route('/'),
+            'edit' => Pages\EditPlayerMap::route('/{record}/edit'),
+            'create' => Pages\CreatePlayerMap::route('/create/{position}'),
+            'map' => Pages\ListPlayerMapsOnMap::route('/map'),
         ];
     }
 

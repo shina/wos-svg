@@ -19,6 +19,8 @@ class ListPlayerMaps extends ListRecords
                 ->url('/map-test')
                 ->link()
                 ->openUrlInNewTab(),
+            Action::make('Select on map')
+                ->url(ListPlayerMapsOnMap::getUrl()),
             Action::make('Add remaining players')
                 ->action(function () {
                     $existingPlayers = PlayerMap::query()
