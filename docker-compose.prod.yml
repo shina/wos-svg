@@ -9,6 +9,7 @@ services:
       - "8000:8000"
     volumes:
       - "./database/database.sqlite:/app/database/database.sqlite"
+      - "./database/database.sqlite:/app/database/database-eng.sqlite"
       - "./storage:/app/storage"
     tty: true
     stdin_open: true
