@@ -14,6 +14,11 @@ class ChangeLog extends Widget
             'changes' => [
                 ChangeData::from([
                     'isNew' => true,
+                    'title' => 'Add list of event for a player',
+                    'date' => '11.07.2024',
+                ]),
+                ChangeData::from([
+                    'isNew' => true,
                     'title' => 'Add Map manager',
                     'date' => '10.07.2024',
                 ]),
