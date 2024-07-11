@@ -21,12 +21,13 @@ class GridItemData extends Data
         $coordinate = Coordinate::{'P'.$playerMap->coordinate_position};
         [$row, $col] = explode('x', $coordinate->value);
 
-        return new static($playerMap->player->full_nickname, $row, $col);
+        return new static($playerMap->player->nickname, $row, $col);
     }
 
     public static function fromCoordinate(Coordinate $coordinate)
     {
         [$row, $col] = explode('x', $coordinate->value);
+
         return new static('-', $row, $col);
     }
 }
