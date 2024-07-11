@@ -3,9 +3,12 @@
 namespace App\Modules\Participation\Filament\Resources;
 
 use App\Models\Player;
+use App\Modules\Participation\Attendee;
 use App\Modules\Participation\Filament\Resources\PlayerParticipationResource\Pages\ListPlayerParticipations;
 use App\Modules\Participation\PlayerParticipation;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ColumnGroup;
@@ -75,7 +78,21 @@ class PlayerParticipationResource extends Resource
                 //
             ])
             ->actions([
-                //                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('See events')
+                    ->modalSubmitAction(false)
+                    ->modalCancelAction(false)
+                    ->infolist([
+                        RepeatableEntry::make('player.attendees')
+                            ->hiddenLabel()
+                            ->columns(2)
+                            ->schema([
+                                TextEntry::make('event.name')
+                                    ->label('Name'),
+                                TextEntry::make('is_commitment_fulfilled')
+                                    ->label('Attended')
+                                    ->getStateUsing(fn (Attendee $record) => $record->is_commitment_fulfilled === true ? '✅' : '❌'),
+                            ]),
+                    ]),
             ])
             ->bulkActions([
                 //                Tables\Actions\BulkActionGroup::make([

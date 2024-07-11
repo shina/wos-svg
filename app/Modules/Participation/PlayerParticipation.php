@@ -2,7 +2,6 @@
 
 namespace App\Modules\Participation;
 
-use App\Models\Player;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

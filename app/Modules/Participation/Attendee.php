@@ -2,7 +2,6 @@
 
 namespace App\Modules\Participation;
 
-use App\Models\Player;
 use App\Modules\Participation\ModelFactories\AttendeeFactory;
 use App\Modules\Participation\Policies\EventPolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

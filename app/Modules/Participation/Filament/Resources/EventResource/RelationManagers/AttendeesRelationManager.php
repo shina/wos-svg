@@ -7,6 +7,8 @@ use App\Modules\Participation\Attendee;
 use App\Modules\Participation\Event;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\ColumnGroup;
@@ -82,7 +84,8 @@ class AttendeesRelationManager extends RelationManager
                                 ->where('players.translated_nickname', 'like', "%{$search}%"));
                     })
                     ->label(''),
-                Tables\Columns\ToggleColumn::make('is_commitment_fulfilled'),
+                Tables\Columns\ToggleColumn::make('is_commitment_fulfilled')
+                    ->label('Attended'),
                 ColumnGroup::make('Participation rate')
                     ->columns([
                         TextColumn::make('playerParticipation.last_3_events')
@@ -129,9 +132,27 @@ class AttendeesRelationManager extends RelationManager
                         }),
                 ]),
             ])
+            ->recordAction(null)
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('See events')
+                    ->modalSubmitAction(false)
+                    ->modalCancelAction(false)
+                    ->infolist([
+                        RepeatableEntry::make('player.attendees')
+                            ->hiddenLabel()
+                            ->columns(2)
+                            ->schema([
+                                TextEntry::make('event.name')
+                                    ->label('Name'),
+                                TextEntry::make('is_commitment_fulfilled')
+                                    ->label('Attended')
+                                    ->getStateUsing(fn (Attendee $record) => $record->is_commitment_fulfilled === true ? '✅' : '❌'),
+                            ]),
+                    ]),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
