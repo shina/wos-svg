@@ -22,7 +22,7 @@ class CalculateTrustLevel
         $query = Attendee::query()->where('player_id', $playerId);
         if ($queryModifier === null) {
             $query = $query->whereHas('event', function (Builder $query) {
-                $query->where('date', '<', now()->subDay()->toISOString());
+                $query->where('date', '<', now()->setTime(0, 0)->toISOString());
             });
         } else {
             $query = $queryModifier->modifyQuery($query);

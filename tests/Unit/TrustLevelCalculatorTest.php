@@ -136,6 +136,15 @@ describe('CalculateTrustLevel', function () {
                     'event_id' => $event->id,
                 ]);
             });
+        Event::factory()
+            ->create(['date' => now()->addDay()->toISOString()])
+            ->each(function (Event $event) use ($player) {
+                Attendee::factory()->create([
+                    'is_commitment_fulfilled' => false,
+                    'player_id' => $player->id,
+                    'event_id' => $event->id,
+                ]);
+            });
 
         $calculateTrustLevel = resolve(CalculateTrustLevel::class);
         $result = $calculateTrustLevel->player($player->id, new Last3Events());
