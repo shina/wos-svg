@@ -6,7 +6,6 @@ down:
 
 migrate:
 	docker exec -it wos-svg /app/artisan migrate --force
-	docker exec -it wos-svg /app/artisan migrate --force --database=sqlite-eng
 
 prune:
 	docker system prune --all --force --volumes
