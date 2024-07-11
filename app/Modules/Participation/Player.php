@@ -12,6 +12,7 @@ class Player extends BasePlayer
         return $this->hasMany(Attendee::class)
             ->with('event')
             ->join('events', 'events.id', '=', 'attendees.event_id')
+            ->where('events.date', '<', now()->toISOString())
             ->orderBy('events.date', 'desc');
     }
 }
