@@ -9,6 +9,9 @@ class Player extends BasePlayer
 {
     public function attendees(): HasMany
     {
-        return $this->hasMany(Attendee::class);
+        return $this->hasMany(Attendee::class)
+            ->with('event')
+            ->join('events', 'events.id', '=', 'attendees.event_id')
+            ->orderBy('events.date', 'desc');
     }
 }

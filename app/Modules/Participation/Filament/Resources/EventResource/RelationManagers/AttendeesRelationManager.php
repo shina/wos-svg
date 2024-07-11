@@ -64,6 +64,9 @@ class AttendeesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->with(['player', 'playerParticipation']);
+            })
             ->columns([
                 TextColumn::make('player.in_game_id')
                     ->label('')
@@ -140,10 +143,13 @@ class AttendeesRelationManager extends RelationManager
                     ->infolist([
                         RepeatableEntry::make('player.attendees')
                             ->hiddenLabel()
-                            ->columns(2)
+                            ->columns(3)
                             ->schema([
                                 TextEntry::make('event.name')
                                     ->label('Name'),
+                                TextEntry::make('event.date')
+                                    ->label('Date')
+                                    ->date(),
                                 TextEntry::make('is_commitment_fulfilled')
                                     ->label('Attended')
                                     ->getStateUsing(fn (Attendee $record) => $record->is_commitment_fulfilled === true ? '✅' : '❌'),
