@@ -28,7 +28,7 @@ class PlayerMapResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                $query->with('player');
+                return $query->with('player');
             })
             ->columns([
                 TextColumn::make('coordinate_position')

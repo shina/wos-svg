@@ -65,7 +65,7 @@ class AttendeesRelationManager extends RelationManager
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                $query->with(['player', 'playerParticipation']);
+                return $query->with(['player', 'playerParticipation']);
             })
             ->columns([
                 TextColumn::make('player.in_game_id')

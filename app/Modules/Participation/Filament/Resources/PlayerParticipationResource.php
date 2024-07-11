@@ -38,7 +38,7 @@ class PlayerParticipationResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                $query->with(['player']);
+                return $query->with(['player']);
             })
             ->columns([
                 TextColumn::make('player.in_game_id')
