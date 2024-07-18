@@ -19,6 +19,7 @@ class CalculateTrustLevel
      */
     public function player(int $playerId, ?QueryModifier $queryModifier = null): string
     {
+        // @todo return the attendees instead of queryModifier. Telescope inspect everything and tries to serialize the QueryBuilder, which is not possible.
         $query = Attendee::query()->where('player_id', $playerId);
         if ($queryModifier === null) {
             $query = $query->whereHas('event', function (Builder $query) {

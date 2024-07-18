@@ -4,6 +4,7 @@ namespace App\Modules\Participation\Filament\Resources;
 
 use App\Models\Player;
 use App\Modules\Participation\Attendee;
+use App\Modules\Participation\EventCategory;
 use App\Modules\Participation\Filament\Resources\PlayerParticipationResource\Pages\ListPlayerParticipations;
 use App\Modules\Participation\PlayerParticipation;
 use Filament\Forms\Form;
@@ -14,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\ColumnGroup;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextColumn\TextColumnSize;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -37,9 +39,6 @@ class PlayerParticipationResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(function (Builder $query) {
-                return $query->with(['player']);
-            })
             ->columns([
                 TextColumn::make('player.in_game_id')
                     ->label('')
@@ -78,7 +77,14 @@ class PlayerParticipationResource extends Resource
                 //                    ->formatStateUsing(fn (Player $record) => $record->full_nickname),
             ])
             ->filters([
-                //
+                SelectFilter::make('categories')
+                    ->multiple()
+                    ->options(fn () => EventCategory::pluck('category', 'category'))
+                    ->modifyQueryUsing(function (Builder $query, array $state) {
+                        // @todo implement the query according to the category
+
+                        return $query;
+                    }),
             ])
             ->actions([
                 Tables\Actions\Action::make('See events')
