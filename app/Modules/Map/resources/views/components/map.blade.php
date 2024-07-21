@@ -101,7 +101,7 @@
 
         @foreach($items as $item)
 
-            addTextToGrid('{{ $item->nickname }}', {{ $item->row }}, {{ $item->col }}, 2, 2, '#5C9B3E', '{{ $item->url }}');
+            addTextToGrid('{{ $item->nickname }}', {{ $item->row }}, {{ $item->col }}, 2, 2, '{{ $item->color }}', '{{ $item->url }}');
 
         @endforeach
     });

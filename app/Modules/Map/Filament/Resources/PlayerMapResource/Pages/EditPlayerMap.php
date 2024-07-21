@@ -7,6 +7,7 @@ use App\Modules\Map\PlayerMap;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\EditRecord;
 
@@ -26,6 +27,8 @@ class EditPlayerMap extends EditRecord
                 ->required()
                 ->relationship('player', 'nickname')
                 ->searchable(),
+
+            Toggle::make('is_correct'),
         ]);
     }
 
@@ -38,9 +41,14 @@ class EditPlayerMap extends EditRecord
 
     protected function beforeSave()
     {
-        PlayerMap::query()
-            ->where('player_id', $this->data['player_id'])
-            ->delete();
+        /** @var PlayerMap $record */
+        $record = $this->record;
+
+        if ($record->player_id !== $this->data['player_id']) {
+            PlayerMap::query()
+                ->where('player_id', $this->data['player_id'])
+                ->delete();
+        }
     }
 
     protected function getRedirectUrl(): ?string

@@ -13,7 +13,15 @@ class PlayerMap extends Model
     protected $fillable = [
         'coordinate_position',
         'player_id',
+        'is_correct',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_correct' => 'bool',
+        ];
+    }
 
     public function player(): BelongsTo
     {
