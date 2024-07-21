@@ -14,11 +14,21 @@ class ChangeLog extends Widget
             'changes' => [
                 ChangeData::from([
                     'isNew' => true,
+                    'title' => 'Different colors on map spots',
+                    'date' => '21.07.2024',
+                ]),
+                ChangeData::from([
+                    'isNew' => true,
+                    'title' => 'Internal notes',
+                    'date' => '21.07.2024',
+                ]),
+                ChangeData::from([
+                    'isNew' => false,
                     'title' => 'Add list of event for a player',
                     'date' => '11.07.2024',
                 ]),
                 ChangeData::from([
-                    'isNew' => true,
+                    'isNew' => false,
                     'title' => 'Add Map manager',
                     'date' => '10.07.2024',
                 ]),
