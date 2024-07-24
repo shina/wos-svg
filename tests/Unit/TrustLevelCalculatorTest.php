@@ -3,9 +3,11 @@
 use App\Models\Player;
 use App\Modules\Participation\Attendee;
 use App\Modules\Participation\Event;
+use App\Modules\Participation\EventCategory;
 use App\Modules\Participation\Services\CalculateTrustLevel;
-use App\Modules\Participation\Services\CalculateTrustLevel\QueryModifiers\Last3Events;
-use App\Modules\Participation\Services\CalculateTrustLevel\QueryModifiers\OneMonth;
+use App\Modules\Participation\Services\CalculateTrustLevel\AttendeeStorages\AllTime;
+use App\Modules\Participation\Services\CalculateTrustLevel\AttendeeStorages\Last3Events;
+use App\Modules\Participation\Services\CalculateTrustLevel\AttendeeStorages\OneMonth;
 
 describe('CalculateTrustLevel', function () {
     beforeEach(function () {
@@ -110,7 +112,7 @@ describe('CalculateTrustLevel', function () {
         ]);
 
         $calculateTrustLevel = resolve(CalculateTrustLevel::class);
-        $result = $calculateTrustLevel->player($player->id, new OneMonth());
+        $result = $calculateTrustLevel->player($player->id, attendeeStorage: new OneMonth());
 
         expect($result)->toBe('100');
     });
@@ -147,8 +149,42 @@ describe('CalculateTrustLevel', function () {
             });
 
         $calculateTrustLevel = resolve(CalculateTrustLevel::class);
-        $result = $calculateTrustLevel->player($player->id, new Last3Events());
+        $result = $calculateTrustLevel->player($player->id, attendeeStorage: new Last3Events());
 
         expect($result)->toBe('100');
+    });
+
+    test('should work with categories', function () {
+        $player = Player::factory()->create();
+        $categories = EventCategory::factory(3)->create();
+
+        $event1 = Event::factory()->create();
+        $event1->categories()->attach($categories->pluck('id'));
+
+        $event2 = Event::factory()->create();
+        $event2->categories()->attach($categories[0]->id);
+
+        Attendee::factory()->create([
+            'is_commitment_fulfilled' => true,
+            'player_id' => $player->id,
+            'event_id' => $event1->id,
+        ]);
+
+        Attendee::factory()->create([
+            'is_commitment_fulfilled' => false,
+            'player_id' => $player->id,
+            'event_id' => $event2->id,
+        ]);
+
+        $result1 = resolve(CalculateTrustLevel::class)
+            ->player($player->id, $categories->pluck('id')->toArray(), new AllTime());
+        $result2 = resolve(CalculateTrustLevel::class)
+            ->player($player->id, [$categories[0]->id, $categories[1]->id], new AllTime());
+        $result3 = resolve(CalculateTrustLevel::class)
+            ->player($player->id, [$categories[0]->id], new AllTime());
+
+        expect($result1)->toBe('100');
+        expect($result2)->toBe('100');
+        expect($result3)->toBe('50');
     });
 });

@@ -4,8 +4,8 @@ namespace App\Modules\Participation\Services;
 
 use App\Exceptions\NonFatalException;
 use App\Modules\Participation\Attendee;
-use App\Modules\Participation\Services\CalculateTrustLevel\QueryModifier;
-use Illuminate\Database\Eloquent\Builder;
+use App\Modules\Participation\Services\CalculateTrustLevel\AttendeeStorage;
+use App\Modules\Participation\Services\CalculateTrustLevel\AttendeeStorages\AllTime;
 
 class CalculateTrustLevel
 {
@@ -17,19 +17,13 @@ class CalculateTrustLevel
      *
      * @throws NonFatalException If the player did not commit to any event.
      */
-    public function player(int $playerId, ?QueryModifier $queryModifier = null): string
+    public function player(int $playerId, ?array $categoryIds = [], ?AttendeeStorage $attendeeStorage = null): string
     {
-        // @todo return the attendees instead of queryModifier. Telescope inspect everything and tries to serialize the QueryBuilder, which is not possible.
-        $query = Attendee::query()->where('player_id', $playerId);
-        if ($queryModifier === null) {
-            $query = $query->whereHas('event', function (Builder $query) {
-                $query->where('date', '<', now()->setTime(0, 0)->toISOString());
-            });
-        } else {
-            $query = $queryModifier->modifyQuery($query);
+        if ($attendeeStorage === null) {
+            $attendeeStorage = resolve(AllTime::class);
         }
 
-        $attendees = $query->get();
+        $attendees = $attendeeStorage->getAttendees($playerId, $categoryIds);
 
         if ($attendees->count() === 0) {
             context([__METHOD__ => get_defined_vars()]);
