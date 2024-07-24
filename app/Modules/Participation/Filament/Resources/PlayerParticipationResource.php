@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\ColumnGroup;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextColumn\TextColumnSize;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -79,19 +80,34 @@ class PlayerParticipationResource extends Resource
             ->filters([
                 SelectFilter::make('categories')
                     ->multiple()
-                    ->options(fn () => EventCategory::pluck('category', 'category'))
+                    ->options(fn () => EventCategory::pluck('category', 'id'))
                     ->modifyQueryUsing(function (Builder $query, array $state) {
-                        // @todo implement the query according to the category
+                        if (blank($state['values'])) {
+                            return $query->whereNull('combined_categories');
+                        }
 
-                        return $query;
+                        return $query->where('combined_categories', implode('-', $state['values']));
                     }),
             ])
+            ->filtersLayout(FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\Action::make('See events')
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false)
                     ->infolist([
                         RepeatableEntry::make('player.attendees')
+                            ->getStateUsing(function (PlayerParticipation $record) {
+                                $query = Attendee::query()
+                                    ->where('player_id', $record->player_id);
+
+                                if ($record->combined_categories !== null) {
+                                    $query->whereInAllCategories(
+                                        explode('-', $record->combined_categories)
+                                    );
+                                }
+
+                                return $query->get();
+                            })
                             ->hiddenLabel()
                             ->columns(3)
                             ->schema([
