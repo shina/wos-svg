@@ -3,10 +3,9 @@
 namespace App\Modules\Participation\Jobs;
 
 use App\Models\Player;
+use App\Modules\Participation\EventCategory;
 use App\Modules\Participation\PlayerParticipation;
-use App\Modules\Participation\Services\CalculateTrustLevel;
-use App\Modules\Participation\Services\CalculateTrustLevel\QueryModifiers\Last3Events;
-use App\Modules\Participation\Services\CalculateTrustLevel\QueryModifiers\OneMonth;
+use App\Modules\Participation\Services\EventCategoryCombiner;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -21,19 +20,26 @@ class RecalculateAllPlayersJob implements ShouldQueue
     {
     }
 
-    public function handle(CalculateTrustLevel $calculateTrustLevel): void
+    public function handle(EventCategoryCombiner $eventCategoryCombiner): void
     {
-        Player::each(function (Player $player) use ($calculateTrustLevel) {
-            $participation = PlayerParticipation::query()
-                ->where('player_id', $player->id)
-                ->firstOrCreate(['player_id' => $player->id]);
+        $categoryIds = EventCategory::pluck('id')->toArray();
+        $combinedCategoriesArray = collect(
+            $eventCategoryCombiner->combineCategoriesArray($categoryIds)
+        );
 
-            $participation->all_time = rescue(fn () => (float) $calculateTrustLevel->player($player->id), null, false);
-            $participation->one_month = rescue(fn () => (float) $calculateTrustLevel->player($player->id, new OneMonth()), null, false);
-            $participation->last_3_events = rescue(fn () => (float) $calculateTrustLevel->player($player->id, new Last3Events()), null, false);
-            $participation->save();
+        Player::each(function (Player $player) use ($combinedCategoriesArray) {
+            $combinedCategoriesArray->each(fn (array $categoryIds) => dispatch_sync(
+                new RecalculatePlayerJob($player->id, $categoryIds)
+            ));
+
+            dispatch_sync(new RecalculatePlayerJob($player->id, null));
         });
 
+        $this->processDeletedPlayers();
+    }
+
+    private function processDeletedPlayers(): void
+    {
         $deletedPlayerIds = Player::query()
             ->onlyTrashed()
             ->pluck('id')
