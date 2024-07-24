@@ -2,11 +2,15 @@
 
 namespace App\Modules\Participation;
 
+use App\Modules\Participation\ModelFactories\EventCategoryFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class EventCategory extends Model
 {
+    use HasFactory;
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -25,5 +29,10 @@ class EventCategory extends Model
                 $eventCategory->category = strtolower($eventCategory->category);
             }
         });
+    }
+
+    protected static function newFactory()
+    {
+        return EventCategoryFactory::new();
     }
 }
