@@ -12,6 +12,7 @@ class PlayerParticipation extends Model
     protected $fillable = [
         'id',
         'player_id',
+        'combined_categories',
         'last_3_events',
         'one_month',
         'all_time',
