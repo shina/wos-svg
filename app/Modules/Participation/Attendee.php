@@ -4,6 +4,7 @@ namespace App\Modules\Participation;
 
 use App\Modules\Participation\ModelFactories\AttendeeFactory;
 use App\Modules\Participation\Policies\EventPolicy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -45,6 +46,28 @@ class Attendee extends Model
     public function playerParticipation(): HasOne
     {
         return $this->hasOne(PlayerParticipation::class, 'player_id', 'player_id');
+    }
+
+    public function scopeWhereInAllCategories(Builder $query, array $categoryIds): Builder
+    {
+        return $query->whereHas('event.categories', function (Builder $query) use ($categoryIds) {
+            return $query->whereIn('event_categories.id', $categoryIds)
+                ->groupBy('event_event_category.event_id')
+                ->havingRaw('COUNT(DISTINCT event_categories.id) = ?', [count($categoryIds)]);
+        });
+    }
+
+    public function scopeWhereInExactCategories(Builder $query, array $categoryIds): Builder
+    {
+        return $query
+            ->whereHas('event.categories', function (Builder $query) use ($categoryIds) {
+                return $query->whereIn('event_categories.id', $categoryIds);
+            }, '=', count($categoryIds))
+
+            ->whereHas('event.categories', function (Builder $query) use ($categoryIds) {
+                return $query->groupBy('event_event_category.event_id')
+                    ->havingRaw('COUNT(DISTINCT event_categories.id) = ?', [count($categoryIds)]);
+            });
     }
 
     protected static function newFactory()
