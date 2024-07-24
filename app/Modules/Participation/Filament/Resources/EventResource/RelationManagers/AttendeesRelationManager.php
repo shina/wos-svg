@@ -64,9 +64,6 @@ class AttendeesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(function (Builder $query) {
-                return $query->with(['player', 'playerParticipation']);
-            })
             ->columns([
                 TextColumn::make('player.in_game_id')
                     ->label('')
@@ -92,16 +89,46 @@ class AttendeesRelationManager extends RelationManager
                 ColumnGroup::make('Participation rate')
                     ->columns([
                         TextColumn::make('playerParticipation.last_3_events')
+                            ->getStateUsing(function (Attendee $record) {
+                                $combinedCategories = $record->event->categories
+                                    ->pluck('id')
+                                    ->join('-');
+
+                                return $record->playerParticipation()
+                                    ->where('combined_categories', filled($combinedCategories) ? $combinedCategories : null)
+                                    ->first()
+                                    ->last_3_events ?? '-';
+                            })
                             ->label('Last 3 events')
                             ->formatStateUsing(fn (string $state) => $state === '-' ? $state : "$state%")
                             ->default('-')
                             ->sortable(),
                         TextColumn::make('playerParticipation.one_month')
+                            ->getStateUsing(function (Attendee $record) {
+                                $combinedCategories = $record->event->categories
+                                    ->pluck('id')
+                                    ->join('-');
+
+                                return $record->playerParticipation()
+                                    ->where('combined_categories', filled($combinedCategories) ? $combinedCategories : null)
+                                    ->first()
+                                    ->one_month ?? '-';
+                            })
                             ->label('One month')
                             ->formatStateUsing(fn (string $state) => $state === '-' ? $state : "$state%")
                             ->default('-')
                             ->sortable(),
                         TextColumn::make('playerParticipation.all_time')
+                            ->getStateUsing(function (Attendee $record) {
+                                $combinedCategories = $record->event->categories
+                                    ->pluck('id')
+                                    ->join('-');
+
+                                return $record->playerParticipation()
+                                    ->where('combined_categories', filled($combinedCategories) ? $combinedCategories : null)
+                                    ->first()
+                                    ->all_time ?? '-';
+                            })
                             ->label('All time')
                             ->formatStateUsing(fn (string $state) => $state === '-' ? $state : "$state%")
                             ->default('-')
@@ -142,6 +169,22 @@ class AttendeesRelationManager extends RelationManager
                     ->modalCancelAction(false)
                     ->infolist([
                         RepeatableEntry::make('player.attendees')
+                            ->getStateUsing(function (Attendee $record) {
+                                /** @var Event $event */
+                                $event = $this->ownerRecord;
+
+                                $query = Attendee::query()
+                                    ->where('player_id', $record->player_id);
+
+                                if ($event->categories->count() > 0) {
+                                    $categoryIds = $event->categories
+                                        ->pluck('id')
+                                        ->toArray();
+                                    $query->whereInAllCategories($categoryIds);
+                                }
+
+                                return $query->get();
+                            })
                             ->hiddenLabel()
                             ->columns(3)
                             ->schema([
