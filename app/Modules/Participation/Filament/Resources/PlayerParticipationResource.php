@@ -95,10 +95,14 @@ class PlayerParticipationResource extends Resource
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false)
                     ->infolist([
-                        RepeatableEntry::make('player.attendees')
+                        RepeatableEntry::make('events')
                             ->getStateUsing(function (PlayerParticipation $record) {
                                 $query = Attendee::query()
-                                    ->where('player_id', $record->player_id);
+                                    ->where('player_id', $record->player_id)
+                                    ->with('event')
+                                    ->join('events', 'events.id', '=', 'attendees.event_id')
+                                    ->where('events.date', '<', now()->toISOString())
+                                    ->orderBy('events.date', 'desc');
 
                                 if ($record->combined_categories !== null) {
                                     $query->whereInAllCategories(
@@ -112,8 +116,10 @@ class PlayerParticipationResource extends Resource
                             ->columns(3)
                             ->schema([
                                 TextEntry::make('event.name')
+                                    ->getStateUsing(fn ($record) => $record->event->name)
                                     ->label('Name'),
                                 TextEntry::make('event.date')
+                                    ->getStateUsing(fn ($record) => $record->event->date)
                                     ->label('Date')
                                     ->date(),
                                 TextEntry::make('is_commitment_fulfilled')

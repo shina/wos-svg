@@ -168,13 +168,17 @@ class AttendeesRelationManager extends RelationManager
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false)
                     ->infolist([
-                        RepeatableEntry::make('player.attendees')
+                        RepeatableEntry::make('events')
                             ->getStateUsing(function (Attendee $record) {
                                 /** @var Event $event */
                                 $event = $this->ownerRecord;
 
                                 $query = Attendee::query()
-                                    ->where('player_id', $record->player_id);
+                                    ->where('player_id', $record->player_id)
+                                    ->with('event')
+                                    ->join('events', 'events.id', '=', 'attendees.event_id')
+                                    ->where('events.date', '<', now()->toISOString())
+                                    ->orderBy('events.date', 'desc');
 
                                 if ($event->categories->count() > 0) {
                                     $categoryIds = $event->categories
@@ -189,8 +193,10 @@ class AttendeesRelationManager extends RelationManager
                             ->columns(3)
                             ->schema([
                                 TextEntry::make('event.name')
+                                    ->getStateUsing(fn ($record) => $record->event->name)
                                     ->label('Name'),
                                 TextEntry::make('event.date')
+                                    ->getStateUsing(fn ($record) => $record->event->date)
                                     ->label('Date')
                                     ->date(),
                                 TextEntry::make('is_commitment_fulfilled')
