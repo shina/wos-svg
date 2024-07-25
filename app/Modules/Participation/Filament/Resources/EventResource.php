@@ -21,7 +21,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Support\Collection;
 
 class EventResource extends Resource
 {
@@ -46,13 +45,17 @@ class EventResource extends Resource
 
                 TagsInput::make('categories')
                     ->placeholder('Add Category')
-                    ->formatStateUsing(function (Event $record) {
+                    ->formatStateUsing(function (?Event $record) {
+                        if ($record === null) {
+                            return [];
+                        }
+
                         return $record
                             ->categories()
                             ->pluck('category');
                     })
-                    ->saveRelationshipsUsing(function (Collection $state, Event $record) {
-                        $categoryIds = $state
+                    ->saveRelationshipsUsing(function ($state, Event $record) {
+                        $categoryIds = collect($state)
                             ->map(fn (string $item) => EventCategory::createOrFirst(['category' => $item]))
                             ->pluck('id');
 
