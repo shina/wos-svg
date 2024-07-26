@@ -1,4 +1,5 @@
 up:
+	cp database/database.sqlite /dev/shm/database.sqlite
 	docker compose -f docker-compose.prod.yml up -d
 
 down:

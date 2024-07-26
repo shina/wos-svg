@@ -8,7 +8,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - "./database/database.sqlite:/app/database/database.sqlite"
+      - "/dev/shm/database.sqlite:/app/database/database.sqlite"
       - "./storage:/app/storage"
     tty: true
     stdin_open: true
