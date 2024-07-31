@@ -11,24 +11,24 @@
         "php": "^8.3",
         "erusev/parsedown": "^1.7",
         "filament/filament": "^3.2",
-        "guzzlehttp/guzzle": "^7.8",
-        "laravel/framework": "^11.10",
-        "laravel/octane": "^2.4",
+        "guzzlehttp/guzzle": "^7.9",
+        "laravel/framework": "^11.19",
+        "laravel/octane": "^2.5",
         "laravel/telescope": "^5.1",
         "laravel/tinker": "^2.9",
         "saloonphp/laravel-plugin": "^3.5",
         "saloonphp/saloon": "^3.9",
-        "spatie/laravel-data": "^4.6",
-        "spatie/laravel-permission": "^6.7"
+        "spatie/laravel-data": "^4.7",
+        "spatie/laravel-permission": "^6.9"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
-        "laravel/pint": "^1.16",
-        "laravel/sail": "^1.29",
+        "laravel/pint": "^1.17",
+        "laravel/sail": "^1.31",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.1",
+        "nunomaduro/collision": "^8.3",
         "pestphp/pest": "^2.34",
-        "spatie/laravel-ignition": "^2.7"
+        "spatie/laravel-ignition": "^2.8"
     },
     "autoload": {
         "files": [
