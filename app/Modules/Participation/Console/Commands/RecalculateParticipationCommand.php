@@ -13,7 +13,12 @@ class RecalculateParticipationCommand extends Command
 
     public function handle(): void
     {
-        info('Starting calculation...');
-        RecalculateAllPlayersJob::dispatch();
+        $this->info('Starting calculation...');
+        logger()->info('Starting calculation...');
+
+        dispatch_sync(new RecalculateAllPlayersJob);
+
+        $this->info('Finished');
+        logger()->info('Finished');
     }
 }
