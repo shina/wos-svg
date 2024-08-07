@@ -90,7 +90,9 @@ class AttendeesRelationManager extends RelationManager
                     ->columns([
                         TextColumn::make('playerParticipation.last_3_events')
                             ->getStateUsing(function (Attendee $record) {
-                                $combinedCategories = $record->event->categories
+                                $combinedCategories = $record->event
+                                    ->categories()
+                                    ->orderBy('category')
                                     ->pluck('id')
                                     ->join('-');
 
@@ -105,7 +107,9 @@ class AttendeesRelationManager extends RelationManager
                             ->sortable(),
                         TextColumn::make('playerParticipation.one_month')
                             ->getStateUsing(function (Attendee $record) {
-                                $combinedCategories = $record->event->categories
+                                $combinedCategories = $record->event
+                                    ->categories()
+                                    ->orderBy('category')
                                     ->pluck('id')
                                     ->join('-');
 
@@ -120,7 +124,9 @@ class AttendeesRelationManager extends RelationManager
                             ->sortable(),
                         TextColumn::make('playerParticipation.all_time')
                             ->getStateUsing(function (Attendee $record) {
-                                $combinedCategories = $record->event->categories
+                                $combinedCategories = $record->event
+                                    ->categories()
+                                    ->orderBy('category')
                                     ->pluck('id')
                                     ->join('-');
 

@@ -16,13 +16,13 @@ class RecalculateAllPlayersJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(EventCategoryCombiner $eventCategoryCombiner): void
     {
-        $categoryIds = EventCategory::pluck('id')->toArray();
+        $categoryIds = EventCategory::orderBy('category')
+            ->pluck('id')
+            ->toArray();
         $combinedCategoriesArray = collect(
             $eventCategoryCombiner->combineCategoriesArray($categoryIds)
         );
