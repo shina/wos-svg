@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\PlayerResource\Pages;
 
 use App\Filament\Resources\PlayerResource;
-use App\Modules\Players\Comment;
+use App\Modules\PlayerReview\Review;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Infolists\Components\RepeatableEntry;
@@ -24,7 +24,7 @@ class ListPlayers extends ListRecords
                 ->modalSubmitAction(false)
                 ->modalCancelAction(false)
                 ->infolist(function (Infolist $infolist) {
-                    $comments = Comment::query()
+                    $comments = Review::query()
                         ->limit(25)
                         ->activePlayers()
                         ->with(['player', 'reviewerUser'])

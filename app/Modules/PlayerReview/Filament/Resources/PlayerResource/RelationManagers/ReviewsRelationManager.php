@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Modules\Players\Filament\Resources\PlayerResource\RelationManagers;
+namespace App\Modules\PlayerReview\Filament\Resources\PlayerResource\RelationManagers;
 
 use App\Models\Player;
-use App\Modules\Players\Comment;
-use App\Modules\Players\Enums\Rate;
-use App\Modules\Players\Services\RatingCalculator;
+use App\Modules\PlayerReview\Review;
+use App\Modules\PlayerReview\Enums\Rate;
+use App\Modules\PlayerReview\Services\RatingCalculator;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
@@ -17,9 +17,9 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class CommentsRelationManager extends RelationManager
+class ReviewsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'comments';
+    protected static string $relationship = 'reviews';
 
     protected static ?string $title = 'Reviews';
 
@@ -50,7 +50,7 @@ class CommentsRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('reviewerUser.name')
                     ->label('')
-                    ->description(fn (Comment $record) => $record->created_at->longAbsoluteDiffForHumans()),
+                    ->description(fn (Review $record) => $record->created_at->longAbsoluteDiffForHumans()),
                 TextColumn::make('rating')
                     ->label('')
                     ->formatStateUsing(fn (int $state) => Rate::fromNumber($state)),

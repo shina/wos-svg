@@ -1,12 +1,12 @@
 <?php
 
 use App\Models\Player;
-use App\Modules\Players\Comment;
+use App\Modules\PlayerReview\Review;
 
 describe('RatingCalculator', function () {
     it('should calculate adding or subtracting from the initial 10', function () {
         $player = Player::factory()->create();
-        $comments = Comment::factory(5)
+        $comments = Review::factory(5)
             ->create([
                 'player_id' => $player->id,
             ]);
@@ -15,9 +15,9 @@ describe('RatingCalculator', function () {
         $comments[2]->rating = -1;
         $comments[3]->rating = -1;
         $comments[4]->rating = 1;
-        $comments->each(fn (Comment $comment) => $comment->save());
+        $comments->each(fn (Review $comment) => $comment->save());
 
-        $ratingCalculator = new \App\Modules\Players\Services\RatingCalculator();
+        $ratingCalculator = new \App\Modules\PlayerReview\Services\RatingCalculator;
         $result = $ratingCalculator->calculate($player);
 
         expect($result)->toBe(8);

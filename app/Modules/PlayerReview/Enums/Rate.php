@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Players\Enums;
+namespace App\Modules\PlayerReview\Enums;
 
 enum Rate: string
 {

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Modules\Players\database\factories;
+namespace App\Modules\PlayerReview\database\factories;
 
 use App\Models\Player;
 use App\Models\User;
-use App\Modules\Players\Comment;
+use App\Modules\PlayerReview\Review;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class CommentFactory extends Factory
+class ReviewFactory extends Factory
 {
-    protected $model = Comment::class;
+    protected $model = Review::class;
 
     public function definition(): array
     {

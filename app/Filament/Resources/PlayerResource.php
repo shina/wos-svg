@@ -8,7 +8,7 @@ use App\Filament\Resources\PlayerResource\Table\Columns\NicknameColumn;
 use App\Libraries\Integrations\Deepl\Deepl;
 use App\Libraries\Integrations\Deepl\Requests\TranslateText\Request\TranslateTextData;
 use App\Models\Player;
-use App\Modules\Players\Filament\Resources\PlayerResource\RelationManagers\CommentsRelationManager;
+use App\Modules\PlayerReview\Filament\Resources\PlayerResource\RelationManagers\ReviewsRelationManager;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -176,7 +176,7 @@ class PlayerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            CommentsRelationManager::class,
+            ReviewsRelationManager::class,
         ];
     }
 }

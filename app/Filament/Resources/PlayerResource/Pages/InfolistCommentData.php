@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\PlayerResource\Pages;
 
-use App\Modules\Players\Comment;
-use App\Modules\Players\Enums\Rate;
+use App\Modules\PlayerReview\Enums\Rate;
+use App\Modules\PlayerReview\Review;
 use Carbon\Carbon;
 use Spatie\LaravelData\Data;
 
@@ -15,10 +15,9 @@ class InfolistCommentData extends Data
         public string $comment,
         public Rate $rate,
         public Carbon $when
-    ) {
-    }
+    ) {}
 
-    public static function fromComment(Comment $comment): static
+    public static function fromComment(Review $comment): static
     {
         return new static(
             $comment->player->nickname,

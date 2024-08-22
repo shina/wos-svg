@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Modules\Players\Services;
+namespace App\Modules\PlayerReview\Services;
 
 use App\Models\Player;
-use App\Modules\Players\Comment;
+use App\Modules\PlayerReview\Review;
 
 class RatingCalculator
 {
     /**
-     * Calculate the total rating for a player based on their comments.
+     * Calculate the total rating for a player based on their reviews.
      *
      * @param  Player  $player  The player for whom to calculate the rating.
      * @return int The total rating for the player.
@@ -17,8 +17,8 @@ class RatingCalculator
      */
     public function calculate(Player $player): int
     {
-        return $player->comments
-            ->map(fn (Comment $comment) => $comment->rating)
+        return $player->reviews
+            ->map(fn (Review $review) => $review->rating)
             ->reduce(function (int $result, int $rating) {
                 $newValue = $result + $rating;
 

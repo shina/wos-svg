@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Modules\Players\Comment;
+use App\Modules\PlayerReview\Review;
 use Database\Factories\PlayerFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -39,9 +39,9 @@ class Player extends Model
         return PlayerFactory::new();
     }
 
-    public function comments(): HasMany
+    public function reviews(): HasMany
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Review::class);
     }
 
     protected function hasTranslation(): Attribute

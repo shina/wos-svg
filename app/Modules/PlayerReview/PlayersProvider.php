@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Players;
+namespace App\Modules\PlayerReview;
 
 use Illuminate\Support\ServiceProvider;
 
