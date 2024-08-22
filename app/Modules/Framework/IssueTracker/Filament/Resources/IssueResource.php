@@ -62,7 +62,7 @@ class IssueResource extends Resource
             ->modifyQueryUsing(function (Builder $query) {
                 $user = auth()->user();
 
-                if (! $user->hasRole(Role::ADMIN)) {
+                if (! $user->hasRole(Role::DEV)) {
                     $query->where('user_id', $user->id);
                 }
             })
@@ -77,7 +77,7 @@ class IssueResource extends Resource
                     ->sortable(),
 
                 ToggleColumn::make('is_solved')
-                    ->hidden(fn () => ! auth()->user()->hasRole(Role::ADMIN)),
+                    ->hidden(fn () => ! auth()->user()->hasRole(Role::DEV)),
 
                 TextColumn::make('created_at')
                     ->date(),

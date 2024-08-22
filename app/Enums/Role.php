@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 
 enum Role: string
 {
+    case DEV = 'developer';
     case ADMIN = 'admin';
 
     case MANAGER = 'manager';
