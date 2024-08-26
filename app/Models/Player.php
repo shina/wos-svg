@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Modules\PlayerReview\Review;
+use App\Traits\BelongsToAlliance;
 use Database\Factories\PlayerFactory;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,10 +13,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Player extends Model
 {
+    use BelongsToAlliance;
     use HasFactory;
     use SoftDeletes;
 
     protected $fillable = [
+        'alliance_id',
         'in_game_id',
         'nickname',
         'translated_nickname',
@@ -33,6 +35,14 @@ class Player extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    protected static function booted()
+    {
+        self::deleted(function (Player $player) {
+            $player->alliance_id = null;
+            $player->save();
+        });
+    }
 
     protected static function newFactory()
     {
@@ -60,9 +70,4 @@ class Player extends Model
             }
         );
     }
-
-    //    public function scope(Builder $query): Builder
-    //    {
-    //        return $query->where();
-    //    }
 }

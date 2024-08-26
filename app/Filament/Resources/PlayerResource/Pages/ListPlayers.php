@@ -3,9 +3,12 @@
 namespace App\Filament\Resources\PlayerResource\Pages;
 
 use App\Filament\Resources\PlayerResource;
+use App\Models\Player;
 use App\Modules\PlayerReview\Review;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Form;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -47,6 +50,31 @@ class ListPlayers extends ListRecords
                                         ->columnSpan(['sm' => 2, 'md' => 3, 'lg' => 4]),
                                 ]),
                         ]);
+                }),
+            Action::make('add-player')
+                ->label('Add existing player')
+                ->form(function (Form $form) {
+                    return $form->schema([
+                        Select::make('player_id')
+                            ->searchable()
+                            ->getSearchResultsUsing(function (string $search) {
+                                return Player::query()
+                                    ->onlyAllianceOrphan()
+                                    ->onlyTrashed()
+                                    ->where('nickname', 'like', "%$search%")
+                                    ->orWhere('translated_nickname', 'like', "%$search%")
+                                    ->orWhere('in_game_id', '=', "$search")
+                                    ->pluck('nickname', 'id');
+                            }),
+                    ]);
+                })
+                ->action(function (array $data) {
+                    $player = Player::query()
+                        ->onlyAllianceOrphan()
+                        ->withTrashed()
+                        ->find($data['player_id']);
+                    $player->alliance_id = allianceId();
+                    $player->restore();
                 }),
             CreateAction::make(),
         ];
