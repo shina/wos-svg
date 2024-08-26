@@ -12,13 +12,12 @@ class AllianceSetupMiddleware
     public function handle(Request $request, Closure $next)
     {
         $url = UrlData::from($request->fullUrl());
-        $allianceName = Alliance::query()
+        $alliance = Alliance::query()
             ->where('domain', $url->host)
-            ->limit(1)
-            ->pluck('name')
-            ->first();
+            ->firstOr(fn () => Alliance::first());
 
-        config()->set('app.name', $allianceName ?? config('app.name'));
+        config()->set('app.name', $alliance->name);
+        context(['alliance_id' => $alliance->id]);
 
         return $next($request);
     }

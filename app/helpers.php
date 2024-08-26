@@ -6,3 +6,13 @@ if (! function_exists('objUse')) {
         return in_array($traitName, class_uses($obj));
     }
 }
+
+if (! function_exists('allianceId')) {
+    function allianceId(): int
+    {
+        $allianceId = context()->get('alliance_id');
+        throw_if($allianceId === null, Error::class, 'Alliance is not setup yet');
+
+        return $allianceId;
+    }
+}
