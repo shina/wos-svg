@@ -3,6 +3,7 @@
 namespace App\Modules\Participation;
 
 use App\Modules\Participation\ModelFactories\EventFactory;
+use App\Traits\BelongsToAlliance;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Event extends Model
 {
+    use BelongsToAlliance;
     use HasFactory;
 
     protected $fillable = [
