@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::table('player_maps', function (Blueprint $table) {
             $table->foreignIdFor(Alliance::class)
-                ->nullable()
+                ->default(1)
                 ->after('id')
                 ->constrained()
                 ->cascadeOnDelete();

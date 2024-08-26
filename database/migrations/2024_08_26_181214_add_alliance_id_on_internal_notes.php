@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::table('internal_notes', function (Blueprint $table) {
             $table->foreignIdFor(Alliance::class)
-                ->nullable()
+                ->default(1)
                 ->after('id')
                 ->constrained()
                 ->cascadeOnDelete();
