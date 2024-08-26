@@ -2,11 +2,14 @@
 
 namespace App\Modules\Agreement;
 
+use App\Traits\BelongsToAlliance;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Agreement extends Model
 {
+    use BelongsToAlliance;
+
     public $timestamps = false;
 
     protected $fillable = [
