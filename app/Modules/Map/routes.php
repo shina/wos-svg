@@ -3,4 +3,5 @@
 use App\Modules\Map\Http\Controllers\MapController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/map', MapController::class);
+Route::middleware('web')
+    ->get('/map', MapController::class);
