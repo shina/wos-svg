@@ -2,11 +2,14 @@
 
 namespace App\Modules\Participation;
 
+use App\Traits\BelongsToAlliance;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PlayerParticipation extends Model
 {
+    use BelongsToAlliance;
+
     public $timestamps = false;
 
     protected $fillable = [
