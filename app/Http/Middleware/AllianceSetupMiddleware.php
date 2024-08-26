@@ -11,10 +11,16 @@ class AllianceSetupMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        $url = UrlData::from($request->fullUrl());
-        $alliance = Alliance::query()
-            ->where('domain', $url->host)
-            ->firstOr(fn () => Alliance::first());
+        $selectedAllianceId = session('selected_alliance_id');
+
+        if ($selectedAllianceId === null) {
+            $url = UrlData::from($request->fullUrl());
+            $alliance = Alliance::query()
+                ->where('domain', $url->host)
+                ->firstOr(fn () => Alliance::first());
+        } else {
+            $alliance = Alliance::find($selectedAllianceId);
+        }
 
         config()->set('app.name', $alliance->name);
         context(['alliance_id' => $alliance->id]);

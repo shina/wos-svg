@@ -8,6 +8,7 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -74,6 +75,12 @@ class AllianceResource extends Resource
                 TrashedFilter::make(),
             ])
             ->actions([
+                Action::make('switch-alliance')
+                    ->label('Switch')
+                    ->action(function (Alliance $record) {
+                        session()->put('selected_alliance_id', $record->id);
+                        redirect(Pages\ListAlliances::getUrl());
+                    }),
                 EditAction::make(),
                 DeleteAction::make(),
                 RestoreAction::make(),
