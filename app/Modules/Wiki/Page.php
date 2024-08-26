@@ -3,12 +3,14 @@
 namespace App\Modules\Wiki;
 
 use App\Modules\Wiki\database\factories\PageFactory;
+use App\Traits\BelongsToAlliance;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Page extends Model
 {
+    use BelongsToAlliance;
     use HasFactory;
 
     protected $guarded = [];
