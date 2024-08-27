@@ -13,36 +13,36 @@ class AlliancePolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(Role::ADMIN);
+        return $user->hasRole(Role::DEV);
     }
 
     public function view(User $user, Alliance $alliance): bool
     {
-        return $user->hasRole(Role::ADMIN);
+        return $user->hasRole(Role::DEV);
     }
 
     public function create(User $user): bool
     {
-        return $user->hasRole(Role::ADMIN);
+        return $user->hasRole(Role::DEV);
     }
 
     public function update(User $user, Alliance $alliance): bool
     {
-        return $user->hasRole(Role::ADMIN);
+        return $user->hasRole(Role::DEV);
     }
 
     public function delete(User $user, Alliance $alliance): bool
     {
-        return $user->hasRole(Role::ADMIN);
+        return $user->hasRole(Role::DEV);
     }
 
     public function restore(User $user, Alliance $alliance): bool
     {
-        return $user->hasRole(Role::ADMIN);
+        return $user->hasRole(Role::DEV);
     }
 
     public function forceDelete(User $user, Alliance $alliance): bool
     {
-        return $user->hasRole(Role::ADMIN);
+        return $user->hasRole(Role::DEV);
     }
 }
