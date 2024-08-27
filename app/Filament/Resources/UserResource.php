@@ -4,10 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Enums\Role;
 use App\Filament\Resources\UserResource\Pages;
+use App\Models\Alliance;
 use App\Models\User;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,6 +20,8 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Spatie\Permission\Models\Permission;
 
 class UserResource extends Resource
 {
@@ -56,6 +60,24 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $user = auth()->user();
+
+                if ($user->hasRole(Role::DEV)) {
+                    return $query;
+                }
+
+                $permissions = $user->permissions;
+                if ($permissions->count() === 0) {
+                    return $query->whereRaw('0 = 1'); // force result be empty
+                }
+
+                return $permissions
+                    ->reduce(
+                        fn (Builder $query, Permission $permission) => $query->permission($permission->name),
+                        $query
+                    );
+            })
             ->columns([
                 TextColumn::make('name')
                     ->searchable()
@@ -79,15 +101,40 @@ class UserResource extends Resource
                 Action::make('roles')
                     ->icon('heroicon-o-adjustments-horizontal')
                     ->form([
-                        CheckboxList::make('roles')
-                            ->label('')
-                            ->options(
-                                Role::collect()->mapWithKeys(fn (Role $role) => [$role->value => $role->value])
-                            )
-                            ->default(fn (User $user) => $user->getRoleNames()->toArray()),
+                        Section::make()
+                            ->columns(2)
+                            ->schema([
+                                CheckboxList::make('roles')
+                                    ->label('')
+                                    ->options(
+                                        Role::collect()->mapWithKeys(fn (Role $role) => [$role->value => $role->value])
+                                    )
+                                    ->default(fn (User $user) => $user->getRoleNames()->toArray()),
+                                CheckboxList::make('alliances')
+                                    ->label('Alliances')
+                                    ->options(function () {
+                                        $user = auth()->user();
+
+                                        if ($user->hasRole(Role::DEV)) {
+                                            return Alliance::all()->pluck('full_name', 'id');
+                                        } else {
+                                            return Alliance::query()
+                                                ->whereIn('id', $user->alliance_permissions)
+                                                ->get()
+                                                ->pluck('full_name', 'id');
+                                        }
+                                    })
+                                    ->default(function (User $user) {
+                                        return $user->alliance_permissions;
+                                    })
+                                    ->visible(fn () => auth()->user()->hasAnyRole([Role::DEV, Role::ADMIN])),
+                            ]),
                     ])
                     ->action(function (array $data, User $user) {
                         $user->syncRoles($data['roles']);
+                        $user->syncPermissions(
+                            collect($data['alliances'])->map(fn (int $allianceId) => "access alliance-id $allianceId")
+                        );
                     }),
                 EditAction::make(),
                 DeleteAction::make(),

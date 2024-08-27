@@ -18,6 +18,8 @@ class InstallUserRolesCommand extends Command
         RoleEnum::collect()
             ->each(fn (RoleEnum $role) => Role::createOrFirst(['name' => $role->value]));
 
-        User::first()->assignRole(RoleEnum::ADMIN);
+        $user = User::first();
+        $user->assignRole(RoleEnum::DEV);
+        $user->assignRole(RoleEnum::ADMIN);
     }
 }

@@ -6,9 +6,11 @@ namespace App\Models;
 use App\Enums\Role;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
@@ -51,6 +53,23 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasRole(Role::ADMIN) || $this->hasRole(Role::MANAGER);
+        return $this->hasAnyRole([
+            Role::DEV,
+            Role::ADMIN,
+            Role::MANAGER,
+        ]);
+    }
+
+    protected function alliancePermissions(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, array $attributes) => $this->permissions
+                ->map(fn (Permission $permission) => (int) str_replace(
+                    'access alliance-id ',
+                    '',
+                    $permission->name
+                ))
+                ->toArray(),
+        );
     }
 }
