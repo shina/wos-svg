@@ -16,24 +16,28 @@ class RecalculateAllPlayersJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct() {}
+    public function __construct(private int $allianceId) {}
 
     public function handle(EventCategoryCombiner $eventCategoryCombiner): void
     {
-        $categoryIds = EventCategory::orderBy('category')
+        $categoryIds = EventCategory::query()
+            ->where('alliance_id', $this->allianceId)
+            ->orderBy('category')
             ->pluck('id')
             ->toArray();
         $combinedCategoriesArray = collect(
             $eventCategoryCombiner->combineCategoriesArray($categoryIds)
         );
 
-        Player::each(function (Player $player) use ($combinedCategoriesArray) {
-            $combinedCategoriesArray->each(fn (array $categoryIds) => dispatch_sync(
-                new RecalculatePlayerJob($player->id, $categoryIds)
-            ));
+        Player::query()
+            ->where('alliance_id', $this->allianceId)
+            ->each(function (Player $player) use ($combinedCategoriesArray) {
+                $combinedCategoriesArray->each(fn (array $categoryIds) => dispatch_sync(
+                    new RecalculatePlayerJob($player->id, $categoryIds, $this->allianceId)
+                ));
 
-            dispatch_sync(new RecalculatePlayerJob($player->id, null));
-        });
+                dispatch_sync(new RecalculatePlayerJob($player->id, null, $this->allianceId));
+            });
 
         $this->processDeletedPlayers();
     }

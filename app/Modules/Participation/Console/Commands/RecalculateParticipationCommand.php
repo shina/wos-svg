@@ -2,7 +2,7 @@
 
 namespace App\Modules\Participation\Console\Commands;
 
-use App\Modules\Participation\Jobs\RecalculateAllPlayersJob;
+use App\Modules\Participation\Jobs\RecauculateAllAlliancesJob;
 use Illuminate\Console\Command;
 
 class RecalculateParticipationCommand extends Command
@@ -16,7 +16,7 @@ class RecalculateParticipationCommand extends Command
         $this->info('Starting calculation...');
         logger()->info('Starting calculation...');
 
-        dispatch_sync(new RecalculateAllPlayersJob);
+        dispatch_sync(new RecauculateAllAlliancesJob);
 
         $this->info('Finished');
         logger()->info('Finished');

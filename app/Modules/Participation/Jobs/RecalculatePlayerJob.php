@@ -18,33 +18,35 @@ class RecalculatePlayerJob implements ShouldQueue
 
     public function __construct(
         private readonly int $playerId,
-        private readonly ?array $categoryIds
-    ) {
-    }
+        private readonly ?array $categoryIds,
+        private readonly int $allianceId
+    ) {}
 
     public function handle(CalculateTrustLevel $calculateTrustLevel): void
     {
         $combinedCategoriesString = $this->categoryIds === null ? null : implode('-', $this->categoryIds);
 
-        PlayerParticipation::updateOrCreate(
-            [
-                'player_id' => $this->playerId,
-                'combined_categories' => $combinedCategoriesString,
-            ],
-            [
-                'all_time' => rescue(
-                    fn () => (float) $calculateTrustLevel->player($this->playerId, $this->categoryIds),
-                    report: false
-                ),
-                'one_month' => rescue(
-                    fn () => (float) $calculateTrustLevel->player($this->playerId, $this->categoryIds, new OneMonth()),
-                    report: false
-                ),
-                'last_3_events' => rescue(
-                    fn () => (float) $calculateTrustLevel->player($this->playerId, $this->categoryIds, new Last3Events()),
-                    report: false
-                ),
-            ]
+        $playerParticipation = PlayerParticipation::query()
+            ->where('player_id', $this->playerId)
+            ->where('combined_categories', $combinedCategoriesString)
+            ->firstOrNew();
+
+        $playerParticipation->player_id = $this->playerId;
+        $playerParticipation->combined_categories = $combinedCategoriesString;
+        $playerParticipation->alliance_id = $this->allianceId;
+        $playerParticipation->all_time = rescue(
+            fn () => (float) $calculateTrustLevel->player($this->playerId, $this->categoryIds),
+            report: false
         );
+        $playerParticipation->one_month = rescue(
+            fn () => (float) $calculateTrustLevel->player($this->playerId, $this->categoryIds, new OneMonth),
+            report: false
+        );
+        $playerParticipation->last_3_events = rescue(
+            fn () => (float) $calculateTrustLevel->player($this->playerId, $this->categoryIds, new Last3Events),
+            report: false
+        );
+
+        $playerParticipation->save();
     }
 }

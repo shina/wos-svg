@@ -1,5 +1,7 @@
 <?php
 
+use App\AllianceSelector;
+
 if (! function_exists('objUse')) {
     function objUse(object $obj, string $traitName): bool
     {
@@ -10,9 +12,6 @@ if (! function_exists('objUse')) {
 if (! function_exists('allianceId')) {
     function allianceId(): int
     {
-        $allianceId = context()->get('alliance_id');
-        throw_if($allianceId === null, Error::class, 'Alliance is not setup yet');
-
-        return $allianceId;
+        return resolve(AllianceSelector::class)->getSelected();
     }
 }

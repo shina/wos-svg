@@ -8,6 +8,10 @@ trait BelongsToAlliance
 {
     public static function bootBelongsToAlliance()
     {
+        if (app()->runningInConsole()) {
+            return;
+        }
+
         static::addGlobalScope(new BelongsToAllianceScope);
 
         static::creating(function ($model) {

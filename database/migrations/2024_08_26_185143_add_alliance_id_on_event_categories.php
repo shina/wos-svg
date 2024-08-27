@@ -15,6 +15,9 @@ return new class extends Migration
                 ->after('id')
                 ->constrained()
                 ->cascadeOnDelete();
+
+            $table->dropUnique('event_categories_category_unique');
+            $table->unique(['category', 'alliance_id']);
         });
     }
 

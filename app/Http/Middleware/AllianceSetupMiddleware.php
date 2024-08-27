@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\AllianceSelector;
 use App\Data\UrlData;
 use App\Enums\Role;
 use App\Models\Alliance;
@@ -10,6 +11,8 @@ use Illuminate\Http\Request;
 
 class AllianceSetupMiddleware
 {
+    public function __construct(private AllianceSelector $allianceSelector) {}
+
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
@@ -19,13 +22,12 @@ class AllianceSetupMiddleware
             $url = UrlData::from($request->fullUrl());
             $alliance = Alliance::query()
                 ->where('domain', $url->host)
-                ->firstOr(fn () => Alliance::first());
+                ->first();
         } else {
             $alliance = Alliance::find($selectedAllianceId);
         }
 
-        config()->set('app.name', $alliance->name);
-        context(['alliance_id' => $alliance->id]);
+        $this->allianceSelector->select($alliance ?? Alliance::first());
 
         if ($user === null) {
             return $next($request);

@@ -99,6 +99,7 @@ class PlayerParticipationResource extends Resource
                             ->getStateUsing(function (PlayerParticipation $record) {
                                 $query = Attendee::query()
                                     ->where('player_id', $record->player_id)
+                                    ->whereHas('event')
                                     ->with('event')
                                     ->join('events', 'events.id', '=', 'attendees.event_id')
                                     ->where('events.date', '<', now()->toISOString())
