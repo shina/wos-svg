@@ -15,10 +15,6 @@ class AllianceSetupMiddleware
         $user = $request->user();
         $selectedAllianceId = session('selected_alliance_id');
 
-        if ($user === null) {
-            return $next($request);
-        }
-
         if ($selectedAllianceId === null) {
             $url = UrlData::from($request->fullUrl());
             $alliance = Alliance::query()
@@ -28,12 +24,16 @@ class AllianceSetupMiddleware
             $alliance = Alliance::find($selectedAllianceId);
         }
 
+        config()->set('app.name', $alliance->name);
+        context(['alliance_id' => $alliance->id]);
+
+        if ($user === null) {
+            return $next($request);
+        }
+
         if (! $user->hasRole(Role::DEV) && $user->cannot("access alliance-id $alliance->id")) {
             abort(403);
         }
-
-        config()->set('app.name', $alliance->name);
-        context(['alliance_id' => $alliance->id]);
 
         return $next($request);
     }
