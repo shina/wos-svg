@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Data\PathData;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Intervention\Image\ImageManager;
@@ -12,6 +13,7 @@ use Spatie\Permission\Models\Permission;
 
 class Alliance extends Model
 {
+    use HasFactory;
     use SoftDeletes;
 
     protected $fillable = [
