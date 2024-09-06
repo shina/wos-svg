@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AllianceResource\Pages;
 use App\Models\Alliance;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -57,6 +58,12 @@ class AllianceResource extends Resource
                 TextInput::make('domain')
                     ->prefix('https://')
                     ->required(),
+
+                FileUpload::make('logo')
+                    ->image()
+                    ->imageEditor()
+                    ->disk('public')
+                    ->directory('alliance/logo'),
             ]);
     }
 

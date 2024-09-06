@@ -7,12 +7,12 @@
 
     @vite('resources/css/app.css')
 
-    <title>[SVG]Savages</title>
+    <title>{{ $alliance->full_name }}</title>
 </head>
 
 <body class="antialiased bg-gray-200 flex items-center justify-center h-screen">
 <div>
-    <img src="{{ asset('layout/logo-large.jpg') }}" alt="Savages" class="w-full h-auto">
+    <img src="{{ Storage::url($alliance->logo) }}" alt="{{ $alliance->name }}" class="w-full h-auto">
 </div>
 </body>
 

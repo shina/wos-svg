@@ -47,10 +47,10 @@
     </div>
     <div class="align-center">
         <picture>
-            <source media="(min-width: 1200px)" srcset="{{ url('/layout/logo-large.jpg') }}">
-            <source media="(min-width: 768px)" srcset="{{ url('/layout/logo-medium.jpg') }}">
-            <source srcset="{{ url('/layout/logo-small.jpg') }}">
-            <img class="logo" src="{{ url('/layout/logo-small.jpg') }}" alt="SVG">
+            <source media="(min-width: 1200px)" srcset="{{ Storage::url($data->logo->large) }}">
+            <source media="(min-width: 768px)" srcset="{{ Storage::url($data->logo->medium) }}">
+            <source srcset="{{ Storage::url($data->logo->small) }}">
+            <img class="logo" src="{{ Storage::url($data->logo->small) }}" alt="{{ $data->acronym }}">
         </picture>
     </div>
 </div>

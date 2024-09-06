@@ -19,6 +19,8 @@ COPY --from=base /app /app
 
 RUN install-php-extensions \
     intl \
-    pcntl
+    pcntl \
+    imagick \
+    exif
 
 CMD ["php", "artisan", "octane:start"]

@@ -12,6 +12,7 @@
         "erusev/parsedown": "^1.7",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.9",
+        "intervention/image": "^3.8",
         "laravel/framework": "^11.19",
         "laravel/octane": "^2.5",
         "laravel/telescope": "^5.1",
