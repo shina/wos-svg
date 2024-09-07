@@ -5,7 +5,7 @@ COPY . /app
 RUN composer install --no-dev --ignore-platform-reqs
 
 
-FROM dunglas/frankenphp
+FROM dunglas/frankenphp:latest
 
 # Be sure to replace "your-domain-name.example.com" by your domain name
 ENV SERVER_NAME=svg.servegame.com
@@ -17,10 +17,13 @@ ENV SERVER_NAME=svg.servegame.com
 
 COPY --from=base /app /app
 
+RUN apt update
+RUN apt install wget
+
 RUN install-php-extensions \
     intl \
     pcntl \
-    imagick \
+    gd \
     exif
 
 CMD ["php", "artisan", "octane:start"]

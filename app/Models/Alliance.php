@@ -37,7 +37,7 @@ class Alliance extends Model
             // todo: needs to support laravel's Storage, therefore it can be uploaded to any kind of storage
             if ($alliance->isDirty('logo')) {
                 $filepath = PathData::from(storage_path("app/public/{$alliance->logo}"));
-                $image = ImageManager::imagick()->read($filepath->toString());
+                $image = ImageManager::gd()->read($filepath->toString());
 
                 self::createScaledLogoFile($image, $filepath, 1024, 'large');
                 self::createScaledLogoFile($image, $filepath, 700, 'medium');
