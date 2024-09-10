@@ -38,6 +38,13 @@ class User extends Authenticatable implements FilamentUser
         'remember_token',
     ];
 
+    protected static function booted()
+    {
+        self::created(function (User $user) {
+            $user->givePermissionTo('access alliance-id '.allianceId());
+        });
+    }
+
     /**
      * Get the attributes that should be cast.
      *

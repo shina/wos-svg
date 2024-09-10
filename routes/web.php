@@ -10,4 +10,9 @@ Route::get('/', function () {
     return view('welcome', ['alliance' => $alliance]);
 });
 
+Route::get(
+    '/new-user-welcome',
+    fn () => 'Successfully registered, ping one of the admins so they can approve your registration'
+)->name('new-user-welcome');
+
 Route::get('/{slug}', PageController::class);
