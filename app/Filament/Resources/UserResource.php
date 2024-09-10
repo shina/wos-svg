@@ -21,7 +21,6 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Spatie\Permission\Models\Permission;
 
 class UserResource extends Resource
 {
@@ -72,11 +71,7 @@ class UserResource extends Resource
                     return $query->whereRaw('0 = 1'); // force result be empty
                 }
 
-                return $permissions
-                    ->reduce(
-                        fn (Builder $query, Permission $permission) => $query->permission($permission->name),
-                        $query
-                    );
+                return $query->permission($permissions->pluck('name'));
             })
             ->columns([
                 TextColumn::make('name')
