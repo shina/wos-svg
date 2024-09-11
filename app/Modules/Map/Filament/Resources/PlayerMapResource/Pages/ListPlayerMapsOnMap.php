@@ -20,7 +20,7 @@ class ListPlayerMapsOnMap extends Page
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('Go back')
+            Action::make('List view')
                 ->url(ListPlayerMaps::getUrl()),
         ];
     }

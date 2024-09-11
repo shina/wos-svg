@@ -48,10 +48,10 @@ class PlayerMapResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPlayerMaps::route('/'),
+            'index' => Pages\ListPlayerMapsOnMap::route('/'),
+            'list' => Pages\ListPlayerMaps::route('/list'),
             'edit' => Pages\EditPlayerMap::route('/{record}/edit'),
             'create' => Pages\CreatePlayerMap::route('/create/{position}'),
-            'map' => Pages\ListPlayerMapsOnMap::route('/map'),
         ];
     }
 

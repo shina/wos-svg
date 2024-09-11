@@ -19,7 +19,7 @@ class ListPlayerMaps extends ListRecords
                 ->url('/map')
                 ->link()
                 ->openUrlInNewTab(),
-            Action::make('Select on map')
+            Action::make('Map view')
                 ->url(ListPlayerMapsOnMap::getUrl()),
             Action::make('Add remaining players')
                 ->action(function () {
