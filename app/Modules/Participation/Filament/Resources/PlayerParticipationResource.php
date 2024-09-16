@@ -86,7 +86,15 @@ class PlayerParticipationResource extends Resource
                             return $query->whereNull('combined_categories');
                         }
 
-                        return $query->where('combined_categories', implode('-', $state['values']));
+                        $categoryIds = collect($state['values'])->sort()->toArray();
+
+                        //                        $categoryIds = EventCategory::query()
+                        //                            ->whereIn('id', $state['values'])
+                        //                            ->orderBy('category')
+                        //                            ->pluck('id')
+                        //                            ->toArray();
+
+                        return $query->where('combined_categories', implode('-', $categoryIds));
                     }),
             ])
             ->filtersLayout(FiltersLayout::AboveContent)

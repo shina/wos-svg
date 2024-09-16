@@ -20,9 +20,13 @@ class RecalculateAllPlayersJob implements ShouldQueue
 
     public function handle(EventCategoryCombiner $eventCategoryCombiner): void
     {
+        PlayerParticipation::query()
+            ->where('alliance_id', $this->allianceId)
+            ->delete();
+
         $categoryIds = EventCategory::query()
             ->where('alliance_id', $this->allianceId)
-            ->orderBy('category')
+            ->orderBy('id')
             ->pluck('id')
             ->toArray();
         $combinedCategoriesArray = collect(
