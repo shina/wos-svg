@@ -22,6 +22,8 @@ use Saloon\Http\Connector;
  */
 class Deepl extends Connector
 {
+    public function __construct(private string $apiKey) {}
+
     public function resolveBaseUrl(): string
     {
         return 'https://api-free.deepl.com/v2';
@@ -29,7 +31,7 @@ class Deepl extends Connector
 
     protected function defaultAuth(): ?Authenticator
     {
-        return new TokenAuthenticator(config('auth.deepl.api-key'), 'DeepL-Auth-Key');
+        return new TokenAuthenticator($this->apiKey, 'DeepL-Auth-Key');
     }
 
     /**
