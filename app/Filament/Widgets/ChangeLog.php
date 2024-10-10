@@ -14,6 +14,11 @@ class ChangeLog extends Widget
             'changes' => [
                 ChangeData::from([
                     'isNew' => true,
+                    'title' => 'Add BT2',
+                    'date' => '10.10.2024',
+                ]),
+                ChangeData::from([
+                    'isNew' => false,
                     'title' => 'Add custom logo for alliances',
                     'date' => '07.09.2024',
                 ]),
