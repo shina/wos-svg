@@ -13,7 +13,7 @@ class MapController extends Controller
         $gridItems = PlayerMap::query()
             ->with('player')
             ->where('coordinate_position', '>=', 1)
-            ->where('coordinate_position', '<=', 100)
+            ->where('coordinate_position', '<=', 126)
             ->get()
             ->map(fn (PlayerMap $playerMap) => GridItemData::from($playerMap));
 

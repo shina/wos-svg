@@ -2,8 +2,6 @@
     #grid-container {
         display: grid;
         gap: 0;
-        width: {{ $width ?? '1000px' }};
-        height: {{ $height ?? '1000px' }};
         padding: 10px;
         box-sizing: border-box;
         transition-duration: 1s;
@@ -74,14 +72,31 @@
             gridContainer.appendChild(gridItem);
         }
 
-        createGrid(26, 22);
+        const cols = 27;
+        const rows = 38;
+        createGrid(rows, cols);
+        document.getElementById('grid-container').style.height = (rows*35) + "px";
+        document.getElementById('grid-container').style.width = (cols*45) + "px";
         togglePerspective();
 
-        // bear
-        addTextToGrid('Bear Trap', 13, 9, 3, 3, '#2D6517');
+        //debug
+        // for (let i=1; i<=cols; i++) {
+        //     addTextToGrid(i, 1, i);
+        // }
+        // for (let i=1; i<=rows; i++) {
+        //     addTextToGrid(i, i, 1);
+        // }
+
+        // BT1
+        addTextToGrid('BT 1', 13, 9, 3, 3, '#2D6517');
         addTextToGrid('B', 13, 12, 1, 1, '#3D6FE3');
         addTextToGrid('B', 16, 9, 1, 1, '#3D6FE3');
         addTextToGrid('B', 16, 12, 1, 1, '#3D6FE3');
+
+        // BT2
+        addTextToGrid('BT 2', 30, 20, 3, 3, '#2D6517');
+        addTextToGrid('B', 32, 23, 1, 1, '#3D6FE3');
+        addTextToGrid('B', 32, 16, 1, 1, '#3D6FE3');
 
         // banners
         addTextToGrid('B', 2, 5, 1, 1, '#3D6FE3');

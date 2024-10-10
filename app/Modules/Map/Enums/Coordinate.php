@@ -106,11 +106,39 @@ enum Coordinate: string
     case P93 = '17x21';
     case P94 = '19x21';
     case P95 = '25x7';
-    case P96 = '25x9';
-    case P97 = '25x11';
-    case P98 = '25x13';
-    case P99 = '25x15';
-    case P100 = '25x17';
+
+    // BT2
+    case P96 = '28x20';
+    case P97 = '28x22';
+    case P98 = '28x24';
+    case P99 = '30x24';
+    case P100 = '32x24';
+    case P101 = '34x24';
+    case P102 = '34x22';
+    case P103 = '34x20';
+    case P104 = '34x18';
+    case P105 = '32x18';
+    case P106 = '30x18';
+    case P107 = '28x18';
+    case P108 = '26x18';
+    case P109 = '26x20';
+    case P110 = '26x22';
+    case P111 = '26x24';
+    case P112 = '26x26';
+    case P113 = '28x26';
+    case P114 = '30x26';
+    case P115 = '32x26';
+    case P116 = '34x26';
+    case P117 = '36x26';
+    case P118 = '36x24';
+    case P119 = '36x22';
+    case P120 = '36x20';
+    case P121 = '36x18';
+    case P122 = '36x16';
+    case P123 = '34x16';
+    case P124 = '30x16';
+    case P125 = '28x16';
+    case P126 = '26x16';
 
     public static function collect(): Collection
     {

@@ -30,7 +30,7 @@ class ListPlayerMapsOnMap extends Page
         $existingGridItems = PlayerMap::query()
             ->with('player')
             ->where('coordinate_position', '>=', 1)
-            ->where('coordinate_position', '<=', 100)
+            ->where('coordinate_position', '<=', 126)
             ->get()
             ->mapWithKeys(function (PlayerMap $playerMap) {
                 $gridItem = GridItemData::from($playerMap);
@@ -39,7 +39,7 @@ class ListPlayerMapsOnMap extends Page
                 return [$playerMap->coordinate_position => $gridItem];
             });
 
-        return collect(range(1, 100))
+        return collect(range(1, 126))
             ->mapWithKeys(function (int $position) {
                 $gridItem = GridItemData::from(Coordinate::{'P'.$position});
                 $gridItem->url = CreatePlayerMap::getUrl(['position' => $position]);
