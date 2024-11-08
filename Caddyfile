@@ -2,10 +2,6 @@ svg.servegame.com {
     reverse_proxy wos-svg:8000
 }
 
-wni.servegame.com {
-    reverse_proxy wos-svg:8000
-}
-
-eng.servegame.com {
+tsm.servegame.com {
     reverse_proxy wos-svg:8000
 }
